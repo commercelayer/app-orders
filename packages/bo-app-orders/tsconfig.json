@@ -36,7 +36,16 @@
       ],
       "react-dom": [
         "./node_modules/preact/compat/"
-      ]
+      ],
+      "#components/*": [
+        "src/components/*"
+      ],
+      "#data/*": [
+        "src/data/*"
+      ],
+      "#pages/*": [
+        "src/pages/*"
+      ],
     }
   },
   "include": [
