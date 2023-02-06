@@ -14,7 +14,8 @@
   "dependencies": {
     "@commercelayer/app-elements": "v0.0.2",
     "preact": "^10.12.1",
-    "wouter": "^2.10.0"
+    "wouter": "^2.10.0",
+    "swr": "^2.0.3"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^0.1.4",

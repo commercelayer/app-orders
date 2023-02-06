@@ -23,6 +23,7 @@ importers:
       '@preact/preset-vite': ^2.5.0
       eslint: ^8.34.0
       preact: ^10.12.1
+      swr: ^2.0.3
       typescript: ^4.9.5
       vite: ^4.1.4
       vite-tsconfig-paths: ^4.0.5
@@ -31,6 +32,7 @@ importers:
     dependencies:
       '@commercelayer/app-elements': 0.0.2_mtvmzx54bedgerusnkqfdeunam
       preact: 10.12.1
+      swr: 2.0.3_react@18.2.0
       wouter: 2.10.0_react@18.2.0
     devDependencies:
       '@commercelayer/eslint-config-ts-react': 0.1.4_km5ddj7uwb23cqeymeyvzjsfb4
@@ -7740,6 +7742,16 @@ packages:
   /supports-preserve-symlinks-flag/1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  /swr/2.0.3_react@18.2.0:
+    resolution: {integrity: sha512-sGvQDok/AHEWTPfhUWXEHBVEXmgGnuahyhmRQbjl9XBYxT/MSlAzvXEKQpyM++bMPaI52vcWS2HiKNaW7+9OFw==}
+    engines: {pnpm: '7'}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
 
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
