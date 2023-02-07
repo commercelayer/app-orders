@@ -10,7 +10,6 @@ export function App(): JSX.Element {
     <TokenProvider
       clientKind='integration'
       onInvalidAuth={() => {}}
-      domain='commercelayer.io'
       currentApp='orders'
       devMode
     >
