@@ -1,7 +1,6 @@
 interface MetricsApiFetcherParams {
   endpoint: string
   slug: string
-  domain?: string
   accessToken: string
   body: Record<string, any>
 }
@@ -9,11 +8,10 @@ interface MetricsApiFetcherParams {
 const metricsApiFetcher = async <Data>({
   endpoint,
   slug,
-  domain = 'commercelayer.io',
   accessToken,
   body
 }: MetricsApiFetcherParams): Promise<VndApiResponse<Data>> => {
-  const url = `https://${slug}.${domain}/metrics${endpoint}`
+  const url = `https://${slug}.${window.config.domain}/metrics${endpoint}`
   const response = await fetch(url, {
     method: 'POST',
     headers: {

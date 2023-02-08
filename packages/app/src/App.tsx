@@ -1,5 +1,5 @@
 import type { JSX } from 'preact'
-import { Route, Router, Switch } from 'wouter'
+import { Link, Route, Router, Switch } from 'wouter'
 import { appRoutes } from './data/routes'
 import { ErrorNotFound } from '#components/ErrorNotFound'
 import { TokenProvider } from '@commercelayer/app-elements'
@@ -11,12 +11,16 @@ export function App(): JSX.Element {
       clientKind='integration'
       onInvalidAuth={() => {}}
       currentApp='orders'
+      domain={window.config.domain}
       devMode
     >
       <Router base='/orders'>
         <Switch>
           <Route path={appRoutes.home.path}>
-            <div>home</div>
+            <div>
+              <div>Home</div>
+              <Link to={appRoutes.filters.makePath()}>History</Link>
+            </div>
           </Route>
           <Route path={appRoutes.filters.path}>
             <OrderHistory />
