@@ -18,7 +18,7 @@ importers:
 
   packages/app:
     specifiers:
-      '@commercelayer/core-app-elements': v0.0.1-beta.9
+      '@commercelayer/app-elements': v0.0.2
       '@commercelayer/eslint-config-ts-react': ^0.1.4
       '@preact/preset-vite': ^2.5.0
       eslint: ^8.34.0
@@ -29,7 +29,7 @@ importers:
       vitest: ^0.28.5
       wouter: ^2.10.0
     dependencies:
-      '@commercelayer/core-app-elements': 0.0.1-beta.9_mtvmzx54bedgerusnkqfdeunam
+      '@commercelayer/app-elements': 0.0.2_mtvmzx54bedgerusnkqfdeunam
       preact: 10.12.1
       wouter: 2.10.0_react@18.2.0
     devDependencies:
@@ -298,8 +298,8 @@ packages:
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
 
-  /@commercelayer/core-app-elements/0.0.1-beta.9_mtvmzx54bedgerusnkqfdeunam:
-    resolution: {integrity: sha512-Hpz8alraZ+6cRCpnbCQK4S5zJiNpspqVl/noUZdbnzAO6LApybLc0G3o6Z6AijAyCVq1SuKDnPUvnTL9t0dVZg==}
+  /@commercelayer/app-elements/0.0.2_mtvmzx54bedgerusnkqfdeunam:
+    resolution: {integrity: sha512-axc1gQVDjqWeGg8IoFIuETc5InMNWIbaqmUcd0M5VOCX8ZOIE3hwsW+gaznpA9bK2MG+JbROTD/kKwvaDUpstg==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^4.x
@@ -7848,15 +7848,9 @@ packages:
   /tinybench/2.3.1:
     resolution: {integrity: sha512-hGYWYBMPr7p4g5IarQE7XhlyWveh1EKhy4wUBS1LrHXCKYgvz+4/jCqgmJqZxxldesn05vccrtME2RLLZNW7iA==}
 
-  /tinypool/0.3.0:
-    resolution: {integrity: sha512-NX5KeqHOBZU6Bc0xj9Vr5Szbb1j8tUHIeD18s41aDJaPeC5QTdEhK0SpdpUrZlj2nv5cctNcSjaKNanXlfcVEQ==}
-    engines: {node: '>=14.0.0'}
-    dev: false
-
   /tinypool/0.3.1:
     resolution: {integrity: sha512-zLA1ZXlstbU2rlpA4CIeVaqvWq41MTWqLY3FfsAXgC8+f7Pk7zroaJQxDgxn1xNudKW6Kmj4808rPFShUlIRmQ==}
     engines: {node: '>=14.0.0'}
-    dev: true
 
   /tinyspy/1.0.2:
     resolution: {integrity: sha512-bSGlgwLBYf7PnUsQ6WOc6SJ3pGOcd+d8AA6EUnLDDM0kWEstC1JIlSZA3UNliDXhd9ABoS7hiRBDCu+XP/sf1Q==}
@@ -8441,7 +8435,7 @@ packages:
       source-map: 0.6.1
       strip-literal: 1.0.0
       tinybench: 2.3.1
-      tinypool: 0.3.0
+      tinypool: 0.3.1
       tinyspy: 1.0.2
       vite: 4.1.4_@types+node@18.11.18
       vite-node: 0.26.3_@types+node@18.11.18

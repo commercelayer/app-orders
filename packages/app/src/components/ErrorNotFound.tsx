@@ -1,9 +1,5 @@
 import { appRoutes } from '#data/routes'
-import {
-  Button,
-  EmptyState,
-  PageLayout
-} from '@commercelayer/core-app-elements'
+import { Button, EmptyState, PageLayout } from '@commercelayer/app-elements'
 import type { JSX } from 'preact/jsx-runtime'
 import { Link } from 'wouter'
 
