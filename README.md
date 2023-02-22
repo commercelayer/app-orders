@@ -1,2 +1,3 @@
-# bo-app-orders
-BackOffice App for Orders
+# App Orders
+
+Commerce Layer application for managing orders.
