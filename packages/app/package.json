@@ -13,16 +13,16 @@
   },
   "dependencies": {
     "@commercelayer/core-app-elements": "v0.0.1-beta.9",
-    "preact": "^10.11.3",
-    "wouter": "^2.9.2"
+    "preact": "^10.12.1",
+    "wouter": "^2.10.0"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^0.1.4",
-    "@preact/preset-vite": "^2.4.0",
-    "eslint": "^8.32.0",
-    "typescript": "^4.9.4",
-    "vite": "^4.0.0",
+    "@preact/preset-vite": "^2.5.0",
+    "eslint": "^8.34.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4",
     "vite-tsconfig-paths": "^4.0.5",
-    "vitest": "^0.28.1"
+    "vitest": "^0.28.5"
   }
 }
