@@ -1,5 +1,6 @@
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { OrderHistory } from '#components/OrderHistory'
+import { ErrorNotFound } from '#pages/ErrorNotFound'
+import { OrderDetails } from '#pages/OrderDetails'
+import { OrderHistory } from '#pages/OrderHistory'
 import {
   CoreSdkProvider,
   ErrorBoundary,
@@ -34,7 +35,7 @@ export function App(): JSX.Element {
                 <OrderHistory />
               </Route>
               <Route path={appRoutes.details.path}>
-                <div>details</div>
+                <OrderDetails />
               </Route>
               <Route>
                 <ErrorNotFound />

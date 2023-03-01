@@ -18,7 +18,7 @@ importers:
 
   packages/app:
     specifiers:
-      '@commercelayer/app-elements': 0.0.4
+      '@commercelayer/app-elements': 0.0.5
       '@commercelayer/eslint-config-ts-react': ^0.1.4
       '@commercelayer/sdk': ^4.25.0
       '@preact/preset-vite': ^2.5.0
@@ -31,7 +31,7 @@ importers:
       vitest: ^0.28.5
       wouter: ^2.10.0
     dependencies:
-      '@commercelayer/app-elements': 0.0.4_@commercelayer+sdk@4.25.0
+      '@commercelayer/app-elements': 0.0.5_@commercelayer+sdk@4.25.0
       '@commercelayer/sdk': 4.25.0
       preact: 10.12.1
       swr: 2.0.3_react@18.2.0
@@ -303,8 +303,8 @@ packages:
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
 
-  /@commercelayer/app-elements/0.0.4_@commercelayer+sdk@4.25.0:
-    resolution: {integrity: sha512-AiO3t/f84fpKxAbIl5/WCLlBNp4rTr4MJUnKpdzeq2sIa+06qioWijl7/zfxYs/v+ZOzS+RS1iGqERSdcMBQJw==}
+  /@commercelayer/app-elements/0.0.5_@commercelayer+sdk@4.25.0:
+    resolution: {integrity: sha512-RntV7t+JX5AuNeOskIOIqqbRsmLDnmMU9p/6CXmXwhIVW02eKU/tFKiIttIp/w7qHdumDZD9X552rveNjVm+lg==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^4.x
