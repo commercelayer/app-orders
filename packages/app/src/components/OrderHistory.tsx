@@ -11,6 +11,7 @@ import type { ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
 import { useEffect, useState } from 'preact/hooks'
 import type { JSX } from 'preact/jsx-runtime'
 import { useLocation } from 'wouter'
+import { ListItemOrder } from './ListItemOrder'
 
 export function OrderHistory(): JSX.Element {
   const {
@@ -64,7 +65,7 @@ export function OrderHistory(): JSX.Element {
           }}
         >
           {orders.map((order) => (
-            <div key={order.id}>{order.id}</div>
+            <ListItemOrder key={order.id} order={order} />
           ))}
         </List>
       </Spacer>
