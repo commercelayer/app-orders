@@ -49,11 +49,13 @@
     }
   },
   "include": [
+    "global.d.ts",
     "src",
     "*.config.ts",
     "*.config.js",
     "*.config.cjs",
-    ".eslintrc.cjs"
+    ".eslintrc.cjs",
+    "public/*.js",
   ],
   "references": [
     {

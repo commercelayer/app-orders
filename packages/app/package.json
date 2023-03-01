@@ -12,8 +12,10 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "v0.0.2",
+    "@commercelayer/app-elements": "0.0.4",
+    "@commercelayer/sdk": "^4.25.0",
     "preact": "^10.12.1",
+    "swr": "^2.0.3",
     "wouter": "^2.10.0"
   },
   "devDependencies": {
