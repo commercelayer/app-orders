@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import type { JSX } from 'preact/jsx-runtime'
+import { appRoutes } from '#data/routes'
+import { getPaymentStatusName } from '#data/status'
 import {
   Icon,
   ListItem,
@@ -7,8 +7,9 @@ import {
   formatDate,
   useTokenProvider
 } from '@commercelayer/app-elements'
+import type { IconProps } from '@commercelayer/app-elements/dist/ui/atoms/Icon'
 import type { Order } from '@commercelayer/sdk'
-import { appRoutes } from '#data/routes'
+import type { JSX } from 'preact/jsx-runtime'
 import { Link } from 'wouter'
 
 interface Props {
@@ -20,13 +21,15 @@ export function ListItemOrder({ order }: Props): JSX.Element {
     settings: { timezone }
   } = useTokenProvider()
 
+  const statusInfo = getStatusInfo(order)
   return (
     <Link href={appRoutes.details.makePath(order.id)} key={order.id}>
       <ListItem
         icon={
-          <OrderIcon
-            status={order.status}
-            payment_status={order.payment_status}
+          <Icon
+            name={statusInfo.icon}
+            background={statusInfo.color}
+            gap='large'
           />
         }
       >
@@ -35,20 +38,21 @@ export function ListItemOrder({ order }: Props): JSX.Element {
             {order.market?.name} #{order.id}
           </Text>
           <Text tag='div' weight='medium' size='small' variant='info'>
-            {order.status} · {order.customer?.email} ·{' '}
+            {statusInfo.label} · {order.customer?.email} ·{' '}
             {formatDate({ isoDate: order.updated_at, timezone })}
           </Text>
-          <ActionHint order={order} />
+          {statusInfo.task != null && (
+            <Text tag='div' weight='bold' size='small' variant='warning'>
+              {statusInfo.task}
+            </Text>
+          )}
         </div>
         <div>
           <Text tag='div' weight='semibold'>
-            {formatPrice({
-              cents: order.total_amount_cents,
-              currency: order.currency_code
-            })}
+            {order.formatted_total_amount}
           </Text>
           <Text tag='div' weight='medium' size='small' variant='info'>
-            {order.payment_status}
+            {getPaymentStatusName(order.payment_status)}
           </Text>
         </div>
       </ListItem>
@@ -56,65 +60,129 @@ export function ListItemOrder({ order }: Props): JSX.Element {
   )
 }
 
-function OrderIcon({
-  status,
-  payment_status
-}: Pick<Order, 'status' | 'payment_status'>): JSX.Element {
-  if (status === 'cancelled') {
-    return <Icon name='x' background='gray' gap='large' />
+// TODO: do we need this?
+type UIStatus =
+  | 'placed'
+  | 'approved'
+  | 'in_progress'
+  | 'paid'
+  | 'fulfilled'
+  | 'cancelled'
+  | 'refunded'
+  | 'part_refunded'
+  | 'not_handled'
+
+// TODO: missing combination to investigate
+// placed:unpaid:unfulfilled
+// placed:authorized:not_required
+// placed:free:unfulfilled
+// type Combination = `${OrderStatus}:${PaymentStatus}:${FulfillmentStatus}`
+export function getStatusInfo(order: Order): {
+  status: UIStatus
+  label: string
+  icon: IconProps['name']
+  color: IconProps['background']
+  task?: string
+} {
+  const status = order.status as OrderStatus
+  const paymentStatus = order.payment_status as PaymentStatus
+  const fulfillmentStatus = order.fulfillment_status as FulfillmentStatus
+
+  const combinedStatus =
+    `${status}:${paymentStatus}:${fulfillmentStatus}` as const
+
+  switch (combinedStatus) {
+    case 'placed:authorized:unfulfilled':
+      return {
+        status: 'placed',
+        label: 'Placed',
+        icon: 'arrowDown',
+        color: 'orange',
+        task: 'Awaiting approval'
+      }
+
+    case 'approved:authorized:unfulfilled':
+      return {
+        status: 'approved',
+        label: 'Approved',
+        icon: 'warning',
+        color: 'orange',
+        task: 'Payment to capture'
+      }
+
+    case 'approved:authorized:in_progress':
+      return {
+        status: 'in_progress',
+        label: 'In progress (Manual)',
+        icon: 'arrowClockwise',
+        color: 'orange',
+        task: 'Fulfillment in progress'
+      }
+
+    case 'approved:paid:in_progress':
+      return {
+        status: 'paid',
+        label: 'In progress',
+        icon: 'arrowClockwise',
+        color: 'orange',
+        task: 'Fulfillment in progress'
+      }
+
+    case 'approved:paid:fulfilled':
+      return {
+        status: 'fulfilled',
+        label: 'Fulfilled',
+        icon: 'check',
+        color: 'green'
+      }
+
+    case 'cancelled:voided:unfulfilled':
+      return {
+        status: 'cancelled',
+        label: 'Cancelled',
+        icon: 'x',
+        color: 'gray'
+      }
+
+    case 'cancelled:refunded:unfulfilled':
+      return {
+        status: 'refunded',
+        label: 'Cancelled',
+        icon: 'x',
+        color: 'gray'
+      }
+
+    case 'cancelled:refunded:fulfilled':
+      return {
+        status: 'refunded',
+        label: 'Cancelled',
+        icon: 'x',
+        color: 'gray'
+      }
+
+    case 'approved:partially_refunded:in_progress':
+      return {
+        status: 'part_refunded',
+        label: 'In progress',
+        icon: 'arrowClockwise',
+        color: 'orange',
+        task: 'Fulfillment in progress'
+      }
+
+    case 'approved:partially_refunded:fulfilled':
+      return {
+        status: 'part_refunded',
+        label: 'Part. refunded',
+        icon: 'check',
+        color: 'green'
+      }
+
+    default:
+      return {
+        status: 'not_handled',
+        label: `Not handled: (${combinedStatus})`,
+        icon: 'warning',
+        color: 'white'
+      }
   }
-
-  if (payment_status === 'authorized') {
-    return <Icon name='arrowDown' background='orange' gap='large' />
-  }
-
-  if (status === 'approved') {
-    return <Icon name='check' background='green' gap='large' />
-  }
-
-  return <Icon name='arrowClockwise' background='orange' gap='large' />
-}
-
-function ActionHint({
-  order: { status, payment_status, fulfillment_status }
-}: {
-  order: Order
-}): JSX.Element {
-  return (
-    <>
-      {status === 'placed' &&
-      payment_status === 'authorized' &&
-      fulfillment_status === 'unfulfilled' ? (
-        <Text tag='div' weight='bold' size='small' variant='warning'>
-          Awaiting approval
-        </Text>
-      ) : null}
-
-      {fulfillment_status === 'in_progress' ? 'Fulfillment in progress' : null}
-    </>
-  )
-}
-
-function formatPrice({
-  cents,
-  currency
-}: {
-  cents?: number
-  currency?: string
-}): string {
-  if (cents == null) {
-    return 'Free'
-  }
-
-  if (currency == null) {
-    return Intl.NumberFormat('en-US', {
-      style: 'decimal',
-      minimumFractionDigits: 2
-    }).format(cents / 100)
-  }
-
-  return Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency
-  }).format(cents / 100)
 }
