@@ -35,7 +35,7 @@ export function ListItemOrder({ order }: Props): JSX.Element {
       >
         <div>
           <Text tag='div' weight='semibold'>
-            {order.market?.name} #{order.id}
+            {order.market?.name} #{order.number}
           </Text>
           <Text tag='div' weight='medium' size='small' variant='info'>
             {statusInfo.label} · {order.customer?.email} ·{' '}
