@@ -7,7 +7,7 @@ import {
   TokenProvider
 } from '@commercelayer/app-elements'
 import type { JSX } from 'preact'
-import { Link, Route, Router, Switch } from 'wouter'
+import { Route, Router, Switch } from 'wouter'
 import { appRoutes } from './data/routes'
 
 const isDev = Boolean(import.meta.env.DEV)
@@ -26,10 +26,7 @@ export function App(): JSX.Element {
           <Router base='/orders'>
             <Switch>
               <Route path={appRoutes.home.path}>
-                <div>
-                  <div>Home</div>
-                  <Link to={appRoutes.filters.makePath()}>History</Link>
-                </div>
+                <OrderHistory />
               </Route>
               <Route path={appRoutes.filters.path}>
                 <OrderHistory />
