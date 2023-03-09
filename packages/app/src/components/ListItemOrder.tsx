@@ -1,5 +1,6 @@
-import { appRoutes } from '#data/routes'
 import { getPaymentStatusName } from '#data/dictionaries'
+import { appRoutes } from '#data/routes'
+import { getDisplayStatus } from '#data/status'
 import {
   Icon,
   ListItem,
@@ -7,7 +8,6 @@ import {
   formatDate,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { IconProps } from '@commercelayer/app-elements/dist/ui/atoms/Icon'
 import type { Order } from '@commercelayer/sdk'
 import type { JSX } from 'preact/jsx-runtime'
 import { Link } from 'wouter'
@@ -21,14 +21,14 @@ export function ListItemOrder({ order }: Props): JSX.Element {
     settings: { timezone }
   } = useTokenProvider()
 
-  const statusInfo = getStatusInfo(order)
+  const displayStatus = getDisplayStatus(order)
   return (
     <Link href={appRoutes.details.makePath(order.id)} key={order.id}>
       <ListItem
         icon={
           <Icon
-            name={statusInfo.icon}
-            background={statusInfo.color}
+            name={displayStatus.icon}
+            background={displayStatus.color}
             gap='large'
           />
         }
@@ -38,12 +38,12 @@ export function ListItemOrder({ order }: Props): JSX.Element {
             {order.market?.name} #{order.number}
           </Text>
           <Text tag='div' weight='medium' size='small' variant='info'>
-            {statusInfo.label} · {order.customer?.email} ·{' '}
+            {displayStatus.label} · {order.customer?.email} ·{' '}
             {formatDate({ isoDate: order.updated_at, timezone })}
           </Text>
-          {statusInfo.task != null && (
+          {displayStatus.task != null && (
             <Text tag='div' weight='bold' size='small' variant='warning'>
-              {statusInfo.task}
+              {displayStatus.task}
             </Text>
           )}
         </div>
@@ -58,162 +58,4 @@ export function ListItemOrder({ order }: Props): JSX.Element {
       </ListItem>
     </Link>
   )
-}
-
-// TODO: do we need this?
-type UIStatus =
-  | 'placed'
-  | 'approved'
-  | 'in_progress'
-  | 'paid'
-  | 'fulfilled'
-  | 'cancelled'
-  | 'refunded'
-  | 'part_refunded'
-  | 'not_handled'
-
-export function getStatusInfo(order: Order): {
-  status: UIStatus
-  label: string
-  icon: IconProps['name']
-  color: IconProps['background']
-  task?: string
-} {
-  const status = order.status as OrderStatus
-  const paymentStatus = order.payment_status as PaymentStatus
-  const fulfillmentStatus = order.fulfillment_status as FulfillmentStatus
-
-  // type Combination = `${OrderStatus}:${PaymentStatus}:${FulfillmentStatus}`
-  const combinedStatus =
-    `${status}:${paymentStatus}:${fulfillmentStatus}` as const
-
-  switch (combinedStatus) {
-    case 'placed:authorized:unfulfilled':
-      return {
-        status: 'placed',
-        label: 'Placed',
-        icon: 'arrowDown',
-        color: 'orange',
-        task: 'Awaiting approval'
-      }
-
-    case 'placed:free:unfulfilled':
-      return {
-        status: 'placed',
-        label: 'Placed',
-        icon: 'arrowDown',
-        color: 'orange',
-        task: 'Awaiting approval'
-      }
-
-    case 'placed:unpaid:unfulfilled':
-      return {
-        status: 'placed',
-        label: 'Placed',
-        icon: 'arrowDown',
-        color: 'orange',
-        task: 'Awaiting Payment'
-      }
-
-    case 'approved:authorized:unfulfilled':
-      return {
-        status: 'approved',
-        label: 'Approved',
-        icon: 'warning',
-        color: 'orange',
-        task: 'Payment to capture'
-      }
-
-    case 'placed:authorized:not_required':
-      return {
-        status: 'approved',
-        label: 'Approved',
-        icon: 'warning',
-        color: 'orange',
-        task: 'Payment to capture'
-      }
-
-    case 'approved:authorized:in_progress':
-      return {
-        status: 'in_progress',
-        label: 'In progress (Manual)',
-        icon: 'arrowClockwise',
-        color: 'orange',
-        task: 'Fulfillment in progress'
-      }
-
-    case 'approved:paid:in_progress':
-      return {
-        status: 'paid',
-        label: 'In progress',
-        icon: 'arrowClockwise',
-        color: 'orange',
-        task: 'Fulfillment in progress'
-      }
-
-    case 'approved:paid:fulfilled':
-      return {
-        status: 'fulfilled',
-        label: 'Fulfilled',
-        icon: 'check',
-        color: 'green'
-      }
-
-    case 'placed:paid:not_required':
-      return {
-        status: 'fulfilled',
-        label: 'Fulfilled',
-        icon: 'check',
-        color: 'green'
-      }
-
-    case 'cancelled:voided:unfulfilled':
-      return {
-        status: 'cancelled',
-        label: 'Cancelled',
-        icon: 'x',
-        color: 'gray'
-      }
-
-    case 'cancelled:refunded:unfulfilled':
-      return {
-        status: 'refunded',
-        label: 'Cancelled',
-        icon: 'x',
-        color: 'gray'
-      }
-
-    case 'cancelled:refunded:fulfilled':
-      return {
-        status: 'refunded',
-        label: 'Cancelled',
-        icon: 'x',
-        color: 'gray'
-      }
-
-    case 'approved:partially_refunded:in_progress':
-      return {
-        status: 'part_refunded',
-        label: 'In progress',
-        icon: 'arrowClockwise',
-        color: 'orange',
-        task: 'Fulfillment in progress'
-      }
-
-    case 'approved:partially_refunded:fulfilled':
-      return {
-        status: 'part_refunded',
-        label: 'Part. refunded',
-        icon: 'check',
-        color: 'green'
-      }
-
-    default:
-      return {
-        status: 'not_handled',
-        label: `Not handled: (${combinedStatus})`,
-        icon: 'warning',
-        color: 'white'
-      }
-  }
 }
