@@ -1,5 +1,5 @@
 import { appRoutes } from '#data/routes'
-import { getPaymentStatusName } from '#data/status'
+import { getPaymentStatusName } from '#data/dictionaries'
 import {
   Icon,
   ListItem,
