@@ -1,6 +1,8 @@
 const paymentStatusDictionary: Record<PaymentStatus, string> = {
   authorized: 'Authorized',
   paid: 'Paid',
+  unpaid: 'Unpaid',
+  free: 'Free',
   voided: 'Voided',
   refunded: 'Refunded',
   partially_refunded: 'Part. refunded'
@@ -14,7 +16,8 @@ export function getPaymentStatusName(paymentStatus?: string): string {
 const fulfillmentStatusDictionary: Record<FulfillmentStatus, string> = {
   unfulfilled: 'Unfulfilled',
   in_progress: 'In progress',
-  fulfilled: 'Fulfilled'
+  fulfilled: 'Fulfilled',
+  not_required: 'Not required'
 }
 export function getFulfillmentStatusName(fulfillmentStatus?: string): string {
   return (

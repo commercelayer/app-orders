@@ -72,11 +72,6 @@ type UIStatus =
   | 'part_refunded'
   | 'not_handled'
 
-// TODO: missing combination to investigate
-// placed:unpaid:unfulfilled
-// placed:authorized:not_required
-// placed:free:unfulfilled
-// type Combination = `${OrderStatus}:${PaymentStatus}:${FulfillmentStatus}`
 export function getStatusInfo(order: Order): {
   status: UIStatus
   label: string
@@ -88,6 +83,7 @@ export function getStatusInfo(order: Order): {
   const paymentStatus = order.payment_status as PaymentStatus
   const fulfillmentStatus = order.fulfillment_status as FulfillmentStatus
 
+  // type Combination = `${OrderStatus}:${PaymentStatus}:${FulfillmentStatus}`
   const combinedStatus =
     `${status}:${paymentStatus}:${fulfillmentStatus}` as const
 
@@ -101,7 +97,34 @@ export function getStatusInfo(order: Order): {
         task: 'Awaiting approval'
       }
 
+    case 'placed:free:unfulfilled':
+      return {
+        status: 'placed',
+        label: 'Placed',
+        icon: 'arrowDown',
+        color: 'orange',
+        task: 'Awaiting approval'
+      }
+
+    case 'placed:unpaid:unfulfilled':
+      return {
+        status: 'placed',
+        label: 'Placed',
+        icon: 'arrowDown',
+        color: 'orange',
+        task: 'Awaiting Payment'
+      }
+
     case 'approved:authorized:unfulfilled':
+      return {
+        status: 'approved',
+        label: 'Approved',
+        icon: 'warning',
+        color: 'orange',
+        task: 'Payment to capture'
+      }
+
+    case 'placed:authorized:not_required':
       return {
         status: 'approved',
         label: 'Approved',
@@ -129,6 +152,14 @@ export function getStatusInfo(order: Order): {
       }
 
     case 'approved:paid:fulfilled':
+      return {
+        status: 'fulfilled',
+        label: 'Fulfilled',
+        icon: 'check',
+        color: 'green'
+      }
+
+    case 'placed:paid:not_required':
       return {
         status: 'fulfilled',
         label: 'Fulfilled',
