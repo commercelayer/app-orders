@@ -18,7 +18,7 @@ export function OrderHistory(): JSX.Element {
     settings: { mode }
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
-  const setLocation = useLocation()[1]
+  const [, setLocation] = useLocation()
 
   const [orders, setOrders] = useState<ListResponse<Order> | undefined>(
     undefined
@@ -30,9 +30,12 @@ export function OrderHistory(): JSX.Element {
         .list({
           include: ['market', 'customer'],
           pageNumber: page,
-          pageSize: 5,
+          pageSize: 25,
           filters: {
             status_in: 'placed,approved,cancelled'
+          },
+          sort: {
+            updated_at: 'desc'
           }
         })
         .then((response) => {
@@ -53,7 +56,7 @@ export function OrderHistory(): JSX.Element {
         setLocation(appRoutes.home.makePath())
       }}
     >
-      <Spacer bottom='4'>
+      <Spacer bottom='14'>
         <List
           title='Results'
           pagination={{
