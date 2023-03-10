@@ -6,6 +6,11 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [preact(), tsconfigPaths()],
   base: '/orders',
+  server: {
+    fs: {
+      strict: false
+    }
+  },
   test: {
     globals: true,
     environment: 'jsdom'
