@@ -1,6 +1,6 @@
 {
-  "name": "orders",
   "private": true,
+  "name": "app",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -12,16 +12,17 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "0.0.5",
+    "@commercelayer/app-elements": "^0.0.7",
     "@commercelayer/sdk": "^4.25.0",
-    "preact": "^10.12.1",
-    "swr": "^2.0.3",
+    "preact": "^10.13.1",
+    "swr": "^2.1.0",
     "wouter": "^2.10.0"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^0.1.4",
     "@preact/preset-vite": "^2.5.0",
-    "eslint": "^8.34.0",
+    "eslint": "^8.35.0",
+    "jsdom": "^21.1.0",
     "typescript": "^4.9.5",
     "vite": "^4.1.4",
     "vite-tsconfig-paths": "^4.0.5",

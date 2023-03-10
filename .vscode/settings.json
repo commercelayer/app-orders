@@ -7,5 +7,10 @@
     "typescriptreact"
   ],
   // be sure vscode always uses TS version in local project
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  // format on save
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+  }
 }
