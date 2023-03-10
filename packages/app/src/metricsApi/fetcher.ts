@@ -11,7 +11,7 @@ const metricsApiFetcher = async <Data>({
   accessToken,
   body
 }: MetricsApiFetcherParams): Promise<VndApiResponse<Data>> => {
-  const url = `https://${slug}.${window.config.domain}/metrics${endpoint}`
+  const url = `https://${slug}.${window.clAppConfig.domain}/metrics${endpoint}`
   const response = await fetch(url, {
     method: 'POST',
     headers: {

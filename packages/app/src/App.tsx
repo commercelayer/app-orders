@@ -18,7 +18,7 @@ export function App(): JSX.Element {
       <TokenProvider
         clientKind='integration'
         currentApp='orders'
-        domain={window.config.domain}
+        domain={window.clAppConfig.domain}
         reauthenticateOnInvalidAuth={!isDev}
         devMode={isDev}
       >
