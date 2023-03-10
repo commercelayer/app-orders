@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=18",
+    "node": ">=19",
     "pnpm": ">=7"
   },
   "workspaces": [
