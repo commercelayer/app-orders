@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
     "@commercelayer/app-elements": "^0.0.7",
