@@ -7,6 +7,7 @@ type UIStatus =
   | 'in_progress'
   | 'paid'
   | 'fulfilled'
+  | 'error'
   | 'cancelled'
   | 'refunded'
   | 'part_refunded'
@@ -38,6 +39,24 @@ export function getDisplayStatus(order: Order): OrderDisplayStatus {
         task: 'Awaiting approval'
       }
 
+    case 'placed:authorized:not_required':
+      return {
+        status: 'placed',
+        label: 'Placed',
+        icon: 'arrowDown',
+        color: 'orange',
+        task: 'Awaiting approval'
+      }
+
+    case 'placed:paid:unfulfilled':
+      return {
+        status: 'placed',
+        label: 'Placed',
+        icon: 'arrowDown',
+        color: 'orange',
+        task: 'Awaiting approval'
+      }
+
     case 'placed:free:unfulfilled':
       return {
         status: 'placed',
@@ -47,46 +66,46 @@ export function getDisplayStatus(order: Order): OrderDisplayStatus {
         task: 'Awaiting approval'
       }
 
-    case 'placed:unpaid:unfulfilled':
+    case 'placed:free:not_required':
       return {
         status: 'placed',
         label: 'Placed',
         icon: 'arrowDown',
         color: 'orange',
-        task: 'Awaiting Payment'
+        task: 'Awaiting approval'
       }
 
     case 'approved:authorized:unfulfilled':
       return {
         status: 'approved',
         label: 'Approved',
-        icon: 'warning',
+        icon: 'creditCard',
         color: 'orange',
         task: 'Payment to capture'
-      }
-
-    case 'placed:authorized:not_required':
-      return {
-        status: 'approved',
-        label: 'Approved',
-        icon: 'warning',
-        color: 'orange',
-        task: 'Payment to capture'
-      }
-
-    case 'approved:authorized:in_progress':
-      return {
-        status: 'in_progress',
-        label: 'In progress (Manual)',
-        icon: 'arrowClockwise',
-        color: 'orange',
-        task: 'Fulfillment in progress'
       }
 
     case 'approved:paid:in_progress':
       return {
         status: 'paid',
         label: 'In progress',
+        icon: 'arrowClockwise',
+        color: 'orange',
+        task: 'Fulfillment in progress'
+      }
+
+    case 'approved:partially_refunded:in_progress':
+      return {
+        status: 'part_refunded',
+        label: 'In progress',
+        icon: 'arrowClockwise',
+        color: 'orange',
+        task: 'Fulfillment in progress'
+      }
+
+    case 'approved:authorized:in_progress':
+      return {
+        status: 'in_progress',
+        label: 'In progress (Manual)',
         icon: 'arrowClockwise',
         color: 'orange',
         task: 'Fulfillment in progress'
@@ -100,10 +119,26 @@ export function getDisplayStatus(order: Order): OrderDisplayStatus {
         color: 'green'
       }
 
-    case 'placed:paid:not_required':
+    case 'approved:free:fulfilled':
       return {
-        status: 'fulfilled',
+        status: 'approved',
         label: 'Fulfilled',
+        icon: 'check',
+        color: 'green'
+      }
+
+    case 'approved:free:not_required':
+      return {
+        status: 'approved',
+        label: 'Approved',
+        icon: 'check',
+        color: 'green'
+      }
+
+    case 'approved:partially_refunded:fulfilled':
+      return {
+        status: 'part_refunded',
+        label: 'Part. refunded',
         icon: 'check',
         color: 'green'
       }
@@ -132,21 +167,13 @@ export function getDisplayStatus(order: Order): OrderDisplayStatus {
         color: 'gray'
       }
 
-    case 'approved:partially_refunded:in_progress':
+    case 'placed:unpaid:unfulfilled':
       return {
-        status: 'part_refunded',
-        label: 'In progress',
-        icon: 'arrowClockwise',
-        color: 'orange',
-        task: 'Fulfillment in progress'
-      }
-
-    case 'approved:partially_refunded:fulfilled':
-      return {
-        status: 'part_refunded',
-        label: 'Part. refunded',
-        icon: 'check',
-        color: 'green'
+        status: 'error',
+        label: 'Placed',
+        icon: 'x',
+        color: 'red',
+        task: 'Error to cancel'
       }
 
     default:
