@@ -1,10 +1,10 @@
 import { defineConfig } from 'vitest/config'
-import preact from '@preact/preset-vite'
+import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [preact(), tsconfigPaths()],
+  plugins: [react(), tsconfigPaths()],
   base: '/orders',
   server: {
     fs: {

@@ -6,7 +6,6 @@ import {
   withinSkeleton
 } from '@commercelayer/app-elements'
 import type { Address, Order } from '@commercelayer/sdk'
-import type { JSX } from 'preact/jsx-runtime'
 
 interface Props {
   order: Order

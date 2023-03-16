@@ -15,8 +15,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { LineItem, Order, Shipment } from '@commercelayer/sdk'
-import { useEffect, useMemo, useState } from 'preact/hooks'
-import type { JSX } from 'preact/jsx-runtime'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
 export function OrderDetails(): JSX.Element {

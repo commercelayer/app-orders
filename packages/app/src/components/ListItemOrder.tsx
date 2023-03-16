@@ -9,7 +9,6 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
-import type { JSX } from 'preact/jsx-runtime'
 import { Link } from 'wouter'
 
 interface Props {

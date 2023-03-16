@@ -6,7 +6,6 @@ import {
   ErrorBoundary,
   TokenProvider
 } from '@commercelayer/app-elements'
-import type { JSX } from 'preact'
 import { Route, Router, Switch } from 'wouter'
 import { appRoutes } from './data/routes'
 

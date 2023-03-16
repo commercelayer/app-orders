@@ -5,7 +5,6 @@ import {
   withinSkeleton
 } from '@commercelayer/app-elements'
 import type { LineItem } from '@commercelayer/sdk'
-import type { JSX } from 'preact/jsx-runtime'
 
 interface Props {
   lineItem: LineItem
