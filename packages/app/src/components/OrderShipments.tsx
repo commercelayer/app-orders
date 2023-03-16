@@ -8,8 +8,7 @@ import {
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
-import { useEffect, useMemo, useState } from 'preact/hooks'
-import type { JSX } from 'preact/jsx-runtime'
+import { useEffect, useMemo, useState } from 'react'
 
 interface Props {
   order: Order

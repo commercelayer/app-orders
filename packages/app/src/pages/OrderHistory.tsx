@@ -1,3 +1,4 @@
+import { ListItemOrder } from '#components/ListItemOrder'
 import { appRoutes } from '#data/routes'
 import {
   List,
@@ -8,10 +9,8 @@ import {
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import type { ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
-import { useEffect, useState } from 'preact/hooks'
-import type { JSX } from 'preact/jsx-runtime'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'wouter'
-import { ListItemOrder } from '../components/ListItemOrder'
 
 export function OrderHistory(): JSX.Element {
   const {
