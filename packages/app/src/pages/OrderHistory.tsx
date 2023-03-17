@@ -27,9 +27,24 @@ export function OrderHistory(): JSX.Element {
     if (sdkClient != null) {
       void sdkClient.orders
         .list({
+          fields: {
+            orders: [
+              'id',
+              'number',
+              'updated_at',
+              'formatted_total_amount',
+              'status',
+              'payment_status',
+              'fulfillment_status',
+              'customer',
+              'market'
+            ],
+            customers: ['email'],
+            markets: ['id', 'name']
+          },
           include: ['market', 'customer'],
-          pageNumber: page,
           pageSize: 25,
+          pageNumber: page,
           filters: {
             status_in: 'placed,approved,cancelled'
           },
