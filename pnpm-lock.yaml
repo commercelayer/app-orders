@@ -1,5 +1,8 @@
 lockfileVersion: 5.4
 
+overrides:
+  '@commercelayer/sdk': 5.0.0-beta.4
+
 importers:
 
   .:
@@ -18,9 +21,9 @@ importers:
 
   packages/app:
     specifiers:
-      '@commercelayer/app-elements': ^0.0.8
+      '@commercelayer/app-elements': ^0.0.10
       '@commercelayer/eslint-config-ts-react': ^0.1.4
-      '@commercelayer/sdk': ^4.25.0
+      '@commercelayer/sdk': 5.0.0-beta.4
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
       '@vitejs/plugin-react': ^3.1.0
@@ -35,8 +38,8 @@ importers:
       vitest: ^0.28.5
       wouter: ^2.10.0
     dependencies:
-      '@commercelayer/app-elements': 0.0.8_@commercelayer+sdk@4.25.0
-      '@commercelayer/sdk': 4.25.0
+      '@commercelayer/app-elements': 0.0.10_xep3v4lkwmrfxquyb26ph6523i
+      '@commercelayer/sdk': 5.0.0-beta.4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       swr: 2.1.0_react@18.2.0
@@ -284,13 +287,13 @@ packages:
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
 
-  /@commercelayer/app-elements/0.0.8_@commercelayer+sdk@4.25.0:
-    resolution: {integrity: sha512-mzz7mU3+0cfxZs9t1KJ0ID0m89i6kmi4dvU8h22M6CG26wFLZ9lZzPYf6sQWzjT49tnHlA682FYnn7mYolz1PQ==}
+  /@commercelayer/app-elements/0.0.10_xep3v4lkwmrfxquyb26ph6523i:
+    resolution: {integrity: sha512-DyaQDfomcMbxTLAkNeV5+Tzfv9A08vSxN+s/EWZOYFKzpxQqYZxVgXJFwuD5iBHd8WeFaUIJcSJFi+9fsqk6qw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^4.x
     dependencies:
-      '@commercelayer/sdk': 4.25.0
+      '@commercelayer/sdk': 5.0.0-beta.4
       '@types/lodash': 4.14.191
       '@types/react': 18.0.28
       '@types/react-datepicker': 4.10.0_biqbaboplfbrettd7655fr4n2y
@@ -350,11 +353,11 @@ packages:
       - supports-color
     dev: true
 
-  /@commercelayer/sdk/4.25.0:
-    resolution: {integrity: sha512-5PZflCUFy+daavuw5AEGJTDF3xbhwQQHMxImmgEh5N7li2lPyw+9pBZ1Aq/DSaYLsIgb/MhnIs8a/u6M7Gto/g==}
+  /@commercelayer/sdk/5.0.0-beta.4:
+    resolution: {integrity: sha512-EY/SNDXRyxvBhdBsL1/01HaGqPOm7KSw8bTytVcpVURmn5yRgz6o6ob19JChMnUDhdU2Wowp2Gdsg8t4+lruGQ==}
     engines: {node: '>=16 || ^14.17'}
     dependencies:
-      axios: 1.3.2
+      axios: 1.3.4
     transitivePeerDependencies:
       - debug
     dev: false
@@ -1895,16 +1898,6 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /axios/1.3.2:
-    resolution: {integrity: sha512-1M3O703bYqYuPhbHeya5bnhpYVsDDRyQSabNja04mZtboLNSuZ4YrltestrLXfHgmzua4TpUqRiVKbiQuo2epw==}
-    dependencies:
-      follow-redirects: 1.15.2
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
   /axios/1.3.4:
     resolution: {integrity: sha512-toYm+Bsyl6VC5wSkfkbbNB6ROv7KY93PEBBL6xyDczaIHasAiv4wPqQ/c4RjoQzipxRD2W5g21cOqQulZ7rHwQ==}
     dependencies:
@@ -1913,7 +1906,6 @@ packages:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
-    dev: true
 
   /babel-plugin-macros/3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}

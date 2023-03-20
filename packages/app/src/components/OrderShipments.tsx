@@ -1,3 +1,4 @@
+import { isMock, makeShipment } from '#mocks'
 import {
   Icon,
   Legend,
@@ -5,7 +6,8 @@ import {
   SkeletonTemplate,
   Spacer,
   Text,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  withinSkeleton
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
@@ -14,49 +16,46 @@ interface Props {
   order: Order
 }
 
-const OrderShipment = ({ id }: { id?: string }): JSX.Element => {
-  const [shipment, setShipment] = useState<Shipment>({
-    type: 'shipments',
-    id: '',
-    created_at: '',
-    updated_at: '',
-    number: 'NY Store #19346523/S/001'
-  })
+const OrderShipment = withinSkeleton<{ id?: string }>(
+  ({ isLoading, id }): JSX.Element => {
+    const [shipment, setShipment] = useState<Shipment>(makeShipment())
 
-  const isLoading = useMemo(() => shipment.id === '', [shipment])
+    const isShipmentLoading = useMemo(() => isMock(shipment), [shipment, id])
 
-  const { sdkClient } = useCoreSdkProvider()
+    const { sdkClient } = useCoreSdkProvider()
 
-  useEffect(
-    function fetchShipment() {
-      if (sdkClient != null && id !== undefined) {
-        void sdkClient.shipments
-          .retrieve(id, { include: ['shipping_method'] })
-          .then((response) => {
-            setShipment(response)
-          })
-      }
-    },
-    [sdkClient, id]
-  )
+    useEffect(
+      function fetchShipment() {
+        if (isLoading === false && sdkClient != null && id !== undefined) {
+          void sdkClient.shipments
+            .retrieve(id, { include: ['shipping_method'] })
+            .then((response) => {
+              setShipment(response)
+            })
+        }
+      },
+      [sdkClient, id]
+    )
 
-  return (
-    <SkeletonTemplate isLoading={isLoading}>
-      <ListItem icon={<Icon name='minus' background='gray' gap='large' />}>
-        <div>
-          <Text tag='div' weight='semibold'>
-            #{shipment.number}
-          </Text>
-          <Text size='small' tag='div' variant='info' weight='medium'>
-            {shipment.status} · {shipment.shipping_method?.name?.toLowerCase()}
-          </Text>
-        </div>
-      </ListItem>
-    </SkeletonTemplate>
-  )
-}
+    return (
+      <SkeletonTemplate isLoading={isShipmentLoading} delayMs={0}>
+        <ListItem icon={<Icon name='minus' background='gray' gap='large' />}>
+          <div>
+            <Text tag='div' weight='semibold'>
+              #{shipment.number}
+            </Text>
+            <Text size='small' tag='div' variant='info' weight='medium'>
+              {shipment.status} ·{' '}
+              {shipment.shipping_method?.name?.toLowerCase()}
+            </Text>
+          </div>
+        </ListItem>
+      </SkeletonTemplate>
+    )
+  }
+)
 
-export const OrderShipments = ({ order }: Props): JSX.Element => {
+export const OrderShipments = withinSkeleton<Props>(({ order }) => {
   return (
     <>
       <Legend title='Shipments' />
@@ -72,4 +71,4 @@ export const OrderShipments = ({ order }: Props): JSX.Element => {
       )}
     </>
   )
-}
+})

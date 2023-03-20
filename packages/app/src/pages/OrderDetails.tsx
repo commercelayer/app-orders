@@ -14,8 +14,9 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { LineItem, Order, Shipment } from '@commercelayer/sdk'
+import type { Order } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
+import { isMock, makeOrder } from '#mocks'
 import { Link, useLocation, useRoute } from 'wouter'
 
 export function OrderDetails(): JSX.Element {
@@ -27,44 +28,9 @@ export function OrderDetails(): JSX.Element {
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
-  const [order, setOrder] = useState<Order>({
-    created_at: '',
-    id: '',
-    type: 'orders',
-    updated_at: '',
-    status: 'Unknown',
-    payment_status: 'Unknown',
-    fulfillment_status: 'Unknown',
-    line_items: Array(2).fill({
-      type: 'line_items',
-      id: '',
-      created_at: '',
-      updated_at: '',
-      item_type: 'skus',
-      image_url:
-        'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
-      name: 'I do not know the name of the product',
-      quantity: 1,
-      formatted_total_amount: '10.00€',
-      formatted_unit_amount: '10.00€'
-    } satisfies LineItem),
-    market: {
-      id: '',
-      created_at: '',
-      type: 'markets',
-      updated_at: '',
-      name: 'Unknown'
-    },
-    shipments: Array(2).fill({
-      type: 'shipments',
-      id: '',
-      created_at: '',
-      updated_at: '',
-      number: 'NY Store #19346523/S/001'
-    } satisfies Shipment)
-  })
+  const [order, setOrder] = useState<Order>(makeOrder())
 
-  const isLoading = useMemo(() => order.id === '', [order])
+  const isLoading = useMemo(() => isMock(order), [order])
 
   const orderId = params?.orderId
 
