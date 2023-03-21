@@ -1,16 +1,14 @@
-import { ListItemOrder } from '#components/ListItemOrder'
 import { appRoutes } from '#data/routes'
 import {
-  List,
   PageLayout,
+  ResourceList,
   Spacer,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import type { ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
-import { useEffect, useState } from 'react'
 import { useLocation } from 'wouter'
+import { ListItemOrder } from '../components/ListItemOrder'
+import type { QueryParamsList } from '@commercelayer/sdk'
 
 export function OrderHistory(): JSX.Element {
   const {
@@ -19,47 +17,30 @@ export function OrderHistory(): JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
 
-  const [orders, setOrders] = useState<ListResponse<Order> | undefined>(
-    undefined
-  )
-  const [page, setPage] = useState(1)
-  useEffect(() => {
-    if (sdkClient != null) {
-      void sdkClient.orders
-        .list({
-          fields: {
-            orders: [
-              'id',
-              'number',
-              'updated_at',
-              'formatted_total_amount',
-              'status',
-              'payment_status',
-              'fulfillment_status',
-              'customer',
-              'market'
-            ],
-            customers: ['email'],
-            markets: ['id', 'name']
-          },
-          include: ['market', 'customer'],
-          pageSize: 25,
-          pageNumber: page,
-          filters: {
-            status_in: 'placed,approved,cancelled'
-          },
-          sort: {
-            updated_at: 'desc'
-          }
-        })
-        .then((response) => {
-          setOrders(response)
-        })
+  const query: QueryParamsList = {
+    fields: {
+      orders: [
+        'id',
+        'number',
+        'updated_at',
+        'formatted_total_amount',
+        'status',
+        'payment_status',
+        'fulfillment_status',
+        'customer',
+        'market'
+      ],
+      customers: ['email'],
+      markets: ['id', 'name']
+    },
+    include: ['market', 'customer'],
+    pageSize: 25,
+    filters: {
+      status_in: 'placed,approved,cancelled'
+    },
+    sort: {
+      updated_at: 'desc'
     }
-  }, [sdkClient, page])
-
-  if (orders === undefined) {
-    return <div>Loading</div>
   }
 
   return (
@@ -71,20 +52,18 @@ export function OrderHistory(): JSX.Element {
       }}
     >
       <Spacer bottom='14'>
-        <List
+        <ResourceList
+          sdkClient={sdkClient}
           title='Results'
-          pagination={{
-            pageCount: orders.meta.pageCount,
-            currentPage: orders.meta.currentPage,
-            onChangePageRequest: setPage,
-            recordCount: orders.meta.recordCount,
-            recordsPerPage: orders.meta.recordsPerPage
+          type='orders'
+          query={query}
+          emptyState={{
+            title: 'No orders yet!',
+            description: 'Add a order with the API, or use the CLI',
+            icon: 'stack'
           }}
-        >
-          {orders.map((order) => (
-            <ListItemOrder key={order.id} order={order} />
-          ))}
-        </List>
+          Item={ListItemOrder}
+        />
       </Spacer>
     </PageLayout>
   )
