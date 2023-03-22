@@ -1,14 +1,74 @@
 import {
+  getFulfillmentStatusName,
+  getOrderStatusName,
+  getPaymentStatusName
+} from '#data/dictionaries'
+import {
   Badge,
   Spacer,
   Stack,
   Text,
   withinSkeleton
 } from '@commercelayer/app-elements'
+import type { BadgeVariant } from '@commercelayer/app-elements/dist/ui/atoms/Badge'
 import type { Order } from '@commercelayer/sdk'
 
 interface Props {
   order: Order
+}
+
+function getOrderStatusBadgeVariant(status: Order['status']): BadgeVariant {
+  switch (status) {
+    case 'approved':
+      return 'success-solid'
+    case 'cancelled':
+    case 'draft':
+    case 'pending':
+      return 'secondary'
+    case 'placed':
+      return 'warning-solid'
+    default:
+      return 'secondary'
+  }
+}
+
+function getPaymentStatusBadgeVariant(
+  status: Order['payment_status']
+): BadgeVariant {
+  switch (status) {
+    case 'paid':
+    case 'free':
+      return 'success-solid'
+    case 'refunded':
+    case 'voided':
+      return 'secondary'
+    case 'authorized':
+      return 'warning-solid'
+    case 'unpaid':
+    case 'partially_authorized':
+    case 'partially_paid':
+    case 'partially_refunded':
+    case 'partially_voided':
+      return 'danger-solid'
+    default:
+      return 'secondary'
+  }
+}
+
+function getFulfillmentStatusBadgeVariant(
+  status: Order['fulfillment_status']
+): BadgeVariant {
+  switch (status) {
+    case 'fulfilled':
+      return 'success-solid'
+    case 'unfulfilled':
+    case 'not_required':
+      return 'secondary'
+    case 'in_progress':
+      return 'warning-solid'
+    default:
+      return 'secondary'
+  }
 }
 
 export const OrderSteps = withinSkeleton<Props>(({ order }): JSX.Element => {
@@ -22,8 +82,8 @@ export const OrderSteps = withinSkeleton<Props>(({ order }): JSX.Element => {
         </Spacer>
         {order.status !== undefined && (
           <Badge
-            label={order.status.toUpperCase()}
-            variant={'secondary' ?? 'success-solid'}
+            label={getOrderStatusName(order.status).toUpperCase()}
+            variant={getOrderStatusBadgeVariant(order.status)}
           />
         )}
       </div>
@@ -35,8 +95,8 @@ export const OrderSteps = withinSkeleton<Props>(({ order }): JSX.Element => {
         </Spacer>
         {order.payment_status !== undefined && (
           <Badge
-            label={order.payment_status.toUpperCase()}
-            variant={'secondary' ?? 'success-solid'}
+            label={getPaymentStatusName(order.payment_status).toUpperCase()}
+            variant={getPaymentStatusBadgeVariant(order.payment_status)}
           />
         )}
       </div>
@@ -48,8 +108,10 @@ export const OrderSteps = withinSkeleton<Props>(({ order }): JSX.Element => {
         </Spacer>
         {order.fulfillment_status !== undefined && (
           <Badge
-            label={order.fulfillment_status.toUpperCase()}
-            variant={'secondary' ?? 'success-solid'}
+            label={getFulfillmentStatusName(
+              order.fulfillment_status
+            ).toUpperCase()}
+            variant={getFulfillmentStatusBadgeVariant(order.fulfillment_status)}
           />
         )}
       </div>

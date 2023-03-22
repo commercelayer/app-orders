@@ -20,6 +20,7 @@ export function App(): JSX.Element {
         domain={window.clAppConfig.domain}
         reauthenticateOnInvalidAuth={!isDev}
         devMode={isDev}
+        loadingElement={<div />}
       >
         <CoreSdkProvider>
           <Router base='/orders'>

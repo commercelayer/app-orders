@@ -48,13 +48,17 @@ export const OrderCustomer = withinSkeleton<Props>(
       [sdkClient, order]
     )
 
+    if (order.customer == null) {
+      return null
+    }
+
     return (
       <>
         <Legend title='Customer' />
         <ListItem icon={<Icon name='user' background='teal' gap='large' />}>
           <div>
             <Text tag='div' weight='semibold'>
-              {order?.customer?.email}
+              {order.customer.email}
             </Text>
             <Text size='small' tag='div' variant='info' weight='medium'>
               <SkeletonTemplate isLoading={totalOrdersIsLoading}>

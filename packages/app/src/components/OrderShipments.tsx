@@ -59,7 +59,7 @@ export const OrderShipments = withinSkeleton<Props>(({ order }) => {
   return (
     <>
       <Legend title='Shipments' />
-      {order.shipments !== undefined && order.shipments.length > 0 ? (
+      {order.shipments != null && order.shipments.length > 0 ? (
         order.shipments.map((shipment) => (
           <OrderShipment key={shipment.id} id={shipment.id} />
         ))
