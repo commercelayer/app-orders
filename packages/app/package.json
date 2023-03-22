@@ -13,8 +13,8 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^0.0.8",
-    "@commercelayer/sdk": "^4.25.0",
+    "@commercelayer/app-elements": "^0.0.12",
+    "@commercelayer/sdk": "5.0.0-beta.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "swr": "^2.1.0",

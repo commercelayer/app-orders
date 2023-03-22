@@ -38,6 +38,9 @@
       "#pages/*": [
         "src/pages/*"
       ],
+      "#mocks": [
+        "src/mocks/index"
+      ],
     }
   },
   "include": [

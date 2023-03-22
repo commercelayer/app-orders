@@ -1,74 +1,69 @@
 import {
-  Avatar,
+  Icon,
   Legend,
   ListItem,
   SkeletonTemplate,
   Text,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  withinSkeleton
 } from '@commercelayer/app-elements'
-import type { Customer, Order } from '@commercelayer/sdk'
+import type { Order } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
 
 interface Props {
-  order?: Order
+  order: Order
 }
 
-export const OrderCustomer = ({ order }: Props): JSX.Element | null => {
-  const [customer, setCustomer] = useState<Customer>({
-    email: 'john.doe@commercelayer.io',
-    id: '',
-    type: 'customers',
-    created_at: '',
-    updated_at: ''
-  })
+export const OrderCustomer = withinSkeleton<Props>(
+  ({ order, isLoading }): JSX.Element | null => {
+    const [totalOrders, setTotalOrders] = useState<number | undefined>()
 
-  const isLoading = useMemo(() => customer.id === '', [customer])
-  // const isLoading = true
+    const totalOrdersIsLoading = useMemo(
+      () => totalOrders === undefined,
+      [totalOrders]
+    )
 
-  const { sdkClient } = useCoreSdkProvider()
+    const { sdkClient } = useCoreSdkProvider()
 
-  useEffect(
-    function fetchCustomer() {
-      if (
-        sdkClient != null &&
-        order !== undefined &&
-        order.customer !== undefined &&
-        order.customer.id !== undefined
-      ) {
-        void sdkClient.customers
-          .retrieve(order.customer.id, { include: ['orders'] })
-          .then((response) => {
-            setCustomer(response)
-          })
-      }
-    },
-    [sdkClient, order]
-  )
+    useEffect(
+      function fetchCustomer() {
+        if (
+          isLoading === false &&
+          sdkClient != null &&
+          order.customer != null
+        ) {
+          void sdkClient.orders
+            .list({
+              fields: ['id'],
+              pageSize: 1,
+              filters: {
+                customer_id_eq: order.customer.id
+              }
+            })
+            .then((response) => {
+              setTotalOrders(response.meta.recordCount)
+            })
+        }
+      },
+      [sdkClient, order]
+    )
 
-  return (
-    <>
-      <SkeletonTemplate isLoading={isLoading}>
+    return (
+      <>
         <Legend title='Customer' />
-        <ListItem
-          icon={
-            <Avatar
-              alt={customer.email ?? ''}
-              border='none'
-              shape='circle'
-              src='https://ui-avatars.com/api/Commerce+Layer/160/101111/FFFFFF/2/0.33/false/true/true'
-            />
-          }
-        >
+        <ListItem icon={<Icon name='user' background='teal' gap='large' />}>
           <div>
             <Text tag='div' weight='semibold'>
-              {customer.email}
+              {order?.customer?.email}
             </Text>
             <Text size='small' tag='div' variant='info' weight='medium'>
-              {customer.orders?.length} orders
+              <SkeletonTemplate isLoading={totalOrdersIsLoading}>
+                {totalOrders} orders
+              </SkeletonTemplate>
             </Text>
           </div>
         </ListItem>
-      </SkeletonTemplate>
-    </>
-  )
-}
+      </>
+    )
+  }
+)
