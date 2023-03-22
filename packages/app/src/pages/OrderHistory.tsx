@@ -1,5 +1,6 @@
 import { appRoutes } from '#data/routes'
 import {
+  A,
   PageLayout,
   ResourceList,
   Spacer,
@@ -59,7 +60,18 @@ export function OrderHistory(): JSX.Element {
           query={query}
           emptyState={{
             title: 'No orders yet!',
-            description: 'Add a order with the API, or use the CLI',
+            description: (
+              <div>
+                <p>Add an order with the API, or use the CLI.</p>
+                <A
+                  target='_blank'
+                  href='https://docs.commercelayer.io/core/v/api-reference/orders'
+                  rel='noreferrer'
+                >
+                  View API reference.
+                </A>
+              </div>
+            ),
             icon: 'stack'
           }}
           Item={ListItemOrder}
