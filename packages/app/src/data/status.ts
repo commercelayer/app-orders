@@ -1,5 +1,10 @@
 import type { IconProps } from '@commercelayer/app-elements/dist/ui/atoms/Icon'
 import type { Order } from '@commercelayer/sdk'
+import type {
+  FulfillmentStatus,
+  OrderStatus,
+  PaymentStatus
+} from './dictionaries'
 
 type UIStatus =
   | 'placed'
