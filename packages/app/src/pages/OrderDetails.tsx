@@ -18,6 +18,7 @@ import type { Order } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
 import { isMock, makeOrder } from '#mocks'
 import { Link, useLocation, useRoute } from 'wouter'
+import { ScrollToTop } from '#components/ScrollToTop'
 
 export function OrderDetails(): JSX.Element {
   const {
@@ -97,6 +98,7 @@ export function OrderDetails(): JSX.Element {
         setLocation(appRoutes.filters.makePath())
       }}
     >
+      <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
           <OrderSteps order={order} />
