@@ -1,3 +1,15 @@
+import type { Order } from '@commercelayer/sdk'
+
+// TODO: remove the following status types once SDK union have been updated
+export type OrderStatus = NonNullable<Order['status']>
+export type PaymentStatus =
+  | NonNullable<Order['payment_status']>
+  | 'partially_refunded'
+  | 'free'
+export type FulfillmentStatus =
+  | NonNullable<Order['fulfillment_status']>
+  | 'not_required'
+
 const paymentStatusDictionary: Record<PaymentStatus, string> = {
   authorized: 'Authorized',
   paid: 'Paid',
