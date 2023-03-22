@@ -11,39 +11,14 @@ import {
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
+import { makeOrder } from '#mocks'
 
 interface Props {
   resource?: Order
 }
 
-const mockedOrder: Order = {
-  id: 'PZrIfTsOXL',
-  created_at: '2023-03-15T13:57:06.856Z',
-  updated_at: '2023-03-15T13:57:06.856Z',
-  type: 'orders',
-  number: 12332323,
-  status: 'placed',
-  payment_status: 'paid',
-  fulfillment_status: 'unfulfilled',
-  formatted_total_amount: '$99.99',
-  customer: {
-    id: 'PZrIfTsOXL',
-    created_at: '2023-03-15T13:57:06.856Z',
-    updated_at: '2023-03-15T13:57:06.856Z',
-    type: 'customers',
-    email: 'email@commercelayer.io'
-  },
-  market: {
-    id: 'PZrIfTsOXL',
-    created_at: '2023-03-15T13:57:06.856Z',
-    updated_at: '2023-03-15T13:57:06.856Z',
-    type: 'markets',
-    name: 'CommerceLayer'
-  }
-}
-
 function ListItemOrderComponent({
-  resource = mockedOrder
+  resource = makeOrder()
 }: Props): JSX.Element {
   const {
     settings: { timezone }
