@@ -20,7 +20,10 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
   } = useTokenProvider()
 
   return (
-    <ListItem icon={<Icon name='minus' background='gray' gap='large' />}>
+    <ListItem
+      key={shipment.id}
+      icon={<Icon name='minus' background='gray' gap='large' />}
+    >
       <div>
         <Text tag='div' weight='semibold'>
           #{shipment.number}

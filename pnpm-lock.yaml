@@ -21,7 +21,7 @@ importers:
 
   packages/app:
     specifiers:
-      '@commercelayer/app-elements': ^0.0.12
+      '@commercelayer/app-elements': ^0.0.14
       '@commercelayer/eslint-config-ts-react': ^0.1.4
       '@commercelayer/sdk': 5.0.0-beta.11
       '@types/react': ^18.0.28
@@ -38,7 +38,7 @@ importers:
       vitest: ^0.28.5
       wouter: ^2.10.0
     dependencies:
-      '@commercelayer/app-elements': 0.0.12_griudegihmafkodmocickdwsi4
+      '@commercelayer/app-elements': 0.0.14_griudegihmafkodmocickdwsi4
       '@commercelayer/sdk': 5.0.0-beta.11
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -294,8 +294,8 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements/0.0.12_griudegihmafkodmocickdwsi4:
-    resolution: {integrity: sha512-jZpvfHNyWfx8i732ohbTzN2ba6+Thy1iK+Il8Pg39DRvLeD4tHVnd8bN+KrgI+TAGuPmQg580cOwyOzCSg3gEg==}
+  /@commercelayer/app-elements/0.0.14_griudegihmafkodmocickdwsi4:
+    resolution: {integrity: sha512-ykaA3aotZcaXCJReYNuCzpkkMkX2a8UyTtl+IvQ4JPnxvUo53nYzqfQGuv+gXC5TD2amzpOo1baTF+leUcoTMA==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^4.x
