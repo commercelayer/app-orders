@@ -18,6 +18,7 @@ import type { Order } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
 import { isMock, makeOrder } from '#mocks'
 import { Link, useLocation, useRoute } from 'wouter'
+import { ScrollToTop } from '#components/ScrollToTop'
 
 export function OrderDetails(): JSX.Element {
   const {
@@ -81,22 +82,24 @@ export function OrderDetails(): JSX.Element {
   const pageTitle = `${order.market?.name} #${order.number}`
 
   return (
-    <SkeletonTemplate isLoading={isLoading}>
-      <PageLayout
-        title={
-          <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-        }
-        description={
-          <SkeletonTemplate isLoading={isLoading}>{`Placed on ${formatDate({
-            isoDate: order.updated_at,
-            timezone,
-            format: 'full'
-          })}`}</SkeletonTemplate>
-        }
-        onGoBack={() => {
-          setLocation(appRoutes.filters.makePath())
-        }}
-      >
+    <PageLayout
+      mode={mode}
+      title={
+        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+      }
+      description={
+        <SkeletonTemplate isLoading={isLoading}>{`Placed on ${formatDate({
+          isoDate: order.updated_at,
+          timezone,
+          format: 'full'
+        })}`}</SkeletonTemplate>
+      }
+      onGoBack={() => {
+        setLocation(appRoutes.filters.makePath())
+      }}
+    >
+      <ScrollToTop />
+      <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
           <OrderSteps order={order} />
           <Spacer top='14'>
@@ -112,7 +115,7 @@ export function OrderDetails(): JSX.Element {
             <OrderShipments order={order} />
           </Spacer>
         </Spacer>
-      </PageLayout>
-    </SkeletonTemplate>
+      </SkeletonTemplate>
+    </PageLayout>
   )
 }

@@ -1,14 +1,20 @@
 import type { Order } from '@commercelayer/sdk'
 
-// TODO: remove the following status types once SDK union have been updated
+// TODO: remove the following status types once SDK nullable=false have been updated
 export type OrderStatus = NonNullable<Order['status']>
-export type PaymentStatus =
-  | NonNullable<Order['payment_status']>
-  | 'partially_refunded'
-  | 'free'
-export type FulfillmentStatus =
-  | NonNullable<Order['fulfillment_status']>
-  | 'not_required'
+export type PaymentStatus = NonNullable<Order['payment_status']>
+export type FulfillmentStatus = NonNullable<Order['fulfillment_status']>
+
+const orderStatusDictionary: Record<OrderStatus, string> = {
+  approved: 'Approved',
+  cancelled: 'Cancelled',
+  draft: 'Draft',
+  pending: 'Pending',
+  placed: 'Placed'
+}
+export function getOrderStatusName(status: Order['status']): string {
+  return orderStatusDictionary[status as OrderStatus] ?? status
+}
 
 const paymentStatusDictionary: Record<PaymentStatus, string> = {
   authorized: 'Authorized',
@@ -17,12 +23,13 @@ const paymentStatusDictionary: Record<PaymentStatus, string> = {
   free: 'Free',
   voided: 'Voided',
   refunded: 'Refunded',
-  partially_refunded: 'Part. refunded'
+  partially_authorized: 'Part. authorized',
+  partially_paid: 'Part. paid',
+  partially_refunded: 'Part. refunded',
+  partially_voided: 'Part. voided'
 }
-export function getPaymentStatusName(paymentStatus?: string): string {
-  return (
-    paymentStatusDictionary[paymentStatus as PaymentStatus] ?? paymentStatus
-  )
+export function getPaymentStatusName(status: Order['payment_status']): string {
+  return paymentStatusDictionary[status as PaymentStatus] ?? status
 }
 
 const fulfillmentStatusDictionary: Record<FulfillmentStatus, string> = {
@@ -31,9 +38,8 @@ const fulfillmentStatusDictionary: Record<FulfillmentStatus, string> = {
   fulfilled: 'Fulfilled',
   not_required: 'Not required'
 }
-export function getFulfillmentStatusName(fulfillmentStatus?: string): string {
-  return (
-    fulfillmentStatusDictionary[fulfillmentStatus as FulfillmentStatus] ??
-    fulfillmentStatus
-  )
+export function getFulfillmentStatusName(
+  status: Order['fulfillment_status']
+): string {
+  return fulfillmentStatusDictionary[status as FulfillmentStatus] ?? status
 }

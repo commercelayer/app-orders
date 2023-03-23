@@ -11,49 +11,45 @@ interface Props {
   order: Order
 }
 
-function renderAddress(address?: Address): JSX.Element | null {
-  if (address === undefined) {
+function renderAddress(
+  label: string,
+  address: Address | undefined | null
+): JSX.Element | null {
+  if (address == null) {
     return null
   }
 
   return (
-    <>
-      {address.full_name}
-      <br />
-      {address.line_1} {address.line_2}
-      <br />
-      {address.city} {address.state_code} {address.zip_code} (
-      {address.country_code})
-    </>
+    <div>
+      <Spacer bottom='2'>
+        <Text tag='div' weight='bold'>
+          {label}
+        </Text>
+      </Spacer>
+      <Text tag='div' variant='info'>
+        {address.full_name}
+        <br />
+        {address.line_1} {address.line_2}
+        <br />
+        {address.city} {address.state_code} {address.zip_code} (
+        {address.country_code})
+      </Text>
+    </div>
   )
 }
 
 export const OrderAddresses = withinSkeleton<Props>(
-  ({ order }): JSX.Element => {
+  ({ order }): JSX.Element | null => {
+    if (order.shipping_address == null && order.billing_address == null) {
+      return null
+    }
+
     return (
       <>
         <Legend border='none' title='Addresses' />
         <Stack>
-          <div>
-            <Spacer bottom='2'>
-              <Text tag='div' weight='bold'>
-                Shipping address
-              </Text>
-            </Spacer>
-            <Text tag='div' variant='info'>
-              {renderAddress(order.shipping_address)}
-            </Text>
-          </div>
-          <div>
-            <Spacer bottom='2'>
-              <Text tag='div' weight='bold'>
-                Billing address
-              </Text>
-            </Spacer>
-            <Text tag='div' variant='info'>
-              {renderAddress(order.billing_address)}
-            </Text>
-          </div>
+          {renderAddress('Shipping address', order.shipping_address)}
+          {renderAddress('Billing address', order.billing_address)}
         </Stack>
       </>
     )

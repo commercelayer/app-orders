@@ -6,7 +6,10 @@ export const makeLineItem = (): LineItem => {
     ...makeResource('line_items'),
     tax_amount_float: 0,
     total_amount_float: 0,
-    item_type: 'skus',
+
+    // TODO: this is a bug in the documenter.
+    item_type: 'skus' as 'sku',
+
     sku_code: Math.random().toString(),
     image_url:
       'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
