@@ -8,7 +8,7 @@ import {
   Spacer,
   Stack,
   Text,
-  withinSkeleton
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { BadgeVariant } from '@commercelayer/app-elements/dist/ui/atoms/Badge'
 import type { Order } from '@commercelayer/sdk'
@@ -71,50 +71,54 @@ function getFulfillmentStatusBadgeVariant(
   }
 }
 
-export const OrderSteps = withinSkeleton<Props>(({ order }): JSX.Element => {
-  return (
-    <Stack>
-      <div>
-        <Spacer bottom='2'>
-          <Text size='small' tag='div' variant='info' weight='semibold'>
-            Order
-          </Text>
-        </Spacer>
-        {order.status !== undefined && (
-          <Badge
-            label={getOrderStatusName(order.status).toUpperCase()}
-            variant={getOrderStatusBadgeVariant(order.status)}
-          />
-        )}
-      </div>
-      <div>
-        <Spacer bottom='2'>
-          <Text size='small' tag='div' variant='info' weight='semibold'>
-            Payment
-          </Text>
-        </Spacer>
-        {order.payment_status !== undefined && (
-          <Badge
-            label={getPaymentStatusName(order.payment_status).toUpperCase()}
-            variant={getPaymentStatusBadgeVariant(order.payment_status)}
-          />
-        )}
-      </div>
-      <div>
-        <Spacer bottom='2'>
-          <Text size='small' tag='div' variant='info' weight='semibold'>
-            Fulfillment
-          </Text>
-        </Spacer>
-        {order.fulfillment_status !== undefined && (
-          <Badge
-            label={getFulfillmentStatusName(
-              order.fulfillment_status
-            ).toUpperCase()}
-            variant={getFulfillmentStatusBadgeVariant(order.fulfillment_status)}
-          />
-        )}
-      </div>
-    </Stack>
-  )
-})
+export const OrderSteps = withSkeletonTemplate<Props>(
+  ({ order }): JSX.Element => {
+    return (
+      <Stack>
+        <div>
+          <Spacer bottom='2'>
+            <Text size='small' tag='div' variant='info' weight='semibold'>
+              Order
+            </Text>
+          </Spacer>
+          {order.status !== undefined && (
+            <Badge
+              label={getOrderStatusName(order.status).toUpperCase()}
+              variant={getOrderStatusBadgeVariant(order.status)}
+            />
+          )}
+        </div>
+        <div>
+          <Spacer bottom='2'>
+            <Text size='small' tag='div' variant='info' weight='semibold'>
+              Payment
+            </Text>
+          </Spacer>
+          {order.payment_status !== undefined && (
+            <Badge
+              label={getPaymentStatusName(order.payment_status).toUpperCase()}
+              variant={getPaymentStatusBadgeVariant(order.payment_status)}
+            />
+          )}
+        </div>
+        <div>
+          <Spacer bottom='2'>
+            <Text size='small' tag='div' variant='info' weight='semibold'>
+              Fulfillment
+            </Text>
+          </Spacer>
+          {order.fulfillment_status !== undefined && (
+            <Badge
+              label={getFulfillmentStatusName(
+                order.fulfillment_status
+              ).toUpperCase()}
+              variant={getFulfillmentStatusBadgeVariant(
+                order.fulfillment_status
+              )}
+            />
+          )}
+        </div>
+      </Stack>
+    )
+  }
+)

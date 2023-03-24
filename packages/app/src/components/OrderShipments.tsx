@@ -6,7 +6,7 @@ import {
   Spacer,
   Text,
   useTokenProvider,
-  withinSkeleton
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
 
@@ -22,6 +22,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
   return (
     <ListItem
       key={shipment.id}
+      tag='div'
       icon={<Icon name='minus' background='gray' gap='large' />}
     >
       <div>
@@ -41,7 +42,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
   )
 }
 
-export const OrderShipments = withinSkeleton<Props>(({ order }) => {
+export const OrderShipments = withSkeletonTemplate<Props>(({ order }) => {
   return (
     <>
       <Legend title='Shipments' />
