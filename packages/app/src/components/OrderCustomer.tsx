@@ -5,7 +5,7 @@ import {
   SkeletonTemplate,
   Text,
   useCoreSdkProvider,
-  withinSkeleton
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
@@ -14,7 +14,7 @@ interface Props {
   order: Order
 }
 
-export const OrderCustomer = withinSkeleton<Props>(
+export const OrderCustomer = withSkeletonTemplate<Props>(
   ({ order, isLoading }): JSX.Element | null => {
     const [totalOrders, setTotalOrders] = useState<number | undefined>()
 
@@ -27,11 +27,7 @@ export const OrderCustomer = withinSkeleton<Props>(
 
     useEffect(
       function fetchCustomer() {
-        if (
-          isLoading === false &&
-          sdkClient != null &&
-          order.customer != null
-        ) {
+        if (isLoading !== true && sdkClient != null && order.customer != null) {
           void sdkClient.orders
             .list({
               fields: ['id'],
@@ -55,7 +51,10 @@ export const OrderCustomer = withinSkeleton<Props>(
     return (
       <>
         <Legend title='Customer' />
-        <ListItem icon={<Icon name='user' background='teal' gap='large' />}>
+        <ListItem
+          tag='div'
+          icon={<Icon name='user' background='teal' gap='large' />}
+        >
           <div>
             <Text tag='div' weight='semibold'>
               {order.customer.email}

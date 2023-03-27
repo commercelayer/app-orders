@@ -3,7 +3,7 @@ import {
   Spacer,
   Stack,
   Text,
-  withinSkeleton
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Address, Order } from '@commercelayer/sdk'
 
@@ -38,7 +38,7 @@ function renderAddress(
   )
 }
 
-export const OrderAddresses = withinSkeleton<Props>(
+export const OrderAddresses = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
     if (order.shipping_address == null && order.billing_address == null) {
       return null
