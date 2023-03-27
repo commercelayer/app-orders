@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { type FC, useEffect } from 'react'
 import { useLocation } from 'wouter'
 
 export const ScrollToTop: FC = () => {

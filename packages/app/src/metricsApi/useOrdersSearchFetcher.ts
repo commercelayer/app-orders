@@ -1,4 +1,4 @@
-import useSWR, { SWRResponse } from 'swr'
+import useSWR, { type SWRResponse } from 'swr'
 import { ordersSearchFetcher } from './fetcher'
 import { useTokenProvider } from '@commercelayer/app-elements'
 

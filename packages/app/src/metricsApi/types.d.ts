@@ -14,7 +14,7 @@ interface MetricsApiOrdersSearchData {
   }
 }
 
-interface VndApiResponse<Data extends any> {
+interface VndApiResponse<Data> {
   data: Data[]
   meta: {
     pagination: {

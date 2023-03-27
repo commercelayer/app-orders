@@ -1,4 +1,4 @@
-import { appRoutes, AppRoute } from './routes'
+import { appRoutes, type AppRoute } from './routes'
 
 describe('appRoutes', () => {
   test('Every route should have a `path` property', () => {
