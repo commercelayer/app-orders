@@ -32,12 +32,12 @@
     "husky": "^8.0.3",
     "lerna": "^6.6.1",
     "lint-staged": "^13.2.0",
-    "npm-check-updates": "^16.8.0",
+    "npm-check-updates": "^16.9.0",
     "typescript": "^4.9.5"
   },
   "pnpm": {
     "overrides": {
-      "@commercelayer/sdk": "5.0.0-beta.15"
+      "@commercelayer/sdk": "5.0.0-beta.19"
     }
   }
 }

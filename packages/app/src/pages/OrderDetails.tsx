@@ -14,11 +14,13 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
 import { isMock, makeOrder } from '#mocks'
 import { Link, useLocation, useRoute } from 'wouter'
 import { ScrollToTop } from '#components/ScrollToTop'
+import { OrderDetailsContextMenu } from '#components/OrderDetailsContextMenu'
+import { OrderContext } from '#contexts/OrderContext'
+import { type Order } from '@commercelayer/sdk'
 
 export function OrderDetails(): JSX.Element {
   const {
@@ -82,40 +84,43 @@ export function OrderDetails(): JSX.Element {
   const pageTitle = `${order.market?.name} #${order.number}`
 
   return (
-    <PageLayout
-      mode={mode}
-      title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
-      description={
-        <SkeletonTemplate isLoading={isLoading}>{`Placed on ${formatDate({
-          isoDate: order.updated_at,
-          timezone,
-          format: 'full'
-        })}`}</SkeletonTemplate>
-      }
-      onGoBack={() => {
-        setLocation(appRoutes.filters.makePath())
-      }}
-    >
-      <ScrollToTop />
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom='4'>
-          <OrderSteps order={order} />
-          <Spacer top='14'>
-            <OrderSummary order={order} />
+    <OrderContext.Provider value={[order, setOrder]}>
+      <PageLayout
+        mode={mode}
+        actionButton={<OrderDetailsContextMenu order={order} />}
+        title={
+          <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        }
+        description={
+          <SkeletonTemplate isLoading={isLoading}>{`Placed on ${formatDate({
+            isoDate: order.placed_at ?? '',
+            timezone,
+            format: 'full'
+          })}`}</SkeletonTemplate>
+        }
+        onGoBack={() => {
+          setLocation(appRoutes.filters.makePath())
+        }}
+      >
+        <ScrollToTop />
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer bottom='4'>
+            <OrderSteps order={order} />
+            <Spacer top='14'>
+              <OrderSummary order={order} />
+            </Spacer>
+            <Spacer top='14'>
+              <OrderCustomer order={order} />
+            </Spacer>
+            <Spacer top='14'>
+              <OrderAddresses order={order} />
+            </Spacer>
+            <Spacer top='14'>
+              <OrderShipments order={order} />
+            </Spacer>
           </Spacer>
-          <Spacer top='14'>
-            <OrderCustomer order={order} />
-          </Spacer>
-          <Spacer top='14'>
-            <OrderAddresses order={order} />
-          </Spacer>
-          <Spacer top='14'>
-            <OrderShipments order={order} />
-          </Spacer>
-        </Spacer>
-      </SkeletonTemplate>
-    </PageLayout>
+        </SkeletonTemplate>
+      </PageLayout>
+    </OrderContext.Provider>
   )
 }

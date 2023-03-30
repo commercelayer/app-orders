@@ -40,6 +40,9 @@
       "#mocks": [
         "src/mocks/index"
       ],
+      "#contexts/*": [
+        "src/contexts/*"
+      ],
     }
   },
   "include": [
