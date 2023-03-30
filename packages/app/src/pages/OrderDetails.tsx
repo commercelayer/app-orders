@@ -93,7 +93,7 @@ export function OrderDetails(): JSX.Element {
         }
         description={
           <SkeletonTemplate isLoading={isLoading}>{`Placed on ${formatDate({
-            isoDate: order.updated_at,
+            isoDate: order.placed_at ?? '',
             timezone,
             format: 'full'
           })}`}</SkeletonTemplate>
