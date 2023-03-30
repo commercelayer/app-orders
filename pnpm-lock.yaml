@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 overrides:
-  '@commercelayer/sdk': 5.0.0-beta.15
+  '@commercelayer/sdk': 5.0.0-beta.19
 
 importers:
 
@@ -21,9 +21,10 @@ importers:
 
   packages/app:
     specifiers:
-      '@commercelayer/app-elements': ^0.0.15
+      '@commercelayer/app-elements': ^0.0.16
       '@commercelayer/eslint-config-ts-react': ^1.0.0-beta.0
-      '@commercelayer/sdk': 5.0.0-beta.15
+      '@commercelayer/sdk': 5.0.0-beta.19
+      '@preact/signals-react': ^1.2.2
       '@types/react': ^18.0.29
       '@types/react-dom': ^18.0.11
       '@vitejs/plugin-react': ^3.1.0
@@ -38,8 +39,9 @@ importers:
       vitest: ^0.29.7
       wouter: ^2.10.0
     dependencies:
-      '@commercelayer/app-elements': 0.0.15_yrvwcqankbpxnogprd7nkwdcpu
-      '@commercelayer/sdk': 5.0.0-beta.15
+      '@commercelayer/app-elements': 0.0.16_fd3ifg5iuniwwil7iznghjbdt4
+      '@commercelayer/sdk': 5.0.0-beta.19
+      '@preact/signals-react': 1.2.2_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       swr: 2.1.1_react@18.2.0
@@ -294,13 +296,13 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements/0.0.15_yrvwcqankbpxnogprd7nkwdcpu:
-    resolution: {integrity: sha512-RH8XFh7jxKvM09V5WPbgMgKOfznOrtVdzqDOZK337xPiu0ZZQ8ZTRvG78x4AaGtgK4cD0oHhTpZiPczOrgWc3A==}
+  /@commercelayer/app-elements/0.0.16_fd3ifg5iuniwwil7iznghjbdt4:
+    resolution: {integrity: sha512-nAuWXyiKI5wj7jSezyQ94Yq0bRxHkyP5KGUhOq0jIZlCkgIWOMBw9cFxIe3dbAk02tUd7bkSvOKyraeMm2NRiA==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^4.x
     dependencies:
-      '@commercelayer/sdk': 5.0.0-beta.15
+      '@commercelayer/sdk': 5.0.0-beta.19
       '@types/lodash': 4.14.191
       '@types/react': 18.0.29
       '@types/react-datepicker': 4.10.0_biqbaboplfbrettd7655fr4n2y
@@ -360,8 +362,8 @@ packages:
       - supports-color
     dev: true
 
-  /@commercelayer/sdk/5.0.0-beta.15:
-    resolution: {integrity: sha512-/gi3cd3l9hfx0RffyeytfzSwqB2CR/rNLjwzC2yRdnRTV2pN/l3saPL/cX4FBYMBbeNvd0jqXGcf2G32vz/PLw==}
+  /@commercelayer/sdk/5.0.0-beta.19:
+    resolution: {integrity: sha512-mnfLcSMhbHRY37IT/ka2atVgBK3i+oQPoO/JlpR/Nyg6cAt2TV37J5A5BZy5kG3W6hvAJ01pFOoSCcUmyvIiiA==}
     engines: {node: '>=16 || ^14.17'}
     dependencies:
       axios: 1.3.4
@@ -1417,6 +1419,20 @@ packages:
 
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+    dev: false
+
+  /@preact/signals-core/1.2.3:
+    resolution: {integrity: sha512-Kui4p7PMcEQevBgsTO0JBo3gyQ88Q3qzEvsVCuSp11t0JcN4DmGCTJcGRVSCq7Bn7lGxJBO+57jNSzDoDJ+QmA==}
+    dev: false
+
+  /@preact/signals-react/1.2.2_react@18.2.0:
+    resolution: {integrity: sha512-GoESQ9n1bns2FD+8yqH7lBvQMavboKLCNEW+s0hs3Wcp5B1VHvVxwJo6aFs6rpxoh1/q8Tvwbi4vIeehBD2mzA==}
+    peerDependencies:
+      react: 17.x || 18.x
+    dependencies:
+      '@preact/signals-core': 1.2.3
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
   /@rollup/plugin-replace/5.0.2:

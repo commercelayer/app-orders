@@ -1,4 +1,5 @@
 import type { Order } from '@commercelayer/sdk'
+import { type UITriggerAttributes } from './status'
 
 // TODO: remove the following status types once SDK nullable=false have been updated
 export type OrderStatus = NonNullable<Order['status']>
@@ -42,4 +43,19 @@ export function getFulfillmentStatusName(
   status: Order['fulfillment_status']
 ): string {
   return fulfillmentStatusDictionary[status as FulfillmentStatus] ?? status
+}
+
+const triggerAttributesDictionary: Record<UITriggerAttributes, string> = {
+  _approve: 'Approve',
+  _archive: 'Archive',
+  _cancel: 'Cancel',
+  _capture: 'Capture payment',
+  _refund: 'Refund',
+  _return: 'Return',
+  _unarchive: 'Unarchive'
+}
+export function getTriggerAttributeName(
+  triggerAttribute: UITriggerAttributes
+): string {
+  return triggerAttributesDictionary[triggerAttribute]
 }

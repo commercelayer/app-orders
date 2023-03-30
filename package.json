@@ -37,7 +37,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@commercelayer/sdk": "5.0.0-beta.15"
+      "@commercelayer/sdk": "5.0.0-beta.19"
     }
   }
 }

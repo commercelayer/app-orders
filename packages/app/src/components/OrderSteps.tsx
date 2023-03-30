@@ -27,8 +27,6 @@ function getOrderStatusBadgeVariant(status: Order['status']): BadgeVariant {
       return 'secondary'
     case 'placed':
       return 'warning-solid'
-    default:
-      return 'secondary'
   }
 }
 
@@ -41,17 +39,15 @@ function getPaymentStatusBadgeVariant(
       return 'success-solid'
     case 'refunded':
     case 'voided':
-      return 'secondary'
-    case 'authorized':
-      return 'warning-solid'
-    case 'unpaid':
-    case 'partially_authorized':
-    case 'partially_paid':
     case 'partially_refunded':
     case 'partially_voided':
-      return 'danger-solid'
-    default:
       return 'secondary'
+    case 'authorized':
+    case 'partially_authorized':
+      return 'warning-solid'
+    case 'unpaid':
+    case 'partially_paid':
+      return 'danger-solid'
   }
 }
 
@@ -66,8 +62,6 @@ function getFulfillmentStatusBadgeVariant(
       return 'secondary'
     case 'in_progress':
       return 'warning-solid'
-    default:
-      return 'secondary'
   }
 }
 
