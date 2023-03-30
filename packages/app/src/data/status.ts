@@ -1,10 +1,5 @@
 import type { IconProps } from '@commercelayer/app-elements/dist/ui/atoms/Icon'
 import type { Order } from '@commercelayer/sdk'
-import type {
-  FulfillmentStatus,
-  OrderStatus,
-  PaymentStatus
-} from './dictionaries'
 
 export type UITriggerAttributes =
   | '_approve'
@@ -37,16 +32,13 @@ interface OrderDisplayStatus {
 }
 
 export function getDisplayStatus(order: Order): OrderDisplayStatus {
-  const status = order.status as OrderStatus
-  const paymentStatus = order.payment_status as PaymentStatus
-  const fulfillmentStatus = order.fulfillment_status as FulfillmentStatus
   const archiveTriggerAttribute: Extract<
     UITriggerAttributes,
     '_archive' | '_unarchive'
   > = order.archived_at == null ? '_archive' : '_unarchive'
 
   const combinedStatus =
-    `${status}:${paymentStatus}:${fulfillmentStatus}` as const
+    `${order.status}:${order.payment_status}:${order.fulfillment_status}` as const
 
   switch (combinedStatus) {
     case 'placed:authorized:unfulfilled':
