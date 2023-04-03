@@ -10,18 +10,24 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "test": "vitest run",
+    "test:watch": "vitest",
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
     "@commercelayer/app-elements": "^0.0.20",
+    "@commercelayer/app-elements-hook-form": "^0.0.20",
     "@commercelayer/sdk": "5.0.0",
+    "query-string": "^8.1.0",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
+    "react-hook-form": "^7.43.9",
     "react-dom": "^18.2.0",
     "swr": "^2.1.2",
     "wouter": "^2.10.0"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.0.0",
+    "@types/lodash": "^4.14.191",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
