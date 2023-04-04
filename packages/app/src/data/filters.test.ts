@@ -15,9 +15,10 @@ describe('fromFormValuesToUrlQuery', () => {
         status: ['cancelled'],
         market: ['dFDdasdgAN', 'KToVGDooQp'],
         paymentStatus: [],
-        fulfillmentStatus: []
+        fulfillmentStatus: [],
+        archived: 'hide'
       })
-    ).toBe('market=dFDdasdgAN&market=KToVGDooQp&status=cancelled')
+    ).toBe('archived=hide&market=dFDdasdgAN&market=KToVGDooQp&status=cancelled')
   })
 
   test('should accept empty values', () => {
@@ -45,19 +46,39 @@ describe('fromFormValuesToSdk', () => {
       market_id_in: 'dFDdasdgAN,KToVGDooQp',
       status_in: 'cancelled',
       payment_status_in: 'paid,refunded',
-      fulfillment_status_in: 'fulfilled'
+      fulfillment_status_in: 'fulfilled',
+      archived_at_null: true
     })
   })
 
-  test('should return empty object on empty form values', () => {
+  test('should return object to filter only archived orders', () => {
     expect(
       fromFormValuesToSdk({
         market: [],
         status: [],
         paymentStatus: [],
-        fulfillmentStatus: []
+        fulfillmentStatus: [],
+        archived: 'only'
       })
-    ).toStrictEqual({})
+    ).toStrictEqual({
+      archived_at_null: false,
+      status_in: 'placed,approved,cancelled'
+    })
+  })
+
+  test('should return default object on empty form values', () => {
+    expect(
+      fromFormValuesToSdk({
+        market: [],
+        status: [],
+        paymentStatus: [],
+        fulfillmentStatus: [],
+        archived: undefined
+      })
+    ).toStrictEqual({
+      archived_at_null: true,
+      status_in: 'placed,approved,cancelled'
+    })
   })
 })
 
@@ -71,7 +92,8 @@ describe('fromUrlQueryToFormValues', () => {
       market: ['dFDdasdgAN', 'KToVGDooQp'],
       status: ['cancelled'],
       paymentStatus: [],
-      fulfillmentStatus: []
+      fulfillmentStatus: [],
+      archived: undefined
     })
   })
 
@@ -80,7 +102,8 @@ describe('fromUrlQueryToFormValues', () => {
       market: [],
       status: ['approved'],
       paymentStatus: [],
-      fulfillmentStatus: []
+      fulfillmentStatus: [],
+      archived: undefined
     })
   })
 
@@ -89,7 +112,8 @@ describe('fromUrlQueryToFormValues', () => {
       market: [],
       status: [],
       paymentStatus: [],
-      fulfillmentStatus: []
+      fulfillmentStatus: [],
+      archived: undefined
     })
   })
 
@@ -102,7 +126,8 @@ describe('fromUrlQueryToFormValues', () => {
       market: [],
       status: ['placed'],
       paymentStatus: [],
-      fulfillmentStatus: []
+      fulfillmentStatus: [],
+      archived: undefined
     })
   })
 })
@@ -113,7 +138,8 @@ describe('fromUrlQueryToSdk', () => {
       fromUrlQueryToSdk('market=dlQbPhNNop&status=approved&status=cancelled')
     ).toStrictEqual({
       market_id_in: 'dlQbPhNNop',
-      status_in: 'approved,cancelled'
+      status_in: 'approved,cancelled',
+      archived_at_null: true
     })
   })
 
@@ -121,20 +147,23 @@ describe('fromUrlQueryToSdk', () => {
     expect(
       fromUrlQueryToSdk('market=&status=approved&status=cancelled')
     ).toStrictEqual({
-      status_in: 'approved,cancelled'
+      status_in: 'approved,cancelled',
+      archived_at_null: true
     })
   })
 
   test('should return invalid status preset if not in url ', () => {
     expect(fromUrlQueryToSdk('paymentStatus=authorized')).toStrictEqual({
       status_in: 'placed,approved,cancelled',
-      payment_status_in: 'authorized'
+      payment_status_in: 'authorized',
+      archived_at_null: true
     })
   })
 
   test('should return invalid status preset when query string is empty or undefined', () => {
     expect(fromUrlQueryToSdk('')).toStrictEqual({
-      status_in: 'placed,approved,cancelled'
+      status_in: 'placed,approved,cancelled',
+      archived_at_null: true
     })
   })
 
@@ -144,7 +173,8 @@ describe('fromUrlQueryToSdk', () => {
         'status=approved&paymentStatus=not-existing&status=draft'
       )
     ).toStrictEqual({
-      status_in: 'approved'
+      status_in: 'approved',
+      archived_at_null: true
     })
   })
 })

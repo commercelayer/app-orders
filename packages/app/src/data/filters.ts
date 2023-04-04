@@ -1,9 +1,6 @@
 import { type Order } from '@commercelayer/sdk'
 import type { QueryFilter } from '@commercelayer/sdk/lib/cjs/query'
-import castArray from 'lodash/castArray'
-import compact from 'lodash/compact'
-import isEmpty from 'lodash/isEmpty'
-import omitBy from 'lodash/omitBy'
+import { castArray, compact, isEmpty, omitBy, isBoolean } from 'lodash'
 import queryString, { type ParsedQuery } from 'query-string'
 
 export const filtrableStatus: Array<Order['status']> = [
@@ -33,6 +30,7 @@ export interface FilterFormValues {
   status: typeof filtrableStatus
   paymentStatus: typeof filtrablePaymentStatus
   fulfillmentStatus: typeof filtrableFulfillmentStatus
+  archived?: 'only' | 'hide'
 }
 
 /**
@@ -51,11 +49,11 @@ function fromFormValuesToUrlQuery(formValues: FilterFormValues): string {
  */
 function fromUrlQueryToFormValues(qs: string): FilterFormValues {
   const parsedQuery = queryString.parse(qs)
-  const { market, status, paymentStatus, fulfillmentStatus } = parsedQuery
-
+  const { market, status, paymentStatus, fulfillmentStatus, archived } =
+    parsedQuery
   // parse a single filter key value to return
   // an array of valid values or an empty array
-  const parseQueryStringValue = <TFiltrableValue extends string>(
+  const parseQueryStringValueAsArray = <TFiltrableValue extends string>(
     value?: ParsedQuery[string],
     acceptedValues?: TFiltrableValue[]
   ): TFiltrableValue[] => {
@@ -70,13 +68,18 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
   }
 
   const formValues: FilterFormValues = {
-    market: parseQueryStringValue(market),
-    status: parseQueryStringValue(status, filtrableStatus),
-    paymentStatus: parseQueryStringValue(paymentStatus, filtrablePaymentStatus),
-    fulfillmentStatus: parseQueryStringValue(
+    market: parseQueryStringValueAsArray(market),
+    status: parseQueryStringValueAsArray(status, filtrableStatus),
+    paymentStatus: parseQueryStringValueAsArray(
+      paymentStatus,
+      filtrablePaymentStatus
+    ),
+    fulfillmentStatus: parseQueryStringValueAsArray(
       fulfillmentStatus,
       filtrableFulfillmentStatus
-    )
+    ),
+    // `hide` is default value for archived
+    archived: parseQueryStringValueAsArray(archived, ['only', 'hide'])[0]
   }
   return formValues
 }
@@ -87,14 +90,29 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
  * @returns an object of type QueryFilter to be used in the SDK stripping out empty or undefined values
  */
 function fromFormValuesToSdk(formValues: FilterFormValues): QueryFilter {
-  const { market, status, paymentStatus, fulfillmentStatus } = formValues
+  const { market, status, paymentStatus, fulfillmentStatus, archived } =
+    formValues
   const sdkFilters: Partial<QueryFilter> = {
     market_id_in: castArray(market).join(','),
     status_in: status.join(','),
     payment_status_in: paymentStatus.join(','),
-    fulfillment_status_in: fulfillmentStatus.join(',')
+    fulfillment_status_in: fulfillmentStatus.join(','),
+    archived_at_null: archived !== 'only'
   }
-  return omitBy(sdkFilters, isEmpty) as QueryFilter
+
+  // stripping out empty or undefined values
+  const noEmpty = omitBy(
+    sdkFilters,
+    (v) => isEmpty(v) && !isBoolean(v)
+  ) as QueryFilter
+
+  // enforce default status_in when not set, to prevent listing draft or pending
+  return isEmpty(noEmpty.status_in)
+    ? {
+        ...noEmpty,
+        status_in: filtrableStatus.join(',')
+      }
+    : noEmpty
 }
 
 /**
@@ -104,13 +122,7 @@ function fromFormValuesToSdk(formValues: FilterFormValues): QueryFilter {
  * stripping out empty or undefined values and enforcing default status_in when empty
  */
 function fromUrlQueryToSdk(qs: string): QueryFilter {
-  const sdkFilters = fromFormValuesToSdk(fromUrlQueryToFormValues(qs))
-  return isEmpty(sdkFilters.status_in)
-    ? {
-        ...sdkFilters,
-        status_in: filtrableStatus.join(',')
-      }
-    : sdkFilters
+  return fromFormValuesToSdk(fromUrlQueryToFormValues(qs))
 }
 
 /**

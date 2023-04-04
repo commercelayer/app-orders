@@ -41,6 +41,8 @@ export function OrderHistory(): JSX.Element {
       },
       include: ['market', 'customer'],
       pageSize: 25,
+      // TODO: match url to build custom filters presets
+      // example: archived --> filtersAdapters.fromFormValuesToSdk({ archived: 'only' })
       filters: filtersAdapters.fromUrlQueryToSdk(location.search),
       sort: {
         updated_at: 'desc'
