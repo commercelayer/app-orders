@@ -20,9 +20,9 @@ export function FilterFieldPaymentStatus(): JSX.Element {
       })}
       name='paymentStatus'
       mode='multi'
-      options={filtrablePaymentStatus.map((s) => ({
-        label: getPaymentStatusName(s),
-        value: s
+      options={filtrablePaymentStatus.map((status) => ({
+        label: getPaymentStatusName(status),
+        value: status
       }))}
     />
   )

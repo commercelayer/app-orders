@@ -20,9 +20,9 @@ export function FilterFieldFulfillmentStatus(): JSX.Element {
       })}
       name='fulfillmentStatus'
       mode='multi'
-      options={filtrableFulfillmentStatus.map((s) => ({
-        label: getFulfillmentStatusName(s),
-        value: s
+      options={filtrableFulfillmentStatus.map((status) => ({
+        label: getFulfillmentStatusName(status),
+        value: status
       }))}
     />
   )

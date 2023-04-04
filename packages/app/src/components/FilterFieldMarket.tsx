@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { computeFilterLabel, type FilterFormValues } from '#data/filters'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
-import { makeMarket } from '#mocks'
+import { makeMarket, repeat } from '#mocks'
 
 export function FilterFieldMarket(): JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
@@ -22,23 +22,15 @@ export function FilterFieldMarket(): JSX.Element {
   >()
 
   useEffect(() => {
-    if (sdkClient == null) {
-      return
+    if (sdkClient != null) {
+      void fetchMarkets({
+        sdkClient
+      }).then(setFetchedMarket)
     }
-    void fetchMarkets({
-      sdkClient
-    }).then(setFetchedMarket)
   }, [sdkClient])
 
   if (fetchedMarket === undefined) {
-    return (
-      <List
-        options={Array(5)
-          .fill(makeMarket())
-          .map((m, idx) => ({ ...m, id: idx }))}
-        isLoading
-      />
-    )
+    return <List options={repeat(5, makeMarket)} isLoading />
   }
 
   return fetchedMarket.length > 5 ? (
