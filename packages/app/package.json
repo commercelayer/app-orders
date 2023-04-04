@@ -13,23 +13,23 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^0.0.17",
-    "@commercelayer/sdk": "5.0.0-beta.19",
+    "@commercelayer/app-elements": "^0.0.20",
+    "@commercelayer/sdk": "5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "swr": "^2.1.1",
+    "swr": "^2.1.2",
     "wouter": "^2.10.0"
   },
   "devDependencies": {
-    "@commercelayer/eslint-config-ts-react": "^1.0.0-beta.0",
-    "@types/react": "^18.0.29",
+    "@commercelayer/eslint-config-ts-react": "^1.0.0",
+    "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
-    "eslint": "^8.36.0",
+    "eslint": "^8.37.0",
     "jsdom": "^21.1.1",
-    "typescript": "^5.0.2",
+    "typescript": "^5.0.3",
     "vite": "^4.2.1",
-    "vite-tsconfig-paths": "^4.0.7",
-    "vitest": "^0.29.7"
+    "vite-tsconfig-paths": "^4.0.8",
+    "vitest": "^0.29.8"
   }
 }
