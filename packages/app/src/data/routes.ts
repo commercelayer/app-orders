@@ -9,10 +9,15 @@ export const appRoutes = {
     path: '/',
     makePath: () => '/'
   },
+  history: {
+    path: '/history',
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/history/?${filters}` : `/history`
+  },
   filters: {
     path: '/filters',
-    makePath: (filters = new URLSearchParams()) =>
-      hasFilterQuery(filters) ? `/filters/?${filters.toString()}` : `/filters`
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`
   },
   details: {
     path: '/details/:orderId',
@@ -20,6 +25,6 @@ export const appRoutes = {
   }
 }
 
-function hasFilterQuery(filters: URLSearchParams): boolean {
-  return Array.from(filters).length > 0
+function hasFilterQuery(filters?: string): filters is string {
+  return Array.from(new URLSearchParams(filters)).length > 0
 }
