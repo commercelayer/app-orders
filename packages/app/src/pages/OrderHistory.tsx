@@ -1,9 +1,9 @@
+import { FiltersNav } from '#components/FiltersNav'
 import { ListItemOrder } from '#components/ListItemOrder'
 import { filtersAdapters, getActiveFilterCountFromUrl } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
   A,
-  Button,
   PageLayout,
   ResourceList,
   Spacer,
@@ -12,7 +12,7 @@ import {
 } from '@commercelayer/app-elements'
 import type { QueryParamsList } from '@commercelayer/sdk'
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'wouter'
+import { useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-location'
 
 export function OrderHistory(): JSX.Element {
@@ -65,15 +65,7 @@ export function OrderHistory(): JSX.Element {
       }}
     >
       <Spacer top='4' bottom='14'>
-        <Link
-          href={appRoutes.filters.makePath(
-            filtersAdapters.fromUrlQueryToUrlQuery(location.search)
-          )}
-        >
-          <Button role='link' variant='secondary'>
-            Filters
-          </Button>
-        </Link>
+        <FiltersNav />
       </Spacer>
 
       <Spacer bottom='14'>
