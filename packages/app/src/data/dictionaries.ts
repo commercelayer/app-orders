@@ -1,5 +1,6 @@
 import type { Order } from '@commercelayer/sdk'
 import { type UITriggerAttributes } from './status'
+import { type TimeRangePreset } from '#data/filters'
 
 export function getOrderStatusName(status: Order['status']): string {
   const dictionary: Record<typeof status, string> = {
@@ -57,4 +58,17 @@ export function getTriggerAttributeName(
   }
 
   return dictionary[triggerAttribute]
+}
+
+export function getTimeRangePresetName(
+  timeRangePreset: TimeRangePreset
+): string {
+  const dictionary: Record<TimeRangePreset, string> = {
+    today: 'Today',
+    last7days: 'Last 7 days',
+    last30days: 'Last 30 days',
+    custom: 'Custom'
+  }
+
+  return dictionary[timeRangePreset]
 }

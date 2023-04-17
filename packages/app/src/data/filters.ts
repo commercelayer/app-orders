@@ -1,7 +1,8 @@
 import { type Order } from '@commercelayer/sdk'
 import type { QueryFilter } from '@commercelayer/sdk/lib/cjs/query'
-import { castArray, compact, isEmpty, omitBy, isBoolean } from 'lodash'
+import { castArray, compact, isBoolean, isEmpty, omitBy } from 'lodash'
 import queryString, { type ParsedQuery } from 'query-string'
+import { makeSdkFilterTime } from './filtersTimeUtils'
 
 export const filtrableStatus: Array<Order['status']> = [
   'placed',
@@ -25,12 +26,23 @@ export const filtrableFulfillmentStatus: Array<Order['fulfillment_status']> = [
   'not_required'
 ]
 
+export const filtrableTimeRangePreset = [
+  'today',
+  'last7days',
+  'last30days',
+  'custom'
+] as const
+export type TimeRangePreset = (typeof filtrableTimeRangePreset)[number]
+
 export interface FilterFormValues {
   market: string[]
   status: typeof filtrableStatus
   paymentStatus: typeof filtrablePaymentStatus
   fulfillmentStatus: typeof filtrableFulfillmentStatus
   archived?: 'only' | 'hide'
+  timePreset?: TimeRangePreset
+  timeFrom?: Date | null
+  timeTo?: Date | null
 }
 
 /**
@@ -39,7 +51,16 @@ export interface FilterFormValues {
  * @returns a string ready to be used in URL
  */
 function fromFormValuesToUrlQuery(formValues: FilterFormValues): string {
-  return queryString.stringify(formValues)
+  return queryString.stringify(
+    omitBy(
+      {
+        ...formValues,
+        timeFrom: formValues.timeFrom?.toISOString(),
+        timeTo: formValues.timeTo?.toISOString()
+      },
+      isEmpty
+    )
+  )
 }
 
 /**
@@ -49,13 +70,22 @@ function fromFormValuesToUrlQuery(formValues: FilterFormValues): string {
  */
 function fromUrlQueryToFormValues(qs: string): FilterFormValues {
   const parsedQuery = queryString.parse(qs)
-  const { market, status, paymentStatus, fulfillmentStatus, archived } =
-    parsedQuery
+  const {
+    market,
+    status,
+    paymentStatus,
+    fulfillmentStatus,
+    archived,
+    timePreset,
+    timeFrom,
+    timeTo
+  } = parsedQuery
+
   // parse a single filter key value to return
   // an array of valid values or an empty array
   const parseQueryStringValueAsArray = <TFiltrableValue extends string>(
     value?: ParsedQuery[string],
-    acceptedValues?: TFiltrableValue[]
+    acceptedValues?: Readonly<TFiltrableValue[]>
   ): TFiltrableValue[] => {
     if (value == null) {
       return []
@@ -65,6 +95,18 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
       return cleanValue.filter((v) => acceptedValues.includes(v))
     }
     return cleanValue
+  }
+
+  const parseQueryStringValueAsDate = (value: unknown): Date | undefined => {
+    const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$/
+    if (typeof value !== 'string' || !isoRegex.test(value)) {
+      return undefined
+    }
+    try {
+      return new Date(value)
+    } catch {
+      return undefined
+    }
   }
 
   const formValues: FilterFormValues = {
@@ -79,8 +121,15 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
       filtrableFulfillmentStatus
     ),
     // `hide` is default value for archived
-    archived: parseQueryStringValueAsArray(archived, ['only', 'hide'])[0]
+    archived: parseQueryStringValueAsArray(archived, ['only', 'hide'])[0],
+    timePreset: parseQueryStringValueAsArray(
+      timePreset,
+      filtrableTimeRangePreset
+    )[0],
+    timeFrom: parseQueryStringValueAsDate(timeFrom),
+    timeTo: parseQueryStringValueAsDate(timeTo)
   }
+
   return formValues
 }
 
@@ -89,15 +138,28 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
  * @param formValues a valid FilterFormValues object
  * @returns an object of type QueryFilter to be used in the SDK stripping out empty or undefined values
  */
-function fromFormValuesToSdk(formValues: FilterFormValues): QueryFilter {
-  const { market, status, paymentStatus, fulfillmentStatus, archived } =
-    formValues
+function fromFormValuesToSdk(
+  formValues: FilterFormValues,
+  timezone?: string
+): QueryFilter {
+  const {
+    market,
+    status,
+    paymentStatus,
+    fulfillmentStatus,
+    archived,
+    timePreset,
+    timeFrom,
+    timeTo
+  } = formValues
+
   const sdkFilters: Partial<QueryFilter> = {
     market_id_in: castArray(market).join(','),
     status_in: status.join(','),
     payment_status_in: paymentStatus.join(','),
     fulfillment_status_in: fulfillmentStatus.join(','),
-    archived_at_null: archived !== 'only'
+    archived_at_null: archived !== 'only',
+    ...makeSdkFilterTime({ timePreset, timeFrom, timeTo, timezone })
   }
 
   // stripping out empty or undefined values
@@ -121,8 +183,8 @@ function fromFormValuesToSdk(formValues: FilterFormValues): QueryFilter {
  * @returns an object of type QueryFilter to be used in the SDK
  * stripping out empty or undefined values and enforcing default status_in when empty
  */
-function fromUrlQueryToSdk(qs: string): QueryFilter {
-  return fromFormValuesToSdk(fromUrlQueryToFormValues(qs))
+function fromUrlQueryToSdk(qs: string, timezone?: string): QueryFilter {
+  return fromFormValuesToSdk(fromUrlQueryToFormValues(qs), timezone)
 }
 
 /**
@@ -171,4 +233,19 @@ export function computeFilterLabel({
   const counter =
     selectedCount > 0 ? `${selectedCount} of ${totalCount}` : totalCount
   return `${label} · ${counter}`
+}
+
+/**
+ * Get total count of active filter groups.
+ * Example: if we have 3 markets selected, will still count as `1` active filter group
+ * If we have 3 markets and 1 status selected, will count as `2`.
+ * @returns number of active filters
+ */
+export function getActiveFilterCountFromUrl(): number {
+  // timeFrom and timeTo will be omitted because Date is consider as empty/non-iterable object
+  const nonEmptyFilter = omitBy<FilterFormValues>(
+    filtersAdapters.fromUrlQueryToFormValues(location.search),
+    isEmpty
+  )
+  return Object.keys(nonEmptyFilter).length
 }
