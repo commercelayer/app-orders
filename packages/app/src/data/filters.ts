@@ -1,6 +1,10 @@
 import { type Order } from '@commercelayer/sdk'
 import type { QueryFilter } from '@commercelayer/sdk/lib/cjs/query'
-import { castArray, compact, isBoolean, isEmpty, omitBy } from 'lodash'
+import castArray from 'lodash/castArray'
+import compact from 'lodash/compact'
+import isBoolean from 'lodash/isBoolean'
+import isEmpty from 'lodash/isEmpty'
+import omitBy from 'lodash/omitBy'
 import queryString, { type ParsedQuery } from 'query-string'
 import { makeSdkFilterTime } from './filtersTimeUtils'
 
