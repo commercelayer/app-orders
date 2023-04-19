@@ -33,7 +33,7 @@ export function FiltersNav(): JSX.Element {
     [search]
   )
 
-  const activeGroupCount = getActiveFilterCountFromUrl()
+  const activeGroupCount = getActiveFilterCountFromUrl({ includeText: false })
 
   const selectedMarkets = filters?.market ?? []
   const selectedStatus = filters?.status ?? []
@@ -79,6 +79,18 @@ export function FiltersNav(): JSX.Element {
     )
   }
 
+  const removeAllFilters = (): void => {
+    // keep the text filter when removing all filters
+    const currentFilters = filtersAdapters.fromUrlQueryToFormValues(search)
+    const emptyFilters = filtersAdapters.fromUrlQueryToFormValues('')
+    updateQueryString(
+      filtersAdapters.fromFormValuesToUrlQuery({
+        ...emptyFilters,
+        text: currentFilters.text
+      })
+    )
+  }
+
   useEffect(
     function fetchSingleMarket() {
       if (selectedMarkets.length === 1 && selectedMarkets[0] != null) {
@@ -103,6 +115,7 @@ export function FiltersNav(): JSX.Element {
 
   return (
     <SkeletonTemplate isLoading={isLoading} delayMs={0}>
+      {/* TODO: no css! */}
       <div className='flex gap-4 flex-wrap'>
         {/* Main filter button */}
         {activeGroupCount > 0 ? (
@@ -110,10 +123,7 @@ export function FiltersNav(): JSX.Element {
             label={`Filters · ${activeGroupCount}`}
             icon='funnel'
             onClick={navigateToFiltersEdit}
-            onRemoveRequest={() => {
-              // remove all filters from url query
-              updateQueryString('')
-            }}
+            onRemoveRequest={removeAllFilters}
           />
         ) : (
           <ButtonFilter

@@ -1,19 +1,26 @@
 import { FiltersNav } from '#components/FiltersNav'
 import { ListItemOrder } from '#components/ListItemOrder'
-import { filtersAdapters, getActiveFilterCountFromUrl } from '#data/filters'
+import {
+  enforceDefaultStatusIn,
+  filtersAdapters,
+  getActiveFilterCountFromUrl
+} from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
   A,
   PageLayout,
   ResourceList,
+  SearchBar,
   Spacer,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { QueryParamsList } from '@commercelayer/sdk'
+import type { QueryFilter } from '@commercelayer/sdk/lib/cjs/query'
+import isEmpty from 'lodash/isEmpty'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'wouter'
-import { useSearch } from 'wouter/use-location'
+import { navigate, useSearch } from 'wouter/use-location'
 
 export function OrderHistory(): JSX.Element {
   const {
@@ -23,33 +30,21 @@ export function OrderHistory(): JSX.Element {
   const search = useSearch()
   const [, setLocation] = useLocation()
   const [sdkQuery, setSdkQuery] = useState<QueryParamsList>()
-  const hasFilters = getActiveFilterCountFromUrl() > 0
+  const hasFilters = getActiveFilterCountFromUrl({ includeText: true }) > 0
 
   useEffect(() => {
-    setSdkQuery({
-      fields: {
-        orders: [
-          'id',
-          'number',
-          'updated_at',
-          'formatted_total_amount',
-          'status',
-          'payment_status',
-          'fulfillment_status',
-          'customer',
-          'market'
-        ],
-        customers: ['email'],
-        markets: ['id', 'name']
-      },
-      include: ['market', 'customer'],
-      pageSize: 25,
-      filters: filtersAdapters.fromUrlQueryToSdk(search, timezone),
-      sort: {
-        updated_at: 'desc'
-      }
-    })
+    const filters = filtersAdapters.fromUrlQueryToSdk(search, timezone)
+    setSdkQuery(buildListQuery(filters))
   }, [search])
+
+  const updateTextFilter = (hint?: string): void => {
+    const currentFilters = filtersAdapters.fromUrlQueryToFormValues(search)
+    const newQueryString = filtersAdapters.fromFormValuesToUrlQuery({
+      ...currentFilters,
+      text: isEmpty(hint?.trim()) ? undefined : hint
+    })
+    navigate(`?${newQueryString}`)
+  }
 
   if (sdkQuery == null) {
     return <div />
@@ -65,6 +60,14 @@ export function OrderHistory(): JSX.Element {
       }}
     >
       <Spacer top='4' bottom='14'>
+        <Spacer bottom='4'>
+          <SearchBar
+            placeholder='Order number or customer email...'
+            initialValue={filtersAdapters.fromUrlQueryToFormValues(search).text}
+            onClear={updateTextFilter}
+            onSearch={updateTextFilter}
+          />
+        </Spacer>
         <FiltersNav />
       </Spacer>
 
@@ -99,4 +102,30 @@ export function OrderHistory(): JSX.Element {
       </Spacer>
     </PageLayout>
   )
+}
+
+function buildListQuery(filters: QueryFilter): QueryParamsList {
+  return {
+    fields: {
+      orders: [
+        'id',
+        'number',
+        'updated_at',
+        'formatted_total_amount',
+        'status',
+        'payment_status',
+        'fulfillment_status',
+        'customer',
+        'market'
+      ],
+      customers: ['email'],
+      markets: ['id', 'name']
+    },
+    include: ['market', 'customer'],
+    pageSize: 25,
+    filters: enforceDefaultStatusIn(filters),
+    sort: {
+      updated_at: 'desc'
+    }
+  }
 }
