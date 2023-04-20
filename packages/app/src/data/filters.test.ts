@@ -1,4 +1,5 @@
 import { filtersAdapters, computeFilterLabel } from './filters'
+import { getActiveFilterCountFromUrl } from '#data/filters'
 
 const {
   fromFormValuesToUrlQuery,
@@ -21,6 +22,21 @@ describe('fromFormValuesToUrlQuery', () => {
     ).toBe('archived=hide&market=dFDdasdgAN&market=KToVGDooQp&status=cancelled')
   })
 
+  test('should handle time range with preset', () => {
+    expect(
+      fromFormValuesToUrlQuery({
+        status: ['cancelled'],
+        market: ['dFDdasdgAN', 'KToVGDooQp'],
+        paymentStatus: [],
+        fulfillmentStatus: [],
+        archived: 'hide',
+        timePreset: 'today'
+      })
+    ).toBe(
+      'archived=hide&market=dFDdasdgAN&market=KToVGDooQp&status=cancelled&timePreset=today'
+    )
+  })
+
   test('should accept empty values', () => {
     expect(
       fromFormValuesToUrlQuery({
@@ -34,6 +50,14 @@ describe('fromFormValuesToUrlQuery', () => {
 })
 
 describe('fromFormValuesToSdk', () => {
+  beforeEach(() => {
+    vi.useFakeTimers().setSystemTime('2023-04-05T15:20:00.000Z')
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   test('should build proper sdk filter object', () => {
     expect(
       fromFormValuesToSdk({
@@ -80,6 +104,66 @@ describe('fromFormValuesToSdk', () => {
       status_in: 'placed,approved,cancelled'
     })
   })
+
+  test('should return handle time range preset', () => {
+    expect(
+      fromFormValuesToSdk({
+        market: [],
+        status: [],
+        paymentStatus: [],
+        fulfillmentStatus: [],
+        archived: undefined,
+        timePreset: 'today'
+      })
+    ).toStrictEqual({
+      archived_at_null: true,
+      status_in: 'placed,approved,cancelled',
+      updated_at_gteq: '2023-04-05T00:00:00.000Z'
+    })
+  })
+
+  test('should handle different timezone', () => {
+    expect(
+      fromFormValuesToSdk(
+        {
+          market: [],
+          status: [],
+          paymentStatus: [],
+          fulfillmentStatus: [],
+          archived: undefined,
+          timePreset: 'today'
+        },
+        'Australia/Sydney'
+      )
+    ).toStrictEqual({
+      archived_at_null: true,
+      status_in: 'placed,approved,cancelled',
+      updated_at_gteq: '2023-04-05T14:00:00.000Z'
+    })
+  })
+
+  test('should return handle time range custom with timezone', () => {
+    expect(
+      fromFormValuesToSdk(
+        {
+          market: [],
+          status: [],
+          paymentStatus: [],
+          fulfillmentStatus: [],
+          archived: undefined,
+          timePreset: 'custom',
+          timeFrom: new Date('2023-02-01T16:35:00.000Z'),
+          timeTo: new Date('2023-02-28T16:35:20.000Z')
+        },
+        'Europe/Rome'
+      )
+    ).toStrictEqual({
+      archived_at_null: true,
+      status_in: 'placed,approved,cancelled',
+      updated_at_gteq: '2023-01-31T23:00:00.000Z',
+      updated_at_lteq: '2023-02-28T22:59:59.999Z'
+    })
+  })
 })
 
 describe('fromUrlQueryToFormValues', () => {
@@ -93,7 +177,10 @@ describe('fromUrlQueryToFormValues', () => {
       status: ['cancelled'],
       paymentStatus: [],
       fulfillmentStatus: [],
-      archived: undefined
+      archived: undefined,
+      timePreset: undefined,
+      timeFrom: undefined,
+      timeTo: undefined
     })
   })
 
@@ -103,7 +190,10 @@ describe('fromUrlQueryToFormValues', () => {
       status: ['approved'],
       paymentStatus: [],
       fulfillmentStatus: [],
-      archived: undefined
+      archived: undefined,
+      timePreset: undefined,
+      timeFrom: undefined,
+      timeTo: undefined
     })
   })
 
@@ -113,7 +203,10 @@ describe('fromUrlQueryToFormValues', () => {
       status: [],
       paymentStatus: [],
       fulfillmentStatus: [],
-      archived: undefined
+      archived: undefined,
+      timePreset: undefined,
+      timeFrom: undefined,
+      timeTo: undefined
     })
   })
 
@@ -127,7 +220,10 @@ describe('fromUrlQueryToFormValues', () => {
       status: ['placed'],
       paymentStatus: [],
       fulfillmentStatus: [],
-      archived: undefined
+      archived: undefined,
+      timePreset: undefined,
+      timeFrom: undefined,
+      timeTo: undefined
     })
   })
 })
@@ -226,5 +322,34 @@ describe('computeFilterLabel', () => {
         totalCount: 6
       })
     ).toBe('Payment status · 2 of 6')
+  })
+})
+
+describe('getActiveFilterCountFromUrl', () => {
+  const { location } = window
+  beforeEach(function clearLocation() {
+    delete (window as any).location
+    ;(window as any).location = {
+      ...location,
+      search: ''
+    }
+  })
+  afterEach(function resetLocation() {
+    window.location = location
+  })
+
+  test('should read current URL query string', () => {
+    window.location.search = '?market=abc123&status=approved&status=cancelled'
+    expect(getActiveFilterCountFromUrl()).toBe(2)
+  })
+
+  test('should return 0 when no filters are in query string', () => {
+    window.location.search = ''
+    expect(getActiveFilterCountFromUrl()).toBe(0)
+  })
+
+  test('should ignore params that are not a filter', () => {
+    window.location.search = '?status=approved&not-a-filter=yeah'
+    expect(getActiveFilterCountFromUrl()).toBe(1)
   })
 })

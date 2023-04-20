@@ -43,7 +43,11 @@ function ListItemOrderComponent({
           </Text>
           <Text tag='div' weight='medium' size='small' variant='info'>
             {displayStatus.label} · {resource.customer?.email} ·{' '}
-            {formatDate({ isoDate: resource.updated_at, timezone })}
+            {formatDate({
+              format: 'date',
+              isoDate: resource.updated_at,
+              timezone
+            })}
           </Text>
           {displayStatus.task != null && (
             <Text tag='div' weight='bold' size='small' variant='warning'>

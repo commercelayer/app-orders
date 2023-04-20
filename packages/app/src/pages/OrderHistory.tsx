@@ -1,9 +1,9 @@
+import { FiltersNav } from '#components/FiltersNav'
 import { ListItemOrder } from '#components/ListItemOrder'
-import { filtersAdapters } from '#data/filters'
+import { filtersAdapters, getActiveFilterCountFromUrl } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
   A,
-  Button,
   PageLayout,
   ResourceList,
   Spacer,
@@ -12,15 +12,18 @@ import {
 } from '@commercelayer/app-elements'
 import type { QueryParamsList } from '@commercelayer/sdk'
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'wouter'
+import { useLocation } from 'wouter'
+import { useSearch } from 'wouter/use-location'
 
 export function OrderHistory(): JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode, timezone }
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
+  const search = useSearch()
   const [, setLocation] = useLocation()
   const [sdkQuery, setSdkQuery] = useState<QueryParamsList>()
+  const hasFilters = getActiveFilterCountFromUrl() > 0
 
   useEffect(() => {
     setSdkQuery({
@@ -41,14 +44,12 @@ export function OrderHistory(): JSX.Element {
       },
       include: ['market', 'customer'],
       pageSize: 25,
-      // TODO: match url to build custom filters presets
-      // example: archived --> filtersAdapters.fromFormValuesToSdk({ archived: 'only' })
-      filters: filtersAdapters.fromUrlQueryToSdk(location.search),
+      filters: filtersAdapters.fromUrlQueryToSdk(search, timezone),
       sort: {
         updated_at: 'desc'
       }
     })
-  }, [location.search])
+  }, [search])
 
   if (sdkQuery == null) {
     return <div />
@@ -64,15 +65,7 @@ export function OrderHistory(): JSX.Element {
       }}
     >
       <Spacer top='4' bottom='14'>
-        <Link
-          href={appRoutes.filters.makePath(
-            filtersAdapters.fromUrlQueryToUrlQuery(location.search)
-          )}
-        >
-          <Button role='link' variant='secondary'>
-            Filters
-          </Button>
-        </Link>
+        <FiltersNav />
       </Spacer>
 
       <Spacer bottom='14'>
@@ -82,8 +75,12 @@ export function OrderHistory(): JSX.Element {
           type='orders'
           query={sdkQuery}
           emptyState={{
-            title: 'No orders yet!',
-            description: (
+            title: hasFilters ? 'No orders found!' : 'No orders yet!',
+            description: hasFilters ? (
+              <div>
+                <p>No orders to list for the current filters selection.</p>
+              </div>
+            ) : (
               <div>
                 <p>Add an order with the API, or use the CLI.</p>
                 <A

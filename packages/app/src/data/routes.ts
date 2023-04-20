@@ -19,6 +19,13 @@ export const appRoutes = {
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`
   },
+  filtersTimeRange: {
+    path: '/filters/timerange',
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters)
+        ? `/filters/timerange/?${filters}`
+        : `/filters/timerange`
+  },
   details: {
     path: '/details/:orderId',
     makePath: (orderId: string) => `/details/${orderId}`

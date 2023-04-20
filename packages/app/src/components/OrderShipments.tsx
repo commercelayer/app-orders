@@ -34,7 +34,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
           {formatDate({
             isoDate: shipment.updated_at,
             timezone,
-            format: 'noYear'
+            format: 'date'
           })}
         </Text>
       </div>

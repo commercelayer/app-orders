@@ -1,5 +1,6 @@
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
+import { FiltersTimeRange } from '#pages/FiltersTimeRange'
 import { OrderDetails } from '#pages/OrderDetails'
 import { OrderHistory } from '#pages/OrderHistory'
 import {
@@ -34,6 +35,9 @@ export function App(): JSX.Element {
               </Route>
               <Route path={appRoutes.filters.path}>
                 <Filters />
+              </Route>
+              <Route path={appRoutes.filtersTimeRange.path}>
+                <FiltersTimeRange />
               </Route>
               <Route path={appRoutes.details.path}>
                 <OrderDetails />
