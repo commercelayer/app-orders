@@ -1,4 +1,5 @@
 import { FiltersNav } from '#components/FiltersNav'
+import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemOrder } from '#components/ListItemOrder'
 import {
   enforceDefaultStatusIn,
@@ -7,7 +8,6 @@ import {
 } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
-  A,
   PageLayout,
   ResourceList,
   SearchBar,
@@ -30,7 +30,7 @@ export function OrderHistory(): JSX.Element {
   const search = useSearch()
   const [, setLocation] = useLocation()
   const [sdkQuery, setSdkQuery] = useState<QueryParamsList>()
-  const hasFilters = getActiveFilterCountFromUrl({ includeText: true }) > 0
+  const isFiltered = getActiveFilterCountFromUrl({ includeText: true }) > 0
 
   useEffect(() => {
     const filters = filtersAdapters.fromUrlQueryToSdk(search, timezone)
@@ -77,26 +77,9 @@ export function OrderHistory(): JSX.Element {
           title='Results'
           type='orders'
           query={sdkQuery}
-          emptyState={{
-            title: hasFilters ? 'No orders found!' : 'No orders yet!',
-            description: hasFilters ? (
-              <div>
-                <p>No orders to list for the current filters selection.</p>
-              </div>
-            ) : (
-              <div>
-                <p>Add an order with the API, or use the CLI.</p>
-                <A
-                  target='_blank'
-                  href='https://docs.commercelayer.io/core/v/api-reference/orders'
-                  rel='noreferrer'
-                >
-                  View API reference.
-                </A>
-              </div>
-            ),
-            icon: 'stack'
-          }}
+          emptyState={
+            <ListEmptyState scope={isFiltered ? 'filters' : 'history'} />
+          }
           Item={ListItemOrder}
         />
       </Spacer>
