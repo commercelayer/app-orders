@@ -20,11 +20,11 @@ importers:
   packages/app:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^0.0.23
-        version: 0.0.23(@commercelayer/sdk@5.0.0)
+        specifier: ^0.0.24
+        version: 0.0.24(@commercelayer/sdk@5.0.0)
       '@commercelayer/app-elements-hook-form':
-        specifier: ^0.0.23
-        version: 0.0.23(@commercelayer/app-elements@0.0.23)(react-hook-form@7.43.9)
+        specifier: ^0.0.24
+        version: 0.0.24(@commercelayer/app-elements@0.0.24)(react-hook-form@7.43.9)
       '@commercelayer/sdk':
         specifier: 5.0.0
         version: 5.0.0
@@ -328,19 +328,19 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements-hook-form@0.0.23(@commercelayer/app-elements@0.0.23)(react-hook-form@7.43.9):
-    resolution: {integrity: sha512-X3Bud3LMox07cNb8nJEydDiMfmqDgexG3eYdzoqdzjt9dZUcvGXL8fYwqdcpQGWaAfQNxxcIcegUy656COhzIg==}
+  /@commercelayer/app-elements-hook-form@0.0.24(@commercelayer/app-elements@0.0.24)(react-hook-form@7.43.9):
+    resolution: {integrity: sha512-4htH7oub1ChTgCHgqwhhg7AOtO90ZO95wUU7C3pFuJkd5/4uSrryorPYt1dDwX5YJTDUaahYm+5FbsUnj1t3hw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
-      '@commercelayer/app-elements': 0.0.23
+      '@commercelayer/app-elements': 0.0.24
       react-hook-form: ^7.43.x
     dependencies:
-      '@commercelayer/app-elements': 0.0.23(@commercelayer/sdk@5.0.0)
+      '@commercelayer/app-elements': 0.0.24(@commercelayer/sdk@5.0.0)
       react-hook-form: 7.43.9(react@18.2.0)
     dev: false
 
-  /@commercelayer/app-elements@0.0.23(@commercelayer/sdk@5.0.0):
-    resolution: {integrity: sha512-bsZvfpeLzrr3zQGIYY8HfPW+KaFaW/uql/0Tm/Zrdp3qcKh47NyRPKlxsQkY5gg4ZRC44GV+soxaSkksEwfSlw==}
+  /@commercelayer/app-elements@0.0.24(@commercelayer/sdk@5.0.0):
+    resolution: {integrity: sha512-8F/lxTs/YPst9CvksiRRVZylSW5FPm6vrQJJV/XLONATETm7XpTBe+JVwiVlkMKaJmPc8gHZuh38u/gXgTuMsQ==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x

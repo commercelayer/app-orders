@@ -47,6 +47,7 @@ export interface FilterFormValues {
   timePreset?: TimeRangePreset
   timeFrom?: Date | null
   timeTo?: Date | null
+  text?: string
 }
 
 /**
@@ -82,7 +83,8 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
     archived,
     timePreset,
     timeFrom,
-    timeTo
+    timeTo,
+    text
   } = parsedQuery
 
   // parse a single filter key value to return
@@ -131,7 +133,8 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
       filtrableTimeRangePreset
     )[0],
     timeFrom: parseQueryStringValueAsDate(timeFrom),
-    timeTo: parseQueryStringValueAsDate(timeTo)
+    timeTo: parseQueryStringValueAsDate(timeTo),
+    text: parseQueryStringValueAsArray(text)[0]
   }
 
   return formValues
@@ -154,7 +157,8 @@ function fromFormValuesToSdk(
     archived,
     timePreset,
     timeFrom,
-    timeTo
+    timeTo,
+    text
   } = formValues
 
   const sdkFilters: Partial<QueryFilter> = {
@@ -163,7 +167,8 @@ function fromFormValuesToSdk(
     payment_status_in: paymentStatus.join(','),
     fulfillment_status_in: fulfillmentStatus.join(','),
     archived_at_null: archived !== 'only',
-    ...makeSdkFilterTime({ timePreset, timeFrom, timeTo, timezone })
+    ...makeSdkFilterTime({ timePreset, timeFrom, timeTo, timezone }),
+    ...(isEmpty(text) ? {} : { number_or_customer_email_cont: text })
   }
 
   // stripping out empty or undefined values
@@ -173,12 +178,7 @@ function fromFormValuesToSdk(
   ) as QueryFilter
 
   // enforce default status_in when not set, to prevent listing draft or pending
-  return isEmpty(noEmpty.status_in)
-    ? {
-        ...noEmpty,
-        status_in: filtrableStatus.join(',')
-      }
-    : noEmpty
+  return enforceDefaultStatusIn(noEmpty)
 }
 
 /**
@@ -216,6 +216,19 @@ export const filtersAdapters = {
 }
 
 /**
+ * Be sure to have a status_in filter with all the default values
+ * to prevent listing draft or pending orders
+ */
+export function enforceDefaultStatusIn(filters: QueryFilter): QueryFilter {
+  return isEmpty(filters.status_in)
+    ? {
+        ...filters,
+        status_in: filtrableStatus.join(',')
+      }
+    : filters
+}
+
+/**
  * Show the filter label with the counter for selected options
  * or just the total of available options when nothing is selected
  * @param options
@@ -240,16 +253,22 @@ export function computeFilterLabel({
 }
 
 /**
- * Get total count of active filter groups.
+ * Get total count of active filter groups from URL query string.
+ * @param includeText if `true` will count `text` filter as active filter group
+ * @returns number of active filters
  * Example: if we have 3 markets selected, will still count as `1` active filter group
  * If we have 3 markets and 1 status selected, will count as `2`.
- * @returns number of active filters
  */
-export function getActiveFilterCountFromUrl(): number {
+export function getActiveFilterCountFromUrl({
+  includeText = false
+}: {
+  includeText?: boolean
+}): number {
+  const toCount = filtersAdapters.fromUrlQueryToFormValues(location.search)
+  if (!includeText) {
+    delete toCount.text
+  }
   // timeFrom and timeTo will be omitted because Date is consider as empty/non-iterable object
-  const nonEmptyFilter = omitBy<FilterFormValues>(
-    filtersAdapters.fromUrlQueryToFormValues(location.search),
-    isEmpty
-  )
+  const nonEmptyFilter = omitBy<FilterFormValues>(toCount, isEmpty)
   return Object.keys(nonEmptyFilter).length
 }

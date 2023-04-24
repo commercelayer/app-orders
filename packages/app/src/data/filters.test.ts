@@ -170,7 +170,7 @@ describe('fromUrlQueryToFormValues', () => {
   test('should build proper form value object', () => {
     expect(
       fromUrlQueryToFormValues(
-        'market=dFDdasdgAN&market=KToVGDooQp&status=cancelled'
+        'market=dFDdasdgAN&market=KToVGDooQp&status=cancelled&text=foobar'
       )
     ).toStrictEqual({
       market: ['dFDdasdgAN', 'KToVGDooQp'],
@@ -180,7 +180,8 @@ describe('fromUrlQueryToFormValues', () => {
       archived: undefined,
       timePreset: undefined,
       timeFrom: undefined,
-      timeTo: undefined
+      timeTo: undefined,
+      text: 'foobar'
     })
   })
 
@@ -193,7 +194,8 @@ describe('fromUrlQueryToFormValues', () => {
       archived: undefined,
       timePreset: undefined,
       timeFrom: undefined,
-      timeTo: undefined
+      timeTo: undefined,
+      text: undefined
     })
   })
 
@@ -206,7 +208,8 @@ describe('fromUrlQueryToFormValues', () => {
       archived: undefined,
       timePreset: undefined,
       timeFrom: undefined,
-      timeTo: undefined
+      timeTo: undefined,
+      text: undefined
     })
   })
 
@@ -223,7 +226,8 @@ describe('fromUrlQueryToFormValues', () => {
       archived: undefined,
       timePreset: undefined,
       timeFrom: undefined,
-      timeTo: undefined
+      timeTo: undefined,
+      text: undefined
     })
   })
 })
@@ -340,16 +344,26 @@ describe('getActiveFilterCountFromUrl', () => {
 
   test('should read current URL query string', () => {
     window.location.search = '?market=abc123&status=approved&status=cancelled'
-    expect(getActiveFilterCountFromUrl()).toBe(2)
+    expect(getActiveFilterCountFromUrl({})).toBe(2)
   })
 
   test('should return 0 when no filters are in query string', () => {
     window.location.search = ''
-    expect(getActiveFilterCountFromUrl()).toBe(0)
+    expect(getActiveFilterCountFromUrl({})).toBe(0)
   })
 
   test('should ignore params that are not a filter', () => {
     window.location.search = '?status=approved&not-a-filter=yeah'
-    expect(getActiveFilterCountFromUrl()).toBe(1)
+    expect(getActiveFilterCountFromUrl({})).toBe(1)
+  })
+
+  test('should ignore text filter', () => {
+    window.location.search = '?status=approved&text=foobar'
+    expect(getActiveFilterCountFromUrl({ includeText: false })).toBe(1)
+  })
+
+  test('should include text filter when asked', () => {
+    window.location.search = '?status=approved&text=foobar'
+    expect(getActiveFilterCountFromUrl({ includeText: true })).toBe(2)
   })
 })
