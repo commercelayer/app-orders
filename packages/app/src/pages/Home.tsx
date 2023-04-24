@@ -104,7 +104,7 @@ export function Home(): JSX.Element {
             <Link href={appRoutes.history.makePath()}>
               <ListItem
                 tag='a'
-                icon={<Icon name='eye' background='black' gap='small' />}
+                icon={<Icon name='asterisk' background='black' gap='small' />}
               >
                 <Text weight='semibold'>Order history</Text>
                 <Icon name='caretRight' />
