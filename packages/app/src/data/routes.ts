@@ -14,6 +14,22 @@ export const appRoutes = {
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/history/?${filters}` : `/history`
   },
+  archived: {
+    path: '/archived',
+    makePath: () => '/archived'
+  },
+  awaitingApproval: {
+    path: '/awaiting-approval',
+    makePath: () => '/awaiting-approval'
+  },
+  paymentToCapture: {
+    path: '/payment-to-capture',
+    makePath: () => '/payment-to-capture'
+  },
+  fulfillmentInProgress: {
+    path: '/fulfillment-in-progress',
+    makePath: () => '/fulfillment-in-progress'
+  },
   filters: {
     path: '/filters',
     makePath: (filters?: string) =>

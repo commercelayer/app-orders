@@ -43,7 +43,7 @@ export interface FilterFormValues {
   status: typeof filtrableStatus
   paymentStatus: typeof filtrablePaymentStatus
   fulfillmentStatus: typeof filtrableFulfillmentStatus
-  archived?: 'only' | 'hide'
+  archived?: 'only' | 'hide' | 'show'
   timePreset?: TimeRangePreset
   timeFrom?: Date | null
   timeTo?: Date | null
@@ -127,7 +127,11 @@ function fromUrlQueryToFormValues(qs: string): FilterFormValues {
       filtrableFulfillmentStatus
     ),
     // `hide` is default value for archived
-    archived: parseQueryStringValueAsArray(archived, ['only', 'hide'])[0],
+    archived: parseQueryStringValueAsArray(archived, [
+      'only',
+      'hide',
+      'show'
+    ])[0],
     timePreset: parseQueryStringValueAsArray(
       timePreset,
       filtrableTimeRangePreset
@@ -166,7 +170,7 @@ function fromFormValuesToSdk(
     status_in: status.join(','),
     payment_status_in: paymentStatus.join(','),
     fulfillment_status_in: fulfillmentStatus.join(','),
-    archived_at_null: archived !== 'only',
+    archived_at_null: archived === 'show' ? undefined : archived !== 'only',
     ...makeSdkFilterTime({ timePreset, timeFrom, timeTo, timezone }),
     ...(isEmpty(text) ? {} : { number_or_customer_email_cont: text })
   }
@@ -201,6 +205,34 @@ function fromUrlQueryToUrlQuery(qs: string): string {
 }
 
 /**
+ * Covert FilterFormValues in Metrics API filter object.
+ * Partial implementation: it only supports status, payment_status and fulfillment_status
+ */
+function fromFormValuesToMetricsApi(formValues: FilterFormValues): object {
+  return {
+    statuses:
+      formValues.status != null && formValues.status.length > 0
+        ? {
+            in: formValues.status
+          }
+        : undefined,
+    payment_statuses:
+      formValues.paymentStatus != null && formValues.paymentStatus.length > 0
+        ? {
+            in: formValues.paymentStatus
+          }
+        : undefined,
+    fulfillment_statuses:
+      formValues.fulfillmentStatus != null &&
+      formValues.fulfillmentStatus.length > 0
+        ? {
+            in: formValues.fulfillmentStatus
+          }
+        : undefined
+  }
+}
+
+/**
  * Contains all methods to transform and parse filter values in different formats
  * since filters can be expressed as
  * - App form UI state (FilterFormValues)
@@ -210,6 +242,7 @@ function fromUrlQueryToUrlQuery(qs: string): string {
 export const filtersAdapters = {
   fromFormValuesToUrlQuery,
   fromFormValuesToSdk,
+  fromFormValuesToMetricsApi,
   fromUrlQueryToFormValues,
   fromUrlQueryToSdk,
   fromUrlQueryToUrlQuery

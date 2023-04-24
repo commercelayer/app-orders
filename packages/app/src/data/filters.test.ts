@@ -6,7 +6,8 @@ const {
   fromFormValuesToSdk,
   fromUrlQueryToFormValues,
   fromUrlQueryToSdk,
-  fromUrlQueryToUrlQuery
+  fromUrlQueryToUrlQuery,
+  fromFormValuesToMetricsApi
 } = filtersAdapters
 
 describe('fromFormValuesToUrlQuery', () => {
@@ -35,6 +36,18 @@ describe('fromFormValuesToUrlQuery', () => {
     ).toBe(
       'archived=hide&market=dFDdasdgAN&market=KToVGDooQp&status=cancelled&timePreset=today'
     )
+  })
+
+  test('should allow to include archived', () => {
+    expect(
+      fromFormValuesToUrlQuery({
+        status: [],
+        market: [],
+        paymentStatus: [],
+        fulfillmentStatus: [],
+        archived: 'show'
+      })
+    ).toBe('archived=show')
   })
 
   test('should accept empty values', () => {
@@ -304,6 +317,44 @@ describe('fromUrlQueryToUrlQuery', () => {
         'status=approved&paymentStatus=not-existing&status=draft'
       )
     ).toBe('status=approved')
+  })
+})
+
+describe('fromFormValuesToMetricsApi', () => {
+  test('should properly adapt format', () => {
+    expect(
+      fromFormValuesToMetricsApi({
+        market: [],
+        status: ['approved'],
+        paymentStatus: ['paid', 'authorized'],
+        fulfillmentStatus: ['fulfilled', 'in_progress']
+      })
+    ).toStrictEqual({
+      statuses: {
+        in: ['approved']
+      },
+      payment_statuses: {
+        in: ['paid', 'authorized']
+      },
+      fulfillment_statuses: {
+        in: ['fulfilled', 'in_progress']
+      }
+    })
+  })
+
+  test('should handle empty values', () => {
+    expect(
+      fromFormValuesToMetricsApi({
+        market: [],
+        status: [],
+        paymentStatus: [],
+        fulfillmentStatus: []
+      })
+    ).toStrictEqual({
+      statuses: undefined,
+      payment_statuses: undefined,
+      fulfillment_statuses: undefined
+    })
   })
 })
 

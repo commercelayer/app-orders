@@ -1,4 +1,4 @@
-interface MetricsApiOrdersSearchData {
+type MetricsApiOrdersSearchData = Array<{
   id: string
   fulfillment_status: 'fulfilled' | 'unfulfilled' | 'in_progress'
   total_amount: number
@@ -12,10 +12,14 @@ interface MetricsApiOrdersSearchData {
   customer?: {
     email: string
   }
+}>
+
+interface MetricsApiOrdersStatsData {
+  value: number
 }
 
 interface VndApiResponse<Data> {
-  data: Data[]
+  data: Data
   meta: {
     pagination: {
       record_count: number

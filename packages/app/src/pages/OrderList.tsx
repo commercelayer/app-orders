@@ -6,6 +6,7 @@ import {
   filtersAdapters,
   getActiveFilterCountFromUrl
 } from '#data/filters'
+import { filtersByListType, type ListType } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
   PageLayout,
@@ -15,14 +16,26 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { QueryParamsList } from '@commercelayer/sdk'
-import type { QueryFilter } from '@commercelayer/sdk/lib/cjs/query'
+import { type QueryParamsList } from '@commercelayer/sdk'
+import { type QueryFilter } from '@commercelayer/sdk/lib/cjs/query'
 import isEmpty from 'lodash/isEmpty'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-location'
 
-export function OrderHistory(): JSX.Element {
+interface Props {
+  type: ListType
+}
+
+const pageTitle: Record<ListType, string> = {
+  awaitingApproval: 'Awaiting approval',
+  paymentToCapture: 'Payment to capture',
+  fulfillmentInProgress: 'Fulfillment in progress',
+  archived: 'Archived',
+  history: 'Order history'
+}
+
+export function OrderList({ type }: Props): JSX.Element {
   const {
     settings: { mode, timezone }
   } = useTokenProvider()
@@ -30,10 +43,14 @@ export function OrderHistory(): JSX.Element {
   const search = useSearch()
   const [, setLocation] = useLocation()
   const [sdkQuery, setSdkQuery] = useState<QueryParamsList>()
-  const isFiltered = getActiveFilterCountFromUrl({ includeText: true }) > 0
+
+  const showFilters = type === 'history'
+  const isUserFiltered = getActiveFilterCountFromUrl({ includeText: true }) > 0
 
   useEffect(() => {
-    const filters = filtersAdapters.fromUrlQueryToSdk(search, timezone)
+    const filters = showFilters
+      ? filtersAdapters.fromUrlQueryToSdk(search, timezone)
+      : filtersAdapters.fromFormValuesToSdk(filtersByListType[type])
     setSdkQuery(buildListQuery(filters))
   }, [search])
 
@@ -52,24 +69,28 @@ export function OrderHistory(): JSX.Element {
 
   return (
     <PageLayout
-      title='Order history'
+      title={pageTitle[type]}
       mode={mode}
-      gap='only-top'
       onGoBack={() => {
         setLocation(appRoutes.home.makePath())
       }}
+      gap={showFilters ? 'only-top' : undefined}
     >
-      <Spacer top='4' bottom='14'>
-        <Spacer bottom='4'>
-          <SearchBar
-            placeholder='Order number or customer email...'
-            initialValue={filtersAdapters.fromUrlQueryToFormValues(search).text}
-            onClear={updateTextFilter}
-            onSearch={updateTextFilter}
-          />
+      {showFilters ? (
+        <Spacer top='4' bottom='14'>
+          <Spacer bottom='4'>
+            <SearchBar
+              placeholder='Search...'
+              initialValue={
+                filtersAdapters.fromUrlQueryToFormValues(search).text
+              }
+              onClear={updateTextFilter}
+              onSearch={updateTextFilter}
+            />
+          </Spacer>
+          <FiltersNav />
         </Spacer>
-        <FiltersNav />
-      </Spacer>
+      ) : null}
 
       <Spacer bottom='14'>
         <ResourceList
@@ -78,7 +99,15 @@ export function OrderHistory(): JSX.Element {
           type='orders'
           query={sdkQuery}
           emptyState={
-            <ListEmptyState scope={isFiltered ? 'filters' : 'history'} />
+            <ListEmptyState
+              scope={
+                isUserFiltered
+                  ? 'filters'
+                  : type === 'history'
+                  ? 'history'
+                  : 'list'
+              }
+            />
           }
           Item={ListItemOrder}
         />
