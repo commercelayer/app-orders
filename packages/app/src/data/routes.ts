@@ -9,24 +9,24 @@ export const appRoutes = {
     path: '/',
     makePath: () => '/'
   },
-  history: {
+  listHistory: {
     path: '/history',
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/history/?${filters}` : `/history`
   },
-  archived: {
+  listArchived: {
     path: '/archived',
     makePath: () => '/archived'
   },
-  awaitingApproval: {
+  listAwaitingApproval: {
     path: '/awaiting-approval',
     makePath: () => '/awaiting-approval'
   },
-  paymentToCapture: {
+  listPaymentToCapture: {
     path: '/payment-to-capture',
     makePath: () => '/payment-to-capture'
   },
-  fulfillmentInProgress: {
+  listFulfillmentInProgress: {
     path: '/fulfillment-in-progress',
     makePath: () => '/fulfillment-in-progress'
   },

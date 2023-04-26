@@ -39,7 +39,7 @@ export function Home(): JSX.Element {
           onClear={() => {}}
           onSearch={(hint) => {
             setLocation(
-              appRoutes.history.makePath(
+              appRoutes.listHistory.makePath(
                 filtersAdapters.fromFormValuesToUrlQuery({
                   status: [],
                   market: [],
@@ -56,7 +56,7 @@ export function Home(): JSX.Element {
       <SkeletonTemplate isLoading={isLoadingCounters}>
         <Spacer bottom='14'>
           <List title='Pending'>
-            <Link href={appRoutes.awaitingApproval.makePath()}>
+            <Link href={appRoutes.listAwaitingApproval.makePath()}>
               <ListItem
                 tag='a'
                 icon={<Icon name='arrowDown' background='orange' gap='small' />}
@@ -68,7 +68,7 @@ export function Home(): JSX.Element {
               </ListItem>
             </Link>
 
-            <Link href={appRoutes.paymentToCapture.makePath()}>
+            <Link href={appRoutes.listPaymentToCapture.makePath()}>
               <ListItem
                 tag='a'
                 icon={
@@ -82,7 +82,7 @@ export function Home(): JSX.Element {
               </ListItem>
             </Link>
 
-            <Link href={appRoutes.fulfillmentInProgress.makePath()}>
+            <Link href={appRoutes.listFulfillmentInProgress.makePath()}>
               <ListItem
                 tag='a'
                 icon={
@@ -101,7 +101,7 @@ export function Home(): JSX.Element {
 
         <Spacer bottom='14'>
           <List title='Browse'>
-            <Link href={appRoutes.history.makePath()}>
+            <Link href={appRoutes.listHistory.makePath()}>
               <ListItem
                 tag='a'
                 icon={<Icon name='asterisk' background='black' gap='small' />}
@@ -110,7 +110,7 @@ export function Home(): JSX.Element {
                 <Icon name='caretRight' />
               </ListItem>
             </Link>
-            <Link href={appRoutes.archived.makePath()}>
+            <Link href={appRoutes.listArchived.makePath()}>
               <ListItem
                 tag='a'
                 icon={<Icon name='minus' background='gray' gap='small' />}

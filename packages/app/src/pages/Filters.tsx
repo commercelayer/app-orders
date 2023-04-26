@@ -51,7 +51,7 @@ export function Filters(): JSX.Element {
       title='Filters'
       onGoBack={() => {
         setLocation(
-          appRoutes.history.makePath(
+          appRoutes.listHistory.makePath(
             filtersAdapters.fromUrlQueryToUrlQuery(location.search)
           )
         )
@@ -61,7 +61,7 @@ export function Filters(): JSX.Element {
         {...methods}
         onSubmit={(formValues) => {
           setLocation(
-            appRoutes.history.makePath(
+            appRoutes.listHistory.makePath(
               filtersAdapters.fromFormValuesToUrlQuery(formValues)
             )
           )

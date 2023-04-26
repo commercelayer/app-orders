@@ -31,19 +31,19 @@ export function App(): JSX.Element {
               <Route path={appRoutes.home.path}>
                 <Home />
               </Route>
-              <Route path={appRoutes.history.path}>
+              <Route path={appRoutes.listHistory.path}>
                 <OrderList type='history' />
               </Route>
-              <Route path={appRoutes.archived.path}>
+              <Route path={appRoutes.listArchived.path}>
                 <OrderList type='archived' />
               </Route>
-              <Route path={appRoutes.awaitingApproval.path}>
+              <Route path={appRoutes.listAwaitingApproval.path}>
                 <OrderList type='awaitingApproval' />
               </Route>
-              <Route path={appRoutes.paymentToCapture.path}>
+              <Route path={appRoutes.listPaymentToCapture.path}>
                 <OrderList type='paymentToCapture' />
               </Route>
-              <Route path={appRoutes.fulfillmentInProgress.path}>
+              <Route path={appRoutes.listFulfillmentInProgress.path}>
                 <OrderList type='fulfillmentInProgress' />
               </Route>
               <Route path={appRoutes.filters.path}>
