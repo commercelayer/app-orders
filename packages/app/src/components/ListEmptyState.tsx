@@ -1,17 +1,17 @@
 import { EmptyState, A } from '@commercelayer/app-elements'
 
 interface Props {
-  scope?: 'history' | 'filters' | 'view'
+  scope?: 'history' | 'filters' | 'list'
 }
 
 export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
-  if (scope === 'view') {
+  if (scope === 'list') {
     return (
       <EmptyState
         title='All good here'
         description={
           <div>
-            <p>There are no orders for the current page</p>
+            <p>There are no orders for the current list.</p>
           </div>
         }
       />

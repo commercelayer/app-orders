@@ -2,7 +2,6 @@ import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
 import { FiltersTimeRange } from '#pages/FiltersTimeRange'
 import { OrderDetails } from '#pages/OrderDetails'
-import { OrderHistory } from '#pages/OrderHistory'
 import {
   CoreSdkProvider,
   ErrorBoundary,
@@ -10,6 +9,8 @@ import {
 } from '@commercelayer/app-elements'
 import { Route, Router, Switch } from 'wouter'
 import { appRoutes } from './data/routes'
+import { OrderList } from '#pages/OrderList'
+import { Home } from '#pages/Home'
 
 const isDev = Boolean(import.meta.env.DEV)
 
@@ -28,10 +29,22 @@ export function App(): JSX.Element {
           <Router base='/orders'>
             <Switch>
               <Route path={appRoutes.home.path}>
-                <OrderHistory />
+                <Home />
               </Route>
-              <Route path={appRoutes.history.path}>
-                <OrderHistory />
+              <Route path={appRoutes.listHistory.path}>
+                <OrderList type='history' />
+              </Route>
+              <Route path={appRoutes.listArchived.path}>
+                <OrderList type='archived' />
+              </Route>
+              <Route path={appRoutes.listAwaitingApproval.path}>
+                <OrderList type='awaitingApproval' />
+              </Route>
+              <Route path={appRoutes.listPaymentToCapture.path}>
+                <OrderList type='paymentToCapture' />
+              </Route>
+              <Route path={appRoutes.listFulfillmentInProgress.path}>
+                <OrderList type='fulfillmentInProgress' />
               </Route>
               <Route path={appRoutes.filters.path}>
                 <Filters />
