@@ -45,6 +45,11 @@ export const appRoutes = {
   details: {
     path: '/details/:orderId',
     makePath: (orderId: string) => `/details/${orderId}`
+  },
+  editAddress: {
+    path: '/details/:orderId/edit-address/:addressId',
+    makePath: (orderId: string, addressId: string) =>
+      `/details/${orderId}/edit-address/${addressId}`
   }
 }
 

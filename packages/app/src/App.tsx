@@ -1,7 +1,10 @@
+import { EditAddress } from '#pages/EditAddress'
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
 import { FiltersTimeRange } from '#pages/FiltersTimeRange'
+import { Home } from '#pages/Home'
 import { OrderDetails } from '#pages/OrderDetails'
+import { OrderList } from '#pages/OrderList'
 import {
   CoreSdkProvider,
   ErrorBoundary,
@@ -9,8 +12,6 @@ import {
 } from '@commercelayer/app-elements'
 import { Route, Router, Switch } from 'wouter'
 import { appRoutes } from './data/routes'
-import { OrderList } from '#pages/OrderList'
-import { Home } from '#pages/Home'
 
 const isDev = Boolean(import.meta.env.DEV)
 
@@ -54,6 +55,9 @@ export function App(): JSX.Element {
               </Route>
               <Route path={appRoutes.details.path}>
                 <OrderDetails />
+              </Route>
+              <Route path={appRoutes.editAddress.path}>
+                <EditAddress />
               </Route>
               <Route>
                 <ErrorNotFound />
