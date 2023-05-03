@@ -18,7 +18,7 @@ export function App(): JSX.Element {
   return (
     <ErrorBoundary hasContainer>
       <TokenProvider
-        clientKind='integration'
+        clientKind={isDev ? 'integration' : 'webapp'}
         currentApp='orders'
         domain={window.clAppConfig.domain}
         reauthenticateOnInvalidAuth={!isDev}
