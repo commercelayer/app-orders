@@ -1,13 +1,13 @@
-import {
-  Legend,
-  withSkeletonTemplate,
-  OrderSummary as OrderSummaryElement,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { getDisplayStatus } from '#data/status'
 import { useOrderContext } from '#contexts/OrderContext'
 import { getTriggerAttributeName } from '#data/dictionaries'
+import { getDisplayStatus } from '#data/status'
+import {
+  Legend,
+  OrderSummary as OrderSummaryElement,
+  useCoreSdkProvider,
+  withSkeletonTemplate
+} from '@commercelayer/app-elements'
+import type { Order } from '@commercelayer/sdk'
 
 interface Props {
   order: Order
@@ -47,7 +47,13 @@ export const OrderSummary = withSkeletonTemplate<Props>(
                           'line_items',
                           'shipping_address',
                           'billing_address',
-                          'shipments'
+                          'shipments',
+
+                          // Timeline
+                          'transactions',
+                          'payment_method',
+                          'payment_source',
+                          'attachments'
                         ]
                       }
                     )

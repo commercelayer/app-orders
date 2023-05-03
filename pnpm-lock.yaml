@@ -49,6 +49,9 @@ importers:
       swr:
         specifier: ^2.1.2
         version: 2.1.2(react@18.2.0)
+      type-fest:
+        specifier: ^3.9.0
+        version: 3.9.0
       wouter:
         specifier: ^2.10.0
         version: 2.10.0(react@18.2.0)
@@ -358,7 +361,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-select: 5.7.2(@types/react@18.0.33)(react-dom@18.2.0)(react@18.2.0)
       ts-invariant: 0.10.3
-      type-fest: 3.8.0
+      type-fest: 3.9.0
     dev: false
 
   /@commercelayer/eslint-config-ts-react@1.0.0(eslint@8.37.0)(react@18.2.0)(typescript@5.0.3):
@@ -7692,8 +7695,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /type-fest@3.8.0:
-    resolution: {integrity: sha512-FVNSzGQz9Th+/9R6Lvv7WIAkstylfHN2/JYxkyhhmKFYh9At2DST8t6L6Lref9eYO8PXFTfG9Sg1Agg0K3vq3Q==}
+  /type-fest@3.9.0:
+    resolution: {integrity: sha512-hR8JP2e8UiH7SME5JZjsobBlEiatFoxpzCP+R3ZeCo7kAaG1jXQE5X/buLzogM6GJu8le9Y4OcfNuIQX0rZskA==}
     engines: {node: '>=14.16'}
     dev: false
 

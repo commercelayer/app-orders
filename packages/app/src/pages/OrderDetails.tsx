@@ -1,26 +1,27 @@
 import { OrderAddresses } from '#components/OrderAddresses'
 import { OrderCustomer } from '#components/OrderCustomer'
+import { OrderDetailsContextMenu } from '#components/OrderDetailsContextMenu'
 import { OrderShipments } from '#components/OrderShipments'
 import { OrderSteps } from '#components/OrderSteps'
 import { OrderSummary } from '#components/OrderSummary'
+import { OrderTimeline } from '#components/OrderTimeline'
+import { ScrollToTop } from '#components/ScrollToTop'
+import { OrderContext } from '#contexts/OrderContext'
 import { appRoutes } from '#data/routes'
+import { isMock, makeOrder } from '#mocks'
 import {
   Button,
   EmptyState,
-  formatDate,
   PageLayout,
   SkeletonTemplate,
   Spacer,
+  formatDate,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { useEffect, useMemo, useState } from 'react'
-import { isMock, makeOrder } from '#mocks'
-import { Link, useLocation, useRoute } from 'wouter'
-import { ScrollToTop } from '#components/ScrollToTop'
-import { OrderDetailsContextMenu } from '#components/OrderDetailsContextMenu'
-import { OrderContext } from '#contexts/OrderContext'
 import { type Order } from '@commercelayer/sdk'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useLocation, useRoute } from 'wouter'
 
 export function OrderDetails(): JSX.Element {
   const {
@@ -49,7 +50,13 @@ export function OrderDetails(): JSX.Element {
               'line_items',
               'shipping_address',
               'billing_address',
-              'shipments'
+              'shipments',
+
+              // Timeline
+              'transactions',
+              'payment_method',
+              'payment_source',
+              'attachments'
             ]
           })
           .then((response) => {
@@ -118,6 +125,9 @@ export function OrderDetails(): JSX.Element {
             </Spacer>
             <Spacer top='14'>
               <OrderShipments order={order} />
+            </Spacer>
+            <Spacer top='14'>
+              <OrderTimeline order={order} />
             </Spacer>
           </Spacer>
         </SkeletonTemplate>
