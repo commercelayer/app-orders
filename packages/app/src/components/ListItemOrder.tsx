@@ -1,17 +1,19 @@
 import { getPaymentStatusName } from '#data/dictionaries'
 import { appRoutes } from '#data/routes'
 import { getDisplayStatus } from '#data/status'
+import { makeOrder } from '#mocks'
 import {
   Icon,
   ListItem,
   Text,
   formatDate,
+  formatDisplayName,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
+import isEmpty from 'lodash/isEmpty'
 import { Link } from 'wouter'
-import { makeOrder } from '#mocks'
 
 interface Props {
   resource?: Order
@@ -21,10 +23,12 @@ function ListItemOrderComponent({
   resource = makeOrder()
 }: Props): JSX.Element {
   const {
-    settings: { timezone }
+    user: { timezone }
   } = useTokenProvider()
 
   const displayStatus = getDisplayStatus(resource)
+  const billingAddress = resource.billing_address
+
   return (
     <Link href={appRoutes.details.makePath(resource.id)}>
       <ListItem
@@ -42,18 +46,27 @@ function ListItemOrderComponent({
             {resource.market?.name} #{resource.number}
           </Text>
           <Text tag='div' weight='medium' size='small' variant='info'>
-            {displayStatus.label} · {resource.customer?.email} ·{' '}
             {formatDate({
               format: 'date',
               isoDate: resource.updated_at,
               timezone
             })}
+            {' · '}
+            {!isEmpty(billingAddress?.company)
+              ? billingAddress?.company
+              : formatDisplayName(
+                  billingAddress?.first_name ?? '',
+                  billingAddress?.last_name ?? ''
+                )}
+            {' · '}
+            {displayStatus.task != null ? (
+              <Text weight='bold' size='small' variant='warning'>
+                {displayStatus.task}
+              </Text>
+            ) : (
+              displayStatus.label
+            )}
           </Text>
-          {displayStatus.task != null && (
-            <Text tag='div' weight='bold' size='small' variant='warning'>
-              {displayStatus.task}
-            </Text>
-          )}
         </div>
         <div>
           <Text tag='div' weight='semibold'>

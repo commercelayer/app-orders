@@ -172,7 +172,9 @@ function fromFormValuesToSdk(
     fulfillment_status_in: fulfillmentStatus.join(','),
     archived_at_null: archived === 'show' ? undefined : archived !== 'only',
     ...makeSdkFilterTime({ timePreset, timeFrom, timeTo, timezone }),
-    ...(isEmpty(text) ? {} : { number_or_customer_email_cont: text })
+    ...(isEmpty(text)
+      ? {}
+      : { number_or_customer_email_or_billing_address_email_cont: text })
   }
 
   // stripping out empty or undefined values
