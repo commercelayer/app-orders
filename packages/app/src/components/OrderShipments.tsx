@@ -16,7 +16,7 @@ interface Props {
 
 const renderShipment = (shipment: Shipment): JSX.Element => {
   const {
-    settings: { timezone }
+    user: { timezone }
   } = useTokenProvider()
 
   return (

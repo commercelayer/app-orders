@@ -24,7 +24,7 @@ import { navigate, useSearch } from 'wouter/use-location'
 
 export function FiltersNav(): JSX.Element {
   const {
-    settings: { timezone }
+    user: { timezone }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const search = useSearch()

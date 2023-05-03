@@ -7,7 +7,7 @@ import { useTokenProvider } from '@commercelayer/app-elements'
 
 export function FilterFieldTimePreset(): JSX.Element {
   const {
-    settings: { timezone }
+    user: { timezone }
   } = useTokenProvider()
   const { watch } = useFormContext<FilterFormValues>()
   const timeFrom = watch('timeFrom')
