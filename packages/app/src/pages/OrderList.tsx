@@ -37,7 +37,8 @@ const pageTitle: Record<ListType, string> = {
 
 export function OrderList({ type }: Props): JSX.Element {
   const {
-    settings: { mode, timezone }
+    settings: { mode },
+    user: { timezone }
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const search = useSearch()
@@ -127,13 +128,13 @@ function buildListQuery(filters: QueryFilter): QueryParamsList {
         'status',
         'payment_status',
         'fulfillment_status',
-        'customer',
-        'market'
+        'market',
+        'billing_address',
+        'shipping_address'
       ],
-      customers: ['email'],
       markets: ['id', 'name']
     },
-    include: ['market', 'customer'],
+    include: ['market', 'billing_address'],
     pageSize: 25,
     filters: enforceDefaultStatusIn(filters),
     sort: {

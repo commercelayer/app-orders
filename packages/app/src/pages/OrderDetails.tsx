@@ -25,7 +25,8 @@ import { type Order } from '@commercelayer/sdk'
 export function OrderDetails(): JSX.Element {
   const {
     canUser,
-    settings: { mode, timezone }
+    settings: { mode },
+    user: { timezone }
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

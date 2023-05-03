@@ -101,6 +101,16 @@ export function getDisplayStatus(order: Order): OrderDisplayStatus {
         triggerAttributes: ['_capture']
       }
 
+    case 'approved:authorized:not_required':
+      return {
+        status: 'approved',
+        label: 'Approved',
+        icon: 'creditCard',
+        color: 'orange',
+        task: 'Payment to capture',
+        triggerAttributes: ['_capture']
+      }
+
     case 'approved:paid:in_progress':
       return {
         status: 'paid',
