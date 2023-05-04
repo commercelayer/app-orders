@@ -7,7 +7,16 @@ import {
   type SetStateAction
 } from 'react'
 
-type Context = [Order, Dispatch<SetStateAction<Order>>]
+interface Context {
+  order: Order
+  setOrder: Dispatch<SetStateAction<Order>>
+  refreshOrder: () => void
+}
 
-export const OrderContext = createContext<Context>([makeOrder(), () => {}])
+export const OrderContext = createContext<Context>({
+  order: makeOrder(),
+  setOrder: () => {},
+  refreshOrder: () => {}
+})
+
 export const useOrderContext = (): Context => useContext(OrderContext)

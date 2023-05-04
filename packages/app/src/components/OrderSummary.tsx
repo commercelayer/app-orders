@@ -15,7 +15,7 @@ interface Props {
 
 export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
-    const [, setOrder] = useOrderContext()
+    const { refreshOrder } = useOrderContext()
     const { triggerAttributes } = getDisplayStatus(order)
     const { sdkClient } = useCoreSdkProvider()
 
@@ -35,30 +35,12 @@ export const OrderSummary = withSkeletonTemplate<Props>(
                 label: getTriggerAttributeName(triggerAttribute),
                 onClick: () => {
                   void sdkClient?.orders
-                    .update(
-                      {
-                        id: order.id,
-                        [triggerAttribute]: true
-                      },
-                      {
-                        include: [
-                          'market',
-                          'customer',
-                          'line_items',
-                          'shipping_address',
-                          'billing_address',
-                          'shipments',
-
-                          // Timeline
-                          'transactions',
-                          'payment_method',
-                          'payment_source',
-                          'attachments'
-                        ]
-                      }
-                    )
-                    .then((order) => {
-                      setOrder(order)
+                    .update({
+                      id: order.id,
+                      [triggerAttribute]: true
+                    })
+                    .then(() => {
+                      refreshOrder()
                     })
                 }
               }

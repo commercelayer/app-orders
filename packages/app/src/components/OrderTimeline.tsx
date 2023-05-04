@@ -1,8 +1,11 @@
+import { useOrderContext } from '#contexts/OrderContext'
 import { getTransactionPastTense } from '#data/dictionaries'
 import {
   Legend,
   Spacer,
   Timeline,
+  useCoreSdkProvider,
+  useTokenProvider,
   withSkeletonTemplate,
   type TimelineEvent
 } from '@commercelayer/app-elements'
@@ -177,7 +180,12 @@ const useTimelineReducer = (
 }
 
 export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
-  const [events, dispatch] = useTimelineReducer(order)
+  const [events] = useTimelineReducer(order)
+  const { sdkClient } = useCoreSdkProvider()
+  const {
+    user: { displayName }
+  } = useTokenProvider()
+  const { refreshOrder } = useOrderContext()
 
   return (
     <>
@@ -187,18 +195,21 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
           events={events}
           onKeyDown={(event) => {
             if (event.code === 'Enter' && event.currentTarget.value !== '') {
-              dispatch({
-                type: 'add',
-                payload: {
-                  date: new Date().toISOString(),
-                  message: (
-                    <span>
-                      <b>M. Montalbano</b> left a note
-                    </span>
-                  ),
-                  note: event.currentTarget.value
-                }
-              })
+              if (displayName != null && displayName !== '') {
+                void sdkClient.attachments
+                  .create({
+                    name: displayName,
+                    description: event.currentTarget.value,
+                    attachable: { type: 'orders', id: order.id }
+                  })
+                  .then(() => {
+                    refreshOrder()
+                  })
+              } else {
+                console.warn(
+                  `Cannot create the attachment: token does not contain a valid "user".`
+                )
+              }
 
               event.currentTarget.value = ''
             }

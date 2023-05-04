@@ -14,7 +14,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
-  const [, setOrder] = useOrderContext()
+  const { setOrder } = useOrderContext()
 
   const archiveStatus = useMemo(() => {
     const { triggerAttributes } = getDisplayStatus(order)

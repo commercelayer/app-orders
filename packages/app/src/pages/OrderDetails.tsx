@@ -35,6 +35,7 @@ export function OrderDetails(): JSX.Element {
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
   const [order, setOrder] = useState<Order>(makeOrder())
+  const [reloadOrder, refreshOrder] = useState<number>(Math.random())
 
   const isLoading = useMemo(() => isMock(order), [order])
 
@@ -65,7 +66,7 @@ export function OrderDetails(): JSX.Element {
           })
       }
     },
-    [sdkClient, orderId]
+    [sdkClient, orderId, reloadOrder]
   )
 
   if (orderId === undefined || !canUser('read', 'orders')) {
@@ -93,7 +94,15 @@ export function OrderDetails(): JSX.Element {
   const pageTitle = `${order.market?.name} #${order.number}`
 
   return (
-    <OrderContext.Provider value={[order, setOrder]}>
+    <OrderContext.Provider
+      value={{
+        order,
+        setOrder,
+        refreshOrder: () => {
+          refreshOrder(Math.random())
+        }
+      }}
+    >
       <PageLayout
         mode={mode}
         actionButton={<OrderDetailsContextMenu order={order} />}
