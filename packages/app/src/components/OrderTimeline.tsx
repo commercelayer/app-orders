@@ -8,30 +8,10 @@ import {
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 import { useEffect, useReducer, type Reducer } from 'react'
-import { z } from 'zod'
 
 interface Props {
   order: Order
 }
-
-const paymentInstrumentType = z.object({
-  issuer_type: z.string(),
-  card_type: z.string().transform((brand) => {
-    return brand
-      .toLowerCase()
-      .split(' ')
-      .map((word) => {
-        const firstLetter = word.charAt(0).toUpperCase()
-        const rest = word.slice(1).toLowerCase()
-
-        return firstLetter + rest
-      })
-      .join(' ')
-  }),
-  card_last_digits: z.string(),
-  card_expiry_month: z.string(),
-  card_expiry_year: z.string()
-})
 
 interface TimelineReducerAction {
   type: 'add'
@@ -103,6 +83,21 @@ const useTimelineReducer = (
   )
 
   useEffect(
+    function addArchived() {
+      if (order.archived_at != null) {
+        dispatch({
+          type: 'add',
+          payload: {
+            date: order.archived_at,
+            message: 'Archived'
+          }
+        })
+      }
+    },
+    [order.archived_at]
+  )
+
+  useEffect(
     function addFulfillmentStatus() {
       if (
         order.fulfillment_updated_at != null &&
@@ -122,20 +117,6 @@ const useTimelineReducer = (
 
   useEffect(
     function addTransactions() {
-      const paymentMethodName =
-        order.payment_method?.name != null ? order.payment_method?.name : ''
-
-      let paymentInfo = `on ${paymentMethodName}`
-
-      const paymentInstrument = paymentInstrumentType.safeParse(
-        // @ts-expect-error At the moment 'payment_instrument' does not exist on type 'SatispayPayment'.
-        order.payment_source?.payment_instrument
-      )
-
-      if (paymentInstrument.success) {
-        paymentInfo = `on ${paymentInstrument.data.card_type} ending in ${paymentInstrument.data.card_last_digits} (via ${paymentMethodName})`
-      }
-
       if (order.transactions != null) {
         order.transactions.forEach((transaction) => {
           const name = getTransactionPastTense(transaction.type)
@@ -144,7 +125,7 @@ const useTimelineReducer = (
             type: 'add',
             payload: {
               date: transaction.created_at,
-              message: `Payment of ${transaction.formatted_amount} ${name} ${paymentInfo}`
+              message: `Payment of ${transaction.formatted_amount} ${name}`
             }
           })
         })

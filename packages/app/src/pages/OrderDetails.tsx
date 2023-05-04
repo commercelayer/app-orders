@@ -1,6 +1,7 @@
 import { OrderAddresses } from '#components/OrderAddresses'
 import { OrderCustomer } from '#components/OrderCustomer'
 import { OrderDetailsContextMenu } from '#components/OrderDetailsContextMenu'
+import { OrderPayment } from '#components/OrderPayment'
 import { OrderShipments } from '#components/OrderShipments'
 import { OrderSteps } from '#components/OrderSteps'
 import { OrderSummary } from '#components/OrderSummary'
@@ -119,6 +120,9 @@ export function OrderDetails(): JSX.Element {
             </Spacer>
             <Spacer top='14'>
               <OrderCustomer order={order} />
+            </Spacer>
+            <Spacer top='14'>
+              <OrderPayment order={order} />
             </Spacer>
             <Spacer top='14'>
               <OrderAddresses order={order} />
