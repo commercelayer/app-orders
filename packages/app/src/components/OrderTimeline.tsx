@@ -3,9 +3,6 @@ import {
   Legend,
   Spacer,
   Timeline,
-  formatDate,
-  timeSeparator,
-  useTokenProvider,
   withSkeletonTemplate,
   type TimelineEvent
 } from '@commercelayer/app-elements'
@@ -36,32 +33,28 @@ const paymentInstrumentType = z.object({
   card_expiry_year: z.string()
 })
 
-function createTimelineEvent({
-  date,
-  message,
-  note,
-  timezone
-}: {
-  date: string
-  message: string
-  note?: string
-  timezone?: string
-}): TimelineEvent {
-  return {
-    date,
-    note,
-    message: `${message} ${timeSeparator} ${formatDate({
-      format: 'time',
-      isoDate: date,
-      timezone
-    })}`
+interface TimelineReducerAction {
+  type: 'add'
+  payload: TimelineEvent
+}
+
+function getFulfillmentMessage(status: Order['fulfillment_status']): string {
+  switch (status) {
+    case 'fulfilled':
+      return 'Fulfilled'
+    case 'in_progress':
+      return 'Fulfillment in progress'
+    case 'not_required':
+      return 'Fulfillment not required'
+    case 'unfulfilled':
+      return 'Unfulfilled'
   }
 }
 
-const timelineReducer: Reducer<
-  TimelineEvent[],
-  { type: 'add'; payload: TimelineEvent }
-> = (state, action) => {
+const timelineReducer: Reducer<TimelineEvent[], TimelineReducerAction> = (
+  state,
+  action
+) => {
   switch (action.type) {
     case 'add':
       if (state.find((s) => s.date === action.payload.date) != null) {
@@ -74,23 +67,20 @@ const timelineReducer: Reducer<
   }
 }
 
-export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
-  const {
-    settings: { timezone }
-  } = useTokenProvider()
-
+const useTimelineReducer = (
+  order: Order
+): [TimelineEvent[], React.Dispatch<TimelineReducerAction>] => {
   const [events, dispatch] = useReducer(timelineReducer, [])
 
   useEffect(
-    function addPlacedAt() {
+    function addPlaced() {
       if (order.placed_at != null) {
         dispatch({
           type: 'add',
-          payload: createTimelineEvent({
+          payload: {
             date: order.placed_at,
-            message: `Placed`,
-            timezone
-          })
+            message: 'Placed'
+          }
         })
       }
     },
@@ -98,15 +88,14 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
   )
 
   useEffect(
-    function addCancelledAt() {
+    function addCancelled() {
       if (order.cancelled_at != null) {
         dispatch({
           type: 'add',
-          payload: createTimelineEvent({
+          payload: {
             date: order.cancelled_at,
-            message: `Cancelled`,
-            timezone
-          })
+            message: 'Cancelled'
+          }
         })
       }
     },
@@ -121,18 +110,10 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
       ) {
         dispatch({
           type: 'add',
-          payload: createTimelineEvent({
+          payload: {
             date: order.fulfillment_updated_at,
-            message:
-              order.fulfillment_status === 'fulfilled'
-                ? 'Fulfilled'
-                : order.fulfillment_status === 'in_progress'
-                ? 'Fulfillment in progress'
-                : order.fulfillment_status === 'not_required'
-                ? 'Fulfillment not required'
-                : '',
-            timezone
-          })
+            message: getFulfillmentMessage(order.fulfillment_status)
+          }
         })
       }
     },
@@ -161,11 +142,10 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
 
           dispatch({
             type: 'add',
-            payload: createTimelineEvent({
+            payload: {
               date: transaction.created_at,
-              message: `Payment of ${transaction.formatted_amount} ${name} ${paymentInfo}`,
-              timezone
-            })
+              message: `Payment of ${transaction.formatted_amount} ${name} ${paymentInfo}`
+            }
           })
         })
       }
@@ -177,15 +157,20 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
     function addAttachments() {
       if (order.attachments != null) {
         order.attachments.forEach((attachment) => {
-          dispatch({
-            type: 'add',
-            payload: createTimelineEvent({
-              date: attachment.created_at,
-              message: `${attachment.name} left a note`,
-              note: attachment.description ?? '',
-              timezone
+          if (attachment.description != null) {
+            dispatch({
+              type: 'add',
+              payload: {
+                date: attachment.updated_at,
+                message: (
+                  <span>
+                    <b>{attachment.name}</b> left a note
+                  </span>
+                ),
+                note: attachment.description
+              }
             })
-          })
+          }
         })
       }
     },
@@ -193,20 +178,25 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
   )
 
   useEffect(
-    function addApprovedAt() {
+    function addApproved() {
       if (order.approved_at != null) {
         dispatch({
           type: 'add',
-          payload: createTimelineEvent({
+          payload: {
             date: order.approved_at,
-            message: 'Approved',
-            timezone
-          })
+            message: 'Approved'
+          }
         })
       }
     },
     [order.approved_at]
   )
+
+  return [events, dispatch]
+}
+
+export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
+  const [events, dispatch] = useTimelineReducer(order)
 
   return (
     <>
@@ -215,15 +205,18 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
         <Timeline
           events={events}
           onKeyDown={(event) => {
-            if (event.code === 'Enter') {
+            if (event.code === 'Enter' && event.currentTarget.value !== '') {
               dispatch({
                 type: 'add',
-                payload: createTimelineEvent({
+                payload: {
                   date: new Date().toISOString(),
-                  message: `Marco left a note`,
-                  note: event.currentTarget.value,
-                  timezone
-                })
+                  message: (
+                    <span>
+                      <b>M. Montalbano</b> left a note
+                    </span>
+                  ),
+                  note: event.currentTarget.value
+                }
               })
 
               event.currentTarget.value = ''
