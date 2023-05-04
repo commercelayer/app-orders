@@ -2,6 +2,7 @@ import {
   Icon,
   Legend,
   ListItem,
+  Spacer,
   Text,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -14,21 +15,28 @@ interface Props {
 
 const paymentInstrumentType = z.object({
   issuer_type: z.string(),
-  card_type: z.string().transform((brand) => {
-    return brand
-      .toLowerCase()
-      .split(' ')
-      .map((word) => {
-        const firstLetter = word.charAt(0).toUpperCase()
-        const rest = word.slice(1).toLowerCase()
+  card_type: z
+    .string()
+    .optional()
+    .transform((brand) => {
+      if (brand == null) {
+        return brand
+      }
 
-        return firstLetter + rest
-      })
-      .join(' ')
-  }),
-  card_last_digits: z.string(),
-  card_expiry_month: z.string(),
-  card_expiry_year: z.string()
+      return brand
+        .toLowerCase()
+        .split(' ')
+        .map((word) => {
+          const firstLetter = word.charAt(0).toUpperCase()
+          const rest = word.slice(1).toLowerCase()
+
+          return firstLetter + rest
+        })
+        .join(' ')
+    }),
+  card_last_digits: z.string().optional(),
+  card_expiry_month: z.string().optional(),
+  card_expiry_year: z.string().optional()
 })
 
 export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
@@ -52,9 +60,17 @@ export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
         {paymentInstrument.success ? (
           <div>
             <Text tag='div' weight='semibold'>
-              {paymentInstrument.data.card_type}{' '}
-              {paymentInstrument.data.issuer_type}&nbsp;&nbsp;··
-              {paymentInstrument.data.card_last_digits}
+              {paymentInstrument.data.card_type != null ? (
+                <span>
+                  {paymentInstrument.data.card_type}{' '}
+                  {paymentInstrument.data.issuer_type}
+                  <Spacer left='2' style={{ display: 'inline-block' }}>
+                    ··{paymentInstrument.data.card_last_digits}
+                  </Spacer>
+                </span>
+              ) : (
+                paymentInstrument.data.issuer_type
+              )}
             </Text>
             <Text size='small' tag='div' variant='info' weight='medium'>
               {order.payment_method.name}
