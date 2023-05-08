@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Icon,
   Legend,
   ListItem,
@@ -6,6 +7,7 @@ import {
   Text,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
+import type { AvatarProps } from '@commercelayer/app-elements/dist/ui/atoms/Avatar'
 import type { Order, PaymentMethod } from '@commercelayer/sdk'
 import { z } from 'zod'
 
@@ -81,16 +83,49 @@ function hasPaymentMethod(
   return order.payment_method?.name != null
 }
 
+function getAvatarSrc(
+  paymentType: string | null | undefined
+): AvatarProps['src'] | undefined {
+  switch (paymentType) {
+    case 'adyen_payments':
+      return 'payments:adyen'
+    case 'axerve_payments':
+      return 'payments:axerve'
+    case 'braintree_payments':
+      return 'payments:braintree'
+    case 'checkout_com_payments':
+      return 'payments:checkout'
+    case 'klarna_payments':
+      return 'payments:klarna'
+    case 'paypal_payments':
+      return 'payments:paypal'
+    case 'satispay_payments':
+      return 'payments:satispay'
+    case 'stripe_payments':
+      return 'payments:stripe'
+    default:
+      return undefined
+  }
+}
+
 export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
+  const avatarSrc = getAvatarSrc(order.payment_method?.payment_source_type)
+  const icon =
+    avatarSrc != null ? (
+      <Avatar
+        src={avatarSrc}
+        alt={order.payment_method?.name ?? ''}
+        shape='circle'
+        size='small'
+      />
+    ) : (
+      <Icon name='creditCard' background='teal' gap='large' />
+    )
   return (
     <>
       <Legend title='Payment method' />
       {hasPaymentMethod(order) ? (
-        <ListItem
-          key={order.payment_method?.id}
-          tag='div'
-          icon={<Icon name='creditCard' background='teal' gap='large' />}
-        >
+        <ListItem tag='div' icon={icon}>
           {renderPayment(order)}
         </ListItem>
       ) : (

@@ -1,19 +1,19 @@
+import { computeFilterLabel, type FilterFormValues } from '#data/filters'
+import { makeMarket, repeat } from '#mocks'
 import {
-  Text,
   Avatar,
   Card,
-  useCoreSdkProvider,
-  Spacer,
   InputCheckbox,
-  SkeletonTemplate
+  SkeletonTemplate,
+  Spacer,
+  Text,
+  useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import { InputSelect } from '@commercelayer/app-elements-hook-form'
 import type { CommerceLayerClient, Market } from '@commercelayer/sdk'
-import { useEffect, useState } from 'react'
-import { computeFilterLabel, type FilterFormValues } from '#data/filters'
-import { Controller, useFormContext } from 'react-hook-form'
 import type { ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
-import { makeMarket, repeat } from '#mocks'
+import { useEffect, useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 
 export function FilterFieldMarket(): JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
@@ -160,7 +160,7 @@ async function fetchMarkets({
 }
 
 const colors = ['FF656B', '055463', 'FFAB2E', '282929', '001993']
-function makeGravatarUrl(name: string, index: number): string {
+function makeGravatarUrl(name: string, index: number): `https://${string}` {
   const bgColor = colors[Math.min(index, colors.length - 1)] ?? 'FF656B'
   const letters = name.substring(0, 2)
   return `https://ui-avatars.com/api/${letters}/160/${bgColor}/FFFFFF/2/0.33/false/true/true`
