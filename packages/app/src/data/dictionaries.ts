@@ -1,6 +1,19 @@
+import { type TimeRangePreset } from '#data/filters'
 import type { Order } from '@commercelayer/sdk'
 import { type UITriggerAttributes } from './status'
-import { type TimeRangePreset } from '#data/filters'
+
+export function getTransactionPastTense(
+  type: NonNullable<Order['transactions']>[number]['type']
+): string {
+  const dictionary: Record<typeof type, string> = {
+    authorizations: 'authorized',
+    captures: 'captured',
+    refunds: 'refunded',
+    voids: 'voided'
+  }
+
+  return dictionary[type]
+}
 
 export function getOrderStatusName(status: Order['status']): string {
   const dictionary: Record<typeof status, string> = {
