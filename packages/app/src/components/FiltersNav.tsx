@@ -23,9 +23,7 @@ import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-location'
 
 export function FiltersNav(): JSX.Element {
-  const {
-    user: { timezone }
-  } = useTokenProvider()
+  const { user } = useTokenProvider()
   const [, setLocation] = useLocation()
   const search = useSearch()
   const filters = useMemo(
@@ -214,7 +212,7 @@ export function FiltersNav(): JSX.Element {
             label={getTimeRangeCustomLabel(
               selectedTimeFrom,
               selectedTimeTo,
-              timezone
+              user?.timezone
             )}
             onClick={navigateToFiltersEdit}
             onRemoveRequest={removeTimeRangeFilter}

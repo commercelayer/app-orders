@@ -22,9 +22,7 @@ interface Props {
 function ListItemOrderComponent({
   resource = makeOrder()
 }: Props): JSX.Element {
-  const {
-    user: { timezone }
-  } = useTokenProvider()
+  const { user } = useTokenProvider()
 
   const displayStatus = getDisplayStatus(resource)
   const billingAddress = resource.billing_address
@@ -49,7 +47,7 @@ function ListItemOrderComponent({
             {formatDate({
               format: 'date',
               isoDate: resource.updated_at,
-              timezone
+              timezone: user?.timezone
             })}
             {' · '}
             {!isEmpty(billingAddress?.company)

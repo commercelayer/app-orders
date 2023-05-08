@@ -1,14 +1,12 @@
-import { type FilterFormValues, filtrableTimeRangePreset } from '#data/filters'
-import { ToggleButtons } from '@commercelayer/app-elements-hook-form'
-import { useFormContext } from 'react-hook-form'
 import { getTimeRangePresetName } from '#data/dictionaries'
+import { filtrableTimeRangePreset, type FilterFormValues } from '#data/filters'
 import { getTimeRangeCustomLabel } from '#data/filtersTimeUtils'
 import { useTokenProvider } from '@commercelayer/app-elements'
+import { ToggleButtons } from '@commercelayer/app-elements-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 export function FilterFieldTimePreset(): JSX.Element {
-  const {
-    user: { timezone }
-  } = useTokenProvider()
+  const { user } = useTokenProvider()
   const { watch } = useFormContext<FilterFormValues>()
   const timeFrom = watch('timeFrom')
   const timeTo = watch('timeTo')
@@ -21,7 +19,7 @@ export function FilterFieldTimePreset(): JSX.Element {
       options={filtrableTimeRangePreset.map((option) => {
         const label =
           option === 'custom' && timeFrom != null && timeTo != null
-            ? getTimeRangeCustomLabel(timeFrom, timeTo, timezone)
+            ? getTimeRangeCustomLabel(timeFrom, timeTo, user?.timezone)
             : getTimeRangePresetName(option)
         return {
           label,
