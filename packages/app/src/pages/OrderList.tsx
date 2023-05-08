@@ -38,7 +38,7 @@ const pageTitle: Record<ListType, string> = {
 export function OrderList({ type }: Props): JSX.Element {
   const {
     settings: { mode },
-    user: { timezone }
+    user
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const search = useSearch()
@@ -50,7 +50,7 @@ export function OrderList({ type }: Props): JSX.Element {
 
   useEffect(() => {
     const filters = showFilters
-      ? filtersAdapters.fromUrlQueryToSdk(search, timezone)
+      ? filtersAdapters.fromUrlQueryToSdk(search, user?.timezone)
       : filtersAdapters.fromFormValuesToSdk(filtersByListType[type])
     setSdkQuery(buildListQuery(filters))
   }, [search])

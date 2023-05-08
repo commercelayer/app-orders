@@ -28,7 +28,7 @@ export function OrderDetails(): JSX.Element {
   const {
     canUser,
     settings: { mode },
-    user: { timezone }
+    user
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
@@ -112,7 +112,7 @@ export function OrderDetails(): JSX.Element {
         description={
           <SkeletonTemplate isLoading={isLoading}>{`Placed on ${formatDate({
             isoDate: order.placed_at ?? '',
-            timezone,
+            timezone: user?.timezone,
             format: 'full'
           })}`}</SkeletonTemplate>
         }

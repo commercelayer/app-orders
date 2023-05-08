@@ -10,6 +10,7 @@ import {
   type TimelineEvent
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
+import isEmpty from 'lodash/isEmpty'
 import { useEffect, useReducer, type Reducer } from 'react'
 
 interface Props {
@@ -33,6 +34,8 @@ function getFulfillmentMessage(status: Order['fulfillment_status']): string {
       return 'Unfulfilled'
   }
 }
+
+const noteReferenceOrigin = 'app-orders--note' as const
 
 const timelineReducer: Reducer<TimelineEvent[], TimelineReducerAction> = (
   state,
@@ -141,7 +144,10 @@ const useTimelineReducer = (
     function addAttachments() {
       if (order.attachments != null) {
         order.attachments.forEach((attachment) => {
-          if (attachment.description != null) {
+          if (
+            attachment.description != null &&
+            attachment.reference_origin === noteReferenceOrigin
+          ) {
             dispatch({
               type: 'add',
               payload: {
@@ -182,9 +188,7 @@ const useTimelineReducer = (
 export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
   const [events] = useTimelineReducer(order)
   const { sdkClient } = useCoreSdkProvider()
-  const {
-    user: { displayName, timezone }
-  } = useTokenProvider()
+  const { user } = useTokenProvider()
   const { refreshOrder } = useOrderContext()
 
   return (
@@ -193,13 +197,14 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
       <Spacer top='8'>
         <Timeline
           events={events}
-          timezone={timezone}
+          timezone={user?.timezone}
           onKeyDown={(event) => {
             if (event.code === 'Enter' && event.currentTarget.value !== '') {
-              if (displayName != null && displayName !== '') {
+              if (user?.displayName != null && !isEmpty(user.displayName)) {
                 void sdkClient.attachments
                   .create({
-                    name: displayName,
+                    reference_origin: noteReferenceOrigin,
+                    name: user.displayName,
                     description: event.currentTarget.value,
                     attachable: { type: 'orders', id: order.id }
                   })

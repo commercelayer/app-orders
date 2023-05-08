@@ -15,9 +15,7 @@ interface Props {
 }
 
 const renderShipment = (shipment: Shipment): JSX.Element => {
-  const {
-    user: { timezone }
-  } = useTokenProvider()
+  const { user } = useTokenProvider()
 
   return (
     <ListItem
@@ -33,7 +31,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
           {shipment.status} ·{' '}
           {formatDate({
             isoDate: shipment.updated_at,
-            timezone,
+            timezone: user?.timezone,
             format: 'date'
           })}
         </Text>
