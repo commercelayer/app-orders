@@ -183,7 +183,7 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
   const [events] = useTimelineReducer(order)
   const { sdkClient } = useCoreSdkProvider()
   const {
-    user: { displayName }
+    user: { displayName, timezone }
   } = useTokenProvider()
   const { refreshOrder } = useOrderContext()
 
@@ -193,6 +193,7 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
       <Spacer top='8'>
         <Timeline
           events={events}
+          timezone={timezone}
           onKeyDown={(event) => {
             if (event.code === 'Enter' && event.currentTarget.value !== '') {
               if (displayName != null && displayName !== '') {
