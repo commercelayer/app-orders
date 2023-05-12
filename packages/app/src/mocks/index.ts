@@ -6,8 +6,12 @@ export * from './resources/markets'
 export * from './resources/orders'
 export * from './resources/shipments'
 
+export const isMockedId = (id: string): boolean => {
+  return id.startsWith('fake-')
+}
+
 export const isMock = (resource: Resource): boolean => {
-  return resource.id.startsWith('fake-')
+  return isMockedId(resource.id)
 }
 
 export const repeat = <R>(n: number, resource: () => R): R[] => {

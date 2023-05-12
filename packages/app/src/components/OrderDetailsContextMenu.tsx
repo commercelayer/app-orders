@@ -1,4 +1,3 @@
-import { useOrderContext } from '#contexts/OrderContext'
 import { getTriggerAttributeName } from '#data/dictionaries'
 import { getDisplayStatus } from '#data/status'
 import {
@@ -9,12 +8,13 @@ import {
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 import { useMemo, type FC } from 'react'
+import { useOrderDetails } from 'src/hooks/useOrderDetails'
 
 export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
-  const { setOrder } = useOrderContext()
+  const { mutateOrder } = useOrderDetails(order.id)
 
   const archiveStatus = useMemo(() => {
     const { triggerAttributes } = getDisplayStatus(order)
@@ -59,7 +59,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
                       }
                     )
                     .then((order) => {
-                      setOrder(order)
+                      void mutateOrder(order)
                     })
                 }}
               />
