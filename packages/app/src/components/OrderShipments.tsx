@@ -14,15 +14,32 @@ interface Props {
   order: Order
 }
 
+function getIcon(status: Shipment['status']): JSX.Element | undefined {
+  switch (status) {
+    case 'cancelled':
+      return undefined
+    case 'draft':
+      return undefined
+    case 'on_hold':
+      return <Icon name='hourglass' background='orange' gap='large' />
+    case 'packing':
+      return <Icon name='package' background='orange' gap='large' />
+    case 'picking':
+      return <Icon name='arrowDown' background='orange' gap='large' />
+    case 'ready_to_ship':
+      return <Icon name='arrowUpRight' background='orange' gap='large' />
+    case 'shipped':
+      return <Icon name='check' background='green' gap='large' />
+    case 'upcoming':
+      return undefined
+  }
+}
+
 const renderShipment = (shipment: Shipment): JSX.Element => {
   const { user } = useTokenProvider()
 
   return (
-    <ListItem
-      key={shipment.id}
-      tag='div'
-      icon={<Icon name='minus' background='gray' gap='large' />}
-    >
+    <ListItem key={shipment.id} tag='div' icon={getIcon(shipment.status)}>
       <div>
         <Text tag='div' weight='semibold'>
           #{shipment.number}
