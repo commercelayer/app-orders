@@ -23,7 +23,7 @@ jobs:
       - <<: *setup
       - run:
           name: Test 
-          command: pnpm test
+          command: pnpm lint && pnpm ts:check && pnpm test
   build:
     <<: *image
     environment:
