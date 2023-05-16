@@ -8,7 +8,8 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { AvatarProps } from '@commercelayer/app-elements/dist/ui/atoms/Avatar'
-import type { Order, PaymentMethod } from '@commercelayer/sdk'
+import type { Order } from '@commercelayer/sdk'
+import type { SetNonNullable, SetRequired } from 'type-fest'
 import { z } from 'zod'
 
 interface Props {
@@ -42,7 +43,7 @@ const paymentInstrumentType = z.object({
 })
 
 const renderPayment = (
-  order: Order & { payment_method: PaymentMethod }
+  order: SetRequired<SetNonNullable<Order, 'payment_method'>, 'payment_method'>
 ): JSX.Element => {
   const paymentInstrument = paymentInstrumentType.safeParse(
     // @ts-expect-error At the moment 'payment_instrument' does not exist on type 'SatispayPayment'.
@@ -79,7 +80,10 @@ const renderPayment = (
 
 function hasPaymentMethod(
   order: Order
-): order is Order & { payment_method: PaymentMethod } {
+): order is SetRequired<
+  SetNonNullable<Order, 'payment_method'>,
+  'payment_method'
+> {
   return order.payment_method?.name != null
 }
 
@@ -121,19 +125,17 @@ export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
     ) : (
       <Icon name='creditCard' background='teal' gap='large' />
     )
+
+  if (!hasPaymentMethod(order) || order.payment_status === 'free') {
+    return null
+  }
+
   return (
     <>
       <Legend title='Payment method' />
-      {hasPaymentMethod(order) ? (
-        <ListItem tag='div' icon={icon}>
-          {renderPayment(order)}
-        </ListItem>
-      ) : (
-        <Spacer top='6' bottom='6'>
-          {' '}
-          This order doesn't have a payment method.
-        </Spacer>
-      )}
+      <ListItem tag='div' icon={icon}>
+        {renderPayment(order)}
+      </ListItem>
     </>
   )
 })
