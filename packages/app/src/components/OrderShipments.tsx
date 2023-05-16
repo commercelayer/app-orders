@@ -3,12 +3,12 @@ import {
   Icon,
   Legend,
   ListItem,
-  Spacer,
   Text,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
+import type { SetNonNullable, SetRequired } from 'type-fest'
 
 interface Props {
   order: Order
@@ -62,18 +62,27 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
   )
 }
 
+function hasShipments(
+  order: Order
+): order is SetRequired<SetNonNullable<Order, 'shipments'>, 'shipments'> {
+  return (
+    order.shipments != null &&
+    order.shipments.length > 0 &&
+    order.shipments.filter((shipment) =>
+      ['draft', 'upcoming', 'cancelled'].includes(shipment.status)
+    ).length === 0
+  )
+}
+
 export const OrderShipments = withSkeletonTemplate<Props>(({ order }) => {
+  if (!hasShipments(order)) {
+    return null
+  }
+
   return (
     <>
       <Legend title='Shipments' />
-      {order.shipments != null && order.shipments.length > 0 ? (
-        order.shipments.map((shipment) => renderShipment(shipment))
-      ) : (
-        <Spacer top='6' bottom='6'>
-          {' '}
-          This order doesn't have any shipments.
-        </Spacer>
-      )}
+      {order.shipments.map((shipment) => renderShipment(shipment))}
     </>
   )
 })
