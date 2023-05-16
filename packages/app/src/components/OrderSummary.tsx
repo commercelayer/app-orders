@@ -1,4 +1,3 @@
-import { useOrderContext } from '#contexts/OrderContext'
 import { getTriggerAttributeName } from '#data/dictionaries'
 import { getDisplayStatus } from '#data/status'
 import {
@@ -8,6 +7,7 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
+import { useOrderDetails } from 'src/hooks/useOrderDetails'
 
 interface Props {
   order: Order
@@ -15,7 +15,7 @@ interface Props {
 
 export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
-    const { refreshOrder } = useOrderContext()
+    const { mutateOrder } = useOrderDetails(order.id)
     const { triggerAttributes } = getDisplayStatus(order)
     const { sdkClient } = useCoreSdkProvider()
 
@@ -40,7 +40,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
                       [triggerAttribute]: true
                     })
                     .then(() => {
-                      refreshOrder()
+                      void mutateOrder()
                     })
                 }
               }

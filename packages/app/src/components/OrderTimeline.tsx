@@ -1,4 +1,3 @@
-import { useOrderContext } from '#contexts/OrderContext'
 import { getTransactionPastTense } from '#data/dictionaries'
 import {
   Legend,
@@ -12,6 +11,7 @@ import {
 import { type Order } from '@commercelayer/sdk'
 import isEmpty from 'lodash/isEmpty'
 import { useEffect, useReducer, type Reducer } from 'react'
+import { useOrderDetails } from 'src/hooks/useOrderDetails'
 
 interface Props {
   order: Order
@@ -189,7 +189,7 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
   const [events] = useTimelineReducer(order)
   const { sdkClient } = useCoreSdkProvider()
   const { user } = useTokenProvider()
-  const { refreshOrder } = useOrderContext()
+  const { mutateOrder } = useOrderDetails(order.id)
 
   return (
     <>
@@ -209,7 +209,7 @@ export const OrderTimeline = withSkeletonTemplate<Props>(({ order }) => {
                     attachable: { type: 'orders', id: order.id }
                   })
                   .then(() => {
-                    refreshOrder()
+                    void mutateOrder()
                   })
               } else {
                 console.warn(
