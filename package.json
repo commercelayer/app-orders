@@ -8,6 +8,7 @@
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "test": "pnpm -r test",
+    "ts:check": "pnpm -r ts:check",
     "test:watch": "pnpm -r test:watch",
     "dep:upgrade:major": "pnpm -r exec npm-check-updates -u",
     "dep:upgrade:minor": "pnpm dep:upgrade:major -t minor",
