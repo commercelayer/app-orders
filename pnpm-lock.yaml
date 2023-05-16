@@ -23,11 +23,11 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@commercelayer/app-elements':
-        specifier: ^0.0.28
-        version: 0.0.28(@commercelayer/sdk@5.0.0)
+        specifier: ^0.0.33
+        version: 0.0.33(@commercelayer/sdk@5.0.0)
       '@commercelayer/app-elements-hook-form':
-        specifier: ^0.0.28
-        version: 0.0.28(@commercelayer/app-elements@0.0.28)(react-hook-form@7.43.9)
+        specifier: ^0.0.33
+        version: 0.0.33(@commercelayer/app-elements@0.0.33)(react-hook-form@7.43.9)
       '@commercelayer/sdk':
         specifier: 5.0.0
         version: 5.0.0
@@ -339,19 +339,19 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements-hook-form@0.0.28(@commercelayer/app-elements@0.0.28)(react-hook-form@7.43.9):
-    resolution: {integrity: sha512-Fm/kX9RuQLiG9LZ3EFTWoxGaa+HZ4sVOATCD/kgQBUCcjjWkkuisah5RIyklRbS9K12+LosUtwZQmV3pbTkB7A==}
+  /@commercelayer/app-elements-hook-form@0.0.33(@commercelayer/app-elements@0.0.33)(react-hook-form@7.43.9):
+    resolution: {integrity: sha512-IhzqBO+tgpXLkBn+PrECSSNoKEzXQc734aTaTalIxnUrUGi2D6zeijB2sLJGJ/WV7IEmxy/GK2+TTZr4JhfLJg==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
-      '@commercelayer/app-elements': 0.0.28
+      '@commercelayer/app-elements': 0.0.33
       react-hook-form: ^7.43.x
     dependencies:
-      '@commercelayer/app-elements': 0.0.28(@commercelayer/sdk@5.0.0)
+      '@commercelayer/app-elements': 0.0.33(@commercelayer/sdk@5.0.0)
       react-hook-form: 7.43.9(react@18.2.0)
     dev: false
 
-  /@commercelayer/app-elements@0.0.28(@commercelayer/sdk@5.0.0):
-    resolution: {integrity: sha512-5W3oiuV/boe/rbInSx4mB0LP5ld+7B89QP3Nal0DY7nKqlM97LJ9laSUv76LTXWEjqQxb7d26ekx9Et5np5xQw==}
+  /@commercelayer/app-elements@0.0.33(@commercelayer/sdk@5.0.0):
+    resolution: {integrity: sha512-HdCibz05/qDeIRTw3FEucKWW4iFEQvszNrdWIkicV3tzwfilOlLE5e1LmcorbzOiJ6krJROdyIToyB/TH4573w==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x
@@ -368,6 +368,7 @@ packages:
       react-datepicker: 4.11.0(react-dom@18.2.0)(react@18.2.0)
       react-dom: 18.2.0(react@18.2.0)
       react-select: 5.7.2(@types/react@18.0.33)(react-dom@18.2.0)(react@18.2.0)
+      swr: 2.1.5(react@18.2.0)
       ts-invariant: 0.10.3
       type-fest: 3.9.0
     dev: false
@@ -7412,6 +7413,15 @@ packages:
 
   /swr@2.1.2(react@18.2.0):
     resolution: {integrity: sha512-ocfaD2rnYZKqTDplCEX2bH5Z1++n2JSej9oYi7hVfXXWYm+0RP+H6fVrogWB0mtMclv1guk9kEnAzNLygOy9Hw==}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /swr@2.1.5(react@18.2.0):
+    resolution: {integrity: sha512-/OhfZMcEpuz77KavXST5q6XE9nrOBOVcBLWjMT+oAE/kQHyE3PASrevXCtQDZ8aamntOfFkbVJp7Il9tNBQWrw==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
