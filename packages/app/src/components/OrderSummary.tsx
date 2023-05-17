@@ -33,6 +33,8 @@ export const OrderSummary = withSkeletonTemplate<Props>(
             .map((triggerAttribute) => {
               return {
                 label: getTriggerAttributeName(triggerAttribute),
+                variant:
+                  triggerAttribute === '_cancel' ? 'secondary' : 'primary',
                 onClick: () => {
                   void sdkClient?.orders
                     .update({

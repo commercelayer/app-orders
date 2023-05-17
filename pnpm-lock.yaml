@@ -23,11 +23,11 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@commercelayer/app-elements':
-        specifier: ^0.0.33
-        version: 0.0.33(@commercelayer/sdk@5.0.0)
+        specifier: ^0.0.34
+        version: 0.0.34(@commercelayer/sdk@5.0.0)
       '@commercelayer/app-elements-hook-form':
-        specifier: ^0.0.33
-        version: 0.0.33(@commercelayer/app-elements@0.0.33)(react-hook-form@7.43.9)
+        specifier: ^0.0.34
+        version: 0.0.34(@commercelayer/app-elements@0.0.34)(react-hook-form@7.43.9)
       '@commercelayer/sdk':
         specifier: 5.0.0
         version: 5.0.0
@@ -339,19 +339,19 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements-hook-form@0.0.33(@commercelayer/app-elements@0.0.33)(react-hook-form@7.43.9):
-    resolution: {integrity: sha512-IhzqBO+tgpXLkBn+PrECSSNoKEzXQc734aTaTalIxnUrUGi2D6zeijB2sLJGJ/WV7IEmxy/GK2+TTZr4JhfLJg==}
+  /@commercelayer/app-elements-hook-form@0.0.34(@commercelayer/app-elements@0.0.34)(react-hook-form@7.43.9):
+    resolution: {integrity: sha512-Un1UK+ML7L7HnBK9oE9YUjmgoJMJdcGIJql4wj6AptogrbHOAURa2PvpsGNpJ9cWqVTwb8aWsu6rOt8bjmnE5Q==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
-      '@commercelayer/app-elements': 0.0.33
+      '@commercelayer/app-elements': 0.0.34
       react-hook-form: ^7.43.x
     dependencies:
-      '@commercelayer/app-elements': 0.0.33(@commercelayer/sdk@5.0.0)
+      '@commercelayer/app-elements': 0.0.34(@commercelayer/sdk@5.0.0)
       react-hook-form: 7.43.9(react@18.2.0)
     dev: false
 
-  /@commercelayer/app-elements@0.0.33(@commercelayer/sdk@5.0.0):
-    resolution: {integrity: sha512-HdCibz05/qDeIRTw3FEucKWW4iFEQvszNrdWIkicV3tzwfilOlLE5e1LmcorbzOiJ6krJROdyIToyB/TH4573w==}
+  /@commercelayer/app-elements@0.0.34(@commercelayer/sdk@5.0.0):
+    resolution: {integrity: sha512-3+BJfdCEH8XgziI25urxtHQP9QAGOX3/p8jk2laqiDmX0cJ/hKGBmupLG0fTUbj1Z0EAaKAKEYIGLwnzSjeHDw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x
