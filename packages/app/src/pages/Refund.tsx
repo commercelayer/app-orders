@@ -57,7 +57,11 @@ export function Refund(): JSX.Element {
   }
 
   const saveNote = async (orderId: string, note?: string): Promise<void> => {
-    if (user?.displayName != null && !isEmpty(user.displayName)) {
+    if (
+      user?.displayName != null &&
+      !isEmpty(user.displayName) &&
+      !isEmpty(note?.trim())
+    ) {
       try {
         await sdkClient.attachments.create({
           reference_origin: refundNoteReferenceOrigin,

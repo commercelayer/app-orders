@@ -1,4 +1,8 @@
-import { isAttachmentValidNote, noteReferenceOrigin } from '#data/attachments'
+import {
+  isAttachmentValidNote,
+  noteReferenceOrigin,
+  refundNoteReferenceOrigin
+} from '#data/attachments'
 import { getTransactionPastTense } from '#data/dictionaries'
 import {
   Legend,
@@ -150,7 +154,10 @@ const useTimelineReducer = (
                 date: attachment.updated_at,
                 message: (
                   <span>
-                    <b>{attachment.name}</b> left a note
+                    <b>{attachment.name}</b>{' '}
+                    {attachment.reference_origin === refundNoteReferenceOrigin
+                      ? 'left a refund note'
+                      : 'left a note'}
                   </span>
                 ),
                 note: attachment.description
