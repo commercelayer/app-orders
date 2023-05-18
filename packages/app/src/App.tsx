@@ -5,6 +5,7 @@ import { FiltersTimeRange } from '#pages/FiltersTimeRange'
 import { Home } from '#pages/Home'
 import { OrderDetails } from '#pages/OrderDetails'
 import { OrderList } from '#pages/OrderList'
+import { Refund } from '#pages/Refund'
 import {
   CoreSdkProvider,
   ErrorBoundary,
@@ -64,6 +65,9 @@ export function App(): JSX.Element {
                 </Route>
                 <Route path={appRoutes.editAddress.path}>
                   <EditAddress />
+                </Route>
+                <Route path={appRoutes.refund.path}>
+                  <Refund />
                 </Route>
                 <Route>
                   <ErrorNotFound />
