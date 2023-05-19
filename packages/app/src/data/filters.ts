@@ -50,6 +50,17 @@ export interface FilterFormValues {
   text?: string
 }
 
+const textRansack =
+  [
+    'number',
+    'reference',
+    'customer_email',
+    'billing_address_email',
+    'billing_address_company',
+    'billing_address_first_name',
+    'billing_address_last_name'
+  ].join('_or_') + '_cont'
+
 /**
  * Covert FilterFormValues in url query string
  * @param formValues a valid FilterFormValues object
@@ -172,9 +183,7 @@ function fromFormValuesToSdk(
     fulfillment_status_in: fulfillmentStatus.join(','),
     archived_at_null: archived === 'show' ? undefined : archived !== 'only',
     ...makeSdkFilterTime({ timePreset, timeFrom, timeTo, timezone }),
-    ...(isEmpty(text)
-      ? {}
-      : { number_or_customer_email_or_billing_address_email_cont: text })
+    ...(isEmpty(text) ? {} : { [textRansack]: text })
   }
 
   // stripping out empty or undefined values

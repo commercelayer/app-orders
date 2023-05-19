@@ -43,7 +43,7 @@ export function Refund(): JSX.Element {
     amountCent: number
   ): Promise<void> => {
     try {
-      setIsSaving(false)
+      setIsSaving(true)
       await sdkClient.captures.update({
         id: captureId,
         _refund: true,
