@@ -46,12 +46,19 @@ export function OrderList({ type }: Props): JSX.Element {
   const [sdkQuery, setSdkQuery] = useState<QueryParamsList>()
 
   const showFilters = type === 'history'
+  const showSearchBar = type === 'history' || type === 'archived'
   const isUserFiltered = getActiveFilterCountFromUrl({ includeText: true }) > 0
 
   useEffect(() => {
     const filters = showFilters
       ? filtersAdapters.fromUrlQueryToSdk(search, user?.timezone)
+      : showSearchBar
+      ? filtersAdapters.fromFormValuesToSdk({
+          ...filtersByListType[type],
+          text: filtersAdapters.fromUrlQueryToFormValues(search).text
+        })
       : filtersAdapters.fromFormValuesToSdk(filtersByListType[type])
+
     setSdkQuery(buildListQuery(filters))
   }, [search])
 
@@ -61,7 +68,9 @@ export function OrderList({ type }: Props): JSX.Element {
       ...currentFilters,
       text: isEmpty(hint?.trim()) ? undefined : hint
     })
-    navigate(`?${newQueryString}`)
+    navigate(`?${newQueryString}`, {
+      replace: true
+    })
   }
 
   if (sdkQuery == null) {
@@ -77,19 +86,21 @@ export function OrderList({ type }: Props): JSX.Element {
       }}
       gap={showFilters ? 'only-top' : undefined}
     >
-      {showFilters ? (
+      {showFilters || showSearchBar ? (
         <Spacer top='4' bottom='14'>
-          <Spacer bottom='4'>
-            <SearchBar
-              placeholder='Search...'
-              initialValue={
-                filtersAdapters.fromUrlQueryToFormValues(search).text
-              }
-              onClear={updateTextFilter}
-              onSearch={updateTextFilter}
-            />
-          </Spacer>
-          <FiltersNav />
+          {showSearchBar && (
+            <Spacer bottom='4'>
+              <SearchBar
+                placeholder='Search...'
+                initialValue={
+                  filtersAdapters.fromUrlQueryToFormValues(search).text
+                }
+                onClear={updateTextFilter}
+                onSearch={updateTextFilter}
+              />
+            </Spacer>
+          )}
+          {showFilters && <FiltersNav />}
         </Spacer>
       ) : null}
 
