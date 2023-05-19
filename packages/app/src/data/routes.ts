@@ -50,6 +50,10 @@ export const appRoutes = {
     path: '/details/:orderId/edit-address/:addressId',
     makePath: (orderId: string, addressId: string) =>
       `/details/${orderId}/edit-address/${addressId}`
+  },
+  refund: {
+    path: '/details/:orderId/refund',
+    makePath: (orderId: string) => `/details/${orderId}/refund`
   }
 }
 

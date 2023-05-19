@@ -1,3 +1,8 @@
+import {
+  isAttachmentValidNote,
+  noteReferenceOrigin,
+  refundNoteReferenceOrigin
+} from '#data/attachments'
 import { getTransactionPastTense } from '#data/dictionaries'
 import {
   Legend,
@@ -34,8 +39,6 @@ function getFulfillmentMessage(status: Order['fulfillment_status']): string {
       return 'Unfulfilled'
   }
 }
-
-const noteReferenceOrigin = 'app-orders--note' as const
 
 const timelineReducer: Reducer<TimelineEvent[], TimelineReducerAction> = (
   state,
@@ -144,17 +147,17 @@ const useTimelineReducer = (
     function addAttachments() {
       if (order.attachments != null) {
         order.attachments.forEach((attachment) => {
-          if (
-            attachment.description != null &&
-            attachment.reference_origin === noteReferenceOrigin
-          ) {
+          if (isAttachmentValidNote(attachment)) {
             dispatch({
               type: 'add',
               payload: {
                 date: attachment.updated_at,
                 message: (
                   <span>
-                    <b>{attachment.name}</b> left a note
+                    <b>{attachment.name}</b>{' '}
+                    {attachment.reference_origin === refundNoteReferenceOrigin
+                      ? 'left a refund note'
+                      : 'left a note'}
                   </span>
                 ),
                 note: attachment.description
