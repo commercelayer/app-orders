@@ -82,7 +82,7 @@ export function Refund(): JSX.Element {
   }
 
   if (
-    !canUser('update', 'captures') ||
+    !canUser('update', 'transactions') ||
     !isRefundable ||
     error != null ||
     order == null
@@ -92,7 +92,7 @@ export function Refund(): JSX.Element {
         <EmptyState
           title='Not found'
           description={
-            !canUser('update', 'captures')
+            !canUser('update', 'transactions')
               ? 'You are not authorized to access this page.'
               : 'Cannot make refund on this order'
           }

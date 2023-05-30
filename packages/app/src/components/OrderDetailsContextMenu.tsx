@@ -76,7 +76,7 @@ function getTriggerAttributesForUser(
   const onOrder: UITriggerAttributes[] = canUser('update', 'orders')
     ? ['_archive', '_unarchive']
     : []
-  const onCapture: UITriggerAttributes[] = canUser('update', 'captures')
+  const onCapture: UITriggerAttributes[] = canUser('update', 'transactions')
     ? ['_refund']
     : []
   return [...onOrder, ...onCapture]
