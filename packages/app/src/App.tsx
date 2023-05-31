@@ -26,7 +26,7 @@ export function App(): JSX.Element {
         }}
       >
         <TokenProvider
-          kind='webapp'
+          kind='orders'
           appSlug='orders'
           domain={window.clAppConfig.domain}
           reauthenticateOnInvalidAuth={!isDev}
