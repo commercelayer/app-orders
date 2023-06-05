@@ -1,12 +1,14 @@
 import { FilterFieldFulfillmentStatus } from '#components/FilterFieldFulfillmentStatus'
-import { FilterFieldMarket } from '#components/FilterFieldMarket'
 import { FilterFieldPaymentStatus } from '#components/FilterFieldPaymentStatus'
 import { FilterFieldStatus } from '#components/FilterFieldStatus'
 import { FilterFieldTimePreset } from '#components/FilterFieldTimePreset'
 import { filtersAdapters, type FilterFormValues } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import { Button, PageLayout, Spacer } from '@commercelayer/app-elements'
-import { Form } from '@commercelayer/app-elements-hook-form'
+import {
+  Form,
+  RelationshipSelector
+} from '@commercelayer/app-elements-hook-form'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
@@ -68,7 +70,16 @@ export function Filters(): JSX.Element {
         }}
       >
         <Spacer bottom='14'>
-          <FilterFieldMarket />
+          <RelationshipSelector
+            name='market'
+            fieldForLabel='name'
+            fieldForValue='id'
+            resource='markets'
+            searchBy='name_cont'
+            sortBy={{ attribute: 'name', direction: 'asc' }}
+            title='Markets'
+            previewLimit={5}
+          />
         </Spacer>
 
         <Spacer bottom='14'>
