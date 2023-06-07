@@ -23,11 +23,11 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@commercelayer/app-elements':
-        specifier: ^0.0.35
-        version: 0.0.35(@commercelayer/sdk@5.0.0)
+        specifier: ^0.0.37
+        version: 0.0.37(@commercelayer/sdk@5.0.0)(wouter@2.10.0)
       '@commercelayer/app-elements-hook-form':
-        specifier: ^0.0.35
-        version: 0.0.35(@commercelayer/app-elements@0.0.35)(react-hook-form@7.43.9)
+        specifier: ^0.0.37
+        version: 0.0.37(@commercelayer/app-elements@0.0.37)(react-hook-form@7.43.9)
       '@commercelayer/sdk':
         specifier: 5.0.0
         version: 5.0.0
@@ -339,22 +339,23 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements-hook-form@0.0.35(@commercelayer/app-elements@0.0.35)(react-hook-form@7.43.9):
-    resolution: {integrity: sha512-QUKP/Rc1EZ7JJiPJRXZSHnIelnRv3OmOQgbz3PJfjJuPaHjwRJ8/hkaMDF67CuYc1AdP0gXTl0Gzwg6CybGKeA==}
+  /@commercelayer/app-elements-hook-form@0.0.37(@commercelayer/app-elements@0.0.37)(react-hook-form@7.43.9):
+    resolution: {integrity: sha512-6EMbh9GWg+dM2bKZkzmjjl/UaLL1E+4Sjw691C5XnPfWI3GGFP4usFqa3jWHlaxT/ME2iQHVq8ql1ybqzr9NGg==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
-      '@commercelayer/app-elements': 0.0.35
+      '@commercelayer/app-elements': 0.0.37
       react-hook-form: ^7.43.x
     dependencies:
-      '@commercelayer/app-elements': 0.0.35(@commercelayer/sdk@5.0.0)
+      '@commercelayer/app-elements': 0.0.37(@commercelayer/sdk@5.0.0)(wouter@2.10.0)
       react-hook-form: 7.43.9(react@18.2.0)
     dev: false
 
-  /@commercelayer/app-elements@0.0.35(@commercelayer/sdk@5.0.0):
-    resolution: {integrity: sha512-BrgzkxBDahqn9bnO4Ur2cs3SFkHsODUwIZxz6UEckX8Au+W19wVPv2dFK3b6QMjXadqnUyQxJUqLAaQQC62/IQ==}
+  /@commercelayer/app-elements@0.0.37(@commercelayer/sdk@5.0.0)(wouter@2.10.0):
+    resolution: {integrity: sha512-i0e54xwY3ISyMpYIn3A80DIfkXLFy7JSYmDsQFatnvDjsmxAD1DIlHnUQarzSSBy2FQMNo4ASzf0xSev4nYz/Q==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x
+      wouter: ^2.x
     dependencies:
       '@commercelayer/sdk': 5.0.0
       '@types/lodash': 4.14.192
@@ -372,6 +373,7 @@ packages:
       swr: 2.1.5(react@18.2.0)
       ts-invariant: 0.10.3
       type-fest: 3.9.0
+      wouter: 2.10.0(react@18.2.0)
     dev: false
 
   /@commercelayer/eslint-config-ts-react@1.0.0(eslint@8.37.0)(react@18.2.0)(typescript@5.0.3):
