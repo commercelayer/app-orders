@@ -31,8 +31,8 @@
   ],
   "devDependencies": {
     "husky": "^8.0.3",
-    "lerna": "^6.6.1",
-    "lint-staged": "^13.2.0",
-    "npm-check-updates": "^16.10.1"
+    "lerna": "^6.6.2",
+    "lint-staged": "^13.2.2",
+    "npm-check-updates": "^16.10.12"
   }
 }
