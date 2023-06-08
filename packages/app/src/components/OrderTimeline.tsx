@@ -4,6 +4,7 @@ import {
   refundNoteReferenceOrigin
 } from '#data/attachments'
 import { getTransactionPastTense } from '#data/dictionaries'
+import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Legend,
   Spacer,
@@ -16,7 +17,6 @@ import {
 import { type Order } from '@commercelayer/sdk'
 import isEmpty from 'lodash/isEmpty'
 import { useEffect, useReducer, type Reducer } from 'react'
-import { useOrderDetails } from 'src/hooks/useOrderDetails'
 
 interface Props {
   order: Order
@@ -129,12 +129,20 @@ const useTimelineReducer = (
       if (order.transactions != null) {
         order.transactions.forEach((transaction) => {
           const name = getTransactionPastTense(transaction.type)
+          const isFailedCapture =
+            transaction.type === 'captures' && !transaction.succeeded
 
           dispatch({
             type: 'add',
             payload: {
               date: transaction.created_at,
-              message: `Payment of ${transaction.formatted_amount} ${name}`
+              message: isFailedCapture
+                ? `Failed capture`
+                : `Payment of ${transaction.formatted_amount} ${name}`,
+              note:
+                isFailedCapture && transaction.message != null
+                  ? transaction.message
+                  : undefined
             }
           })
         })
