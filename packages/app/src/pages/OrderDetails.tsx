@@ -8,6 +8,7 @@ import { OrderSummary } from '#components/OrderSummary'
 import { OrderTimeline } from '#components/OrderTimeline'
 import { ScrollToTop } from '#components/ScrollToTop'
 import { appRoutes } from '#data/routes'
+import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Button,
   EmptyState,
@@ -17,7 +18,6 @@ import {
   formatDate,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { useOrderDetails } from 'src/hooks/useOrderDetails'
 import { Link, useLocation, useRoute } from 'wouter'
 
 export function OrderDetails(): JSX.Element {

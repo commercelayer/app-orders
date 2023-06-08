@@ -1,22 +1,21 @@
 import { getTriggerAttributeName } from '#data/dictionaries'
 import { appRoutes } from '#data/routes'
 import { getDisplayStatus, type UITriggerAttributes } from '#data/status'
+import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   ContextMenu,
   DropdownMenuItem,
-  useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 import { useMemo, type FC } from 'react'
-import { useOrderDetails } from 'src/hooks/useOrderDetails'
 import { useLocation } from 'wouter'
 
 export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   const { canUser } = useTokenProvider()
-  const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
-  const { mutateOrder } = useOrderDetails(order.id)
+
+  const { dispatch } = useTriggerAttribute(order.id)
 
   const menuActions = useMemo(() => {
     const { triggerAttributes } = getDisplayStatus(order)
@@ -41,27 +40,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
               setLocation(appRoutes.refund.makePath(order.id))
               return
             }
-
-            void sdkClient?.orders
-              .update(
-                {
-                  id: order.id,
-                  [triggerAttribute]: true
-                },
-                {
-                  include: [
-                    'market',
-                    'customer',
-                    'line_items',
-                    'shipping_address',
-                    'billing_address',
-                    'shipments'
-                  ]
-                }
-              )
-              .then((order) => {
-                void mutateOrder(order)
-              })
+            void dispatch(triggerAttribute)
           }}
         />
       ))}
