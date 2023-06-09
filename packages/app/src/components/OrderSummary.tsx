@@ -35,7 +35,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
           footerActions={triggerAttributes
             .filter(
               (triggerAttribute) =>
-                !['_archive', '_unarchive', '_refund'].includes(
+                !['_archive', '_unarchive', '_refund', '_return'].includes(
                   triggerAttribute
                 )
             )
