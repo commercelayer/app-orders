@@ -89,7 +89,7 @@ export function OrderList({ type }: Props): JSX.Element {
       {showFilters || showSearchBar ? (
         <Spacer top='4' bottom='14'>
           {showSearchBar && (
-            <Spacer bottom='4'>
+            <Spacer bottom='2'>
               <SearchBar
                 placeholder='Search...'
                 initialValue={
@@ -107,7 +107,7 @@ export function OrderList({ type }: Props): JSX.Element {
       <Spacer bottom='14'>
         <ResourceList
           sdkClient={sdkClient}
-          title='Results'
+          title={isUserFiltered ? 'Results' : 'All orders'}
           type='orders'
           query={sdkQuery}
           emptyState={
