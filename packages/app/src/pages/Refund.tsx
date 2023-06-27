@@ -88,7 +88,7 @@ export function Refund(): JSX.Element {
     order == null
   ) {
     return (
-      <PageLayout title='Make refund'>
+      <PageLayout title='Issue a refund'>
         <EmptyState
           title='Not found'
           description={
