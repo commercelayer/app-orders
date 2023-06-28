@@ -1,8 +1,9 @@
+import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemOrder } from '#components/ListItemOrder'
 import { instructions } from '#data/filters'
+import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
-  EmptyState,
   PageLayout,
   Spacer,
   useTokenProvider
@@ -19,15 +20,22 @@ export function OrderList(): JSX.Element {
   const queryString = useSearch()
   const [, setLocation] = useLocation()
 
-  const { SearchWithNav, FilteredList, viewTitle } = useFilters({
-    instructions
-  })
-  const hideSearchBar = !['Archived', 'Order history'].includes(viewTitle ?? '')
-  const hideFiltersNav = viewTitle !== 'Order history'
+  const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
+    useFilters({
+      instructions
+    })
+
+  const isUserCustomFiltered =
+    hasActiveFilter && viewTitle === presets.history.viewTitle
+  const hideSearchBar = ![
+    presets.history.viewTitle,
+    presets.archived.viewTitle
+  ].includes(viewTitle)
+  const hideFiltersNav = viewTitle !== presets.history.viewTitle
 
   return (
     <PageLayout
-      title={viewTitle ?? 'Order history'}
+      title={viewTitle ?? 'Order list'}
       mode={mode}
       gap={hideSearchBar ? undefined : 'only-top'}
       onGoBack={() => {
@@ -75,15 +83,13 @@ export function OrderList(): JSX.Element {
             }
           }}
           emptyState={
-            <EmptyState
-              // TODO: use ListEmptyState
-              title='No orders found!'
-              description={
-                <div>
-                  <p>
-                    We didn't find any orders matching the current selection.
-                  </p>
-                </div>
+            <ListEmptyState
+              scope={
+                isUserCustomFiltered
+                  ? 'userFiltered'
+                  : viewTitle !== presets.history.viewTitle
+                  ? 'presetView'
+                  : 'history'
               }
             />
           }

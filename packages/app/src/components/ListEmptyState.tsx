@@ -1,11 +1,11 @@
-import { EmptyState, A } from '@commercelayer/app-elements'
+import { A, EmptyState } from '@commercelayer/app-elements'
 
 interface Props {
-  scope?: 'history' | 'filters' | 'list'
+  scope?: 'history' | 'userFiltered' | 'presetView'
 }
 
 export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
-  if (scope === 'list') {
+  if (scope === 'presetView') {
     return (
       <EmptyState
         title='All good here'
@@ -18,7 +18,7 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
     )
   }
 
-  if (scope === 'filters') {
+  if (scope === 'userFiltered') {
     return (
       <EmptyState
         title='No orders found!'
