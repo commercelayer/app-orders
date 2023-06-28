@@ -1,7 +1,6 @@
 import { EditAddress } from '#pages/EditAddress'
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
-import { FiltersTimeRange } from '#pages/FiltersTimeRange'
 import { Home } from '#pages/Home'
 import { OrderDetails } from '#pages/OrderDetails'
 import { OrderList } from '#pages/OrderList'
@@ -39,26 +38,11 @@ export function App(): JSX.Element {
                 <Route path={appRoutes.home.path}>
                   <Home />
                 </Route>
-                <Route path={appRoutes.listHistory.path}>
-                  <OrderList type='history' />
-                </Route>
-                <Route path={appRoutes.listArchived.path}>
-                  <OrderList type='archived' />
-                </Route>
-                <Route path={appRoutes.listAwaitingApproval.path}>
-                  <OrderList type='awaitingApproval' />
-                </Route>
-                <Route path={appRoutes.listPaymentToCapture.path}>
-                  <OrderList type='paymentToCapture' />
-                </Route>
-                <Route path={appRoutes.listFulfillmentInProgress.path}>
-                  <OrderList type='fulfillmentInProgress' />
+                <Route path={appRoutes.list.path}>
+                  <OrderList />
                 </Route>
                 <Route path={appRoutes.filters.path}>
                   <Filters />
-                </Route>
-                <Route path={appRoutes.filtersTimeRange.path}>
-                  <FiltersTimeRange />
                 </Route>
                 <Route path={appRoutes.details.path}>
                   <OrderDetails />

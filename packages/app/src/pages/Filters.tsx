@@ -1,107 +1,33 @@
-import { FilterFieldFulfillmentStatus } from '#components/FilterFieldFulfillmentStatus'
-import { FilterFieldPaymentStatus } from '#components/FilterFieldPaymentStatus'
-import { FilterFieldStatus } from '#components/FilterFieldStatus'
-import { FilterFieldTimePreset } from '#components/FilterFieldTimePreset'
-import { filtersAdapters, type FilterFormValues } from '#data/filters'
+import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
-import { Button, PageLayout, Spacer } from '@commercelayer/app-elements'
-import {
-  Form,
-  RelationshipSelector
-} from '@commercelayer/app-elements-hook-form'
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { PageLayout } from '@commercelayer/app-elements'
+import { useFilters } from '@commercelayer/app-elements-hook-form'
 import { useLocation } from 'wouter'
 
 export function Filters(): JSX.Element {
   const [, setLocation] = useLocation()
-
-  const methods = useForm<FilterFormValues>({
-    defaultValues: filtersAdapters.fromUrlQueryToFormValues(location.search)
+  const { FiltersForm, adapters } = useFilters({
+    instructions
   })
-
-  const timePreset = methods.watch('timePreset')
-  const timeFrom = methods.watch('timeFrom')
-  const timeTo = methods.watch('timeTo')
-
-  useEffect(
-    function navigateToTimeRangeCustom() {
-      const isRangeNotSet = timeFrom == null || timeTo == null
-      if (timePreset === 'custom' && isRangeNotSet) {
-        setLocation(
-          appRoutes.filtersTimeRange.makePath(
-            filtersAdapters.fromFormValuesToUrlQuery(methods.getValues())
-          )
-        )
-      }
-    },
-    [timePreset]
-  )
-
-  useEffect(
-    function resetTimeRangeOnPreset() {
-      if (timePreset !== 'custom') {
-        methods.setValue('timeFrom', null)
-        methods.setValue('timeTo', null)
-      }
-    },
-    [timePreset]
-  )
 
   return (
     <PageLayout
       title='Filters'
       onGoBack={() => {
         setLocation(
-          appRoutes.listHistory.makePath(
-            filtersAdapters.fromUrlQueryToUrlQuery(location.search)
+          appRoutes.list.makePath(
+            adapters.adaptUrlQueryToUrlQuery({
+              queryString: location.search
+            })
           )
         )
       }}
     >
-      <Form
-        {...methods}
-        onSubmit={(formValues) => {
-          setLocation(
-            appRoutes.listHistory.makePath(
-              filtersAdapters.fromFormValuesToUrlQuery(formValues)
-            )
-          )
+      <FiltersForm
+        onSubmit={(filtersQueryString) => {
+          setLocation(appRoutes.list.makePath(filtersQueryString))
         }}
-      >
-        <Spacer bottom='14'>
-          <RelationshipSelector
-            name='market'
-            fieldForLabel='name'
-            fieldForValue='id'
-            resource='markets'
-            searchBy='name_cont'
-            sortBy={{ attribute: 'name', direction: 'asc' }}
-            title='Markets'
-            previewLimit={5}
-          />
-        </Spacer>
-
-        <Spacer bottom='14'>
-          <FilterFieldStatus />
-        </Spacer>
-
-        <Spacer bottom='14'>
-          <FilterFieldPaymentStatus />
-        </Spacer>
-
-        <Spacer bottom='14'>
-          <FilterFieldFulfillmentStatus />
-        </Spacer>
-
-        <Spacer bottom='14'>
-          <FilterFieldTimePreset />
-        </Spacer>
-
-        <Spacer bottom='14'>
-          <Button type='submit'>Apply filters</Button>
-        </Spacer>
-      </Form>
+      />
     </PageLayout>
   )
 }

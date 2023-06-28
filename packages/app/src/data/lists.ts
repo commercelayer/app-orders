@@ -1,4 +1,4 @@
-import { filtrableStatus, type FilterFormValues } from '#data/filters'
+import type { FormFullValues } from '@commercelayer/app-elements-hook-form/dist/filters/methods/types'
 
 export type ListType =
   | 'awaitingApproval'
@@ -7,40 +7,31 @@ export type ListType =
   | 'archived'
   | 'history'
 
-export const filtersByListType: Record<ListType, FilterFormValues> = {
+export const presets: Record<ListType, FormFullValues> = {
   awaitingApproval: {
-    market: [],
-    status: ['placed'],
-    fulfillmentStatus: [],
-    paymentStatus: ['authorized', 'free'],
-    archived: 'show'
+    status_in: ['placed'],
+    payment_status_in: ['authorized', 'free'],
+    archived_at_null: 'show',
+    viewTitle: 'Awaiting approval'
   },
   paymentToCapture: {
-    market: [],
-    status: ['approved'],
-    fulfillmentStatus: [],
-    paymentStatus: ['authorized'],
-    archived: 'show'
+    status_in: ['approved'],
+    payment_status_in: ['authorized'],
+    archived_at_null: 'show',
+    viewTitle: 'Payment to capture'
   },
   fulfillmentInProgress: {
-    market: [],
-    status: ['approved'],
-    fulfillmentStatus: ['in_progress'],
-    paymentStatus: [],
-    archived: 'show'
-  },
-  archived: {
-    market: [],
-    status: filtrableStatus,
-    fulfillmentStatus: [],
-    paymentStatus: [],
-    archived: 'only'
+    status_in: ['approved'],
+    fulfillment_status_in: ['in_progress'],
+    archived_at_null: 'show',
+    viewTitle: 'Fulfillment in progress'
   },
   history: {
-    market: [],
-    status: filtrableStatus,
-    fulfillmentStatus: [],
-    paymentStatus: [],
-    archived: 'hide'
+    archived_at_null: 'hide',
+    viewTitle: 'Order history'
+  },
+  archived: {
+    archived_at_null: 'only',
+    viewTitle: 'Archived'
   }
 }
