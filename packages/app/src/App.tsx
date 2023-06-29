@@ -9,6 +9,7 @@ import { Refund } from '#pages/Refund'
 import {
   CoreSdkProvider,
   ErrorBoundary,
+  MetaTags,
   TokenProvider
 } from '@commercelayer/app-elements'
 import { SWRConfig } from 'swr'
@@ -33,6 +34,7 @@ export function App(): JSX.Element {
           devMode={isDev}
           loadingElement={<div />}
         >
+          <MetaTags />
           <CoreSdkProvider>
             <Router base='/orders'>
               <Switch>
