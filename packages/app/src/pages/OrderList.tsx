@@ -27,17 +27,13 @@ export function OrderList(): JSX.Element {
 
   const isUserCustomFiltered =
     hasActiveFilter && viewTitle === presets.history.viewTitle
-  const hideSearchBar = ![
-    presets.history.viewTitle,
-    presets.archived.viewTitle
-  ].includes(viewTitle)
   const hideFiltersNav = viewTitle !== presets.history.viewTitle
 
   return (
     <PageLayout
       title={viewTitle ?? 'Order list'}
       mode={mode}
-      gap={hideSearchBar ? undefined : 'only-top'}
+      gap='only-top'
       onGoBack={() => {
         setLocation(appRoutes.home.makePath())
       }}
@@ -53,7 +49,6 @@ export function OrderList(): JSX.Element {
           setLocation(appRoutes.filters.makePath(queryString))
         }}
         hideFiltersNav={hideFiltersNav}
-        hideSearchBar={hideSearchBar}
       />
 
       <Spacer bottom='14'>
