@@ -1,17 +1,19 @@
+import { instructions } from '#data/filters'
+import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
-  PageLayout,
-  useTokenProvider,
-  SearchBar,
-  Spacer,
+  Icon,
   List,
   ListItem,
-  Icon,
+  PageLayout,
+  SkeletonTemplate,
+  Spacer,
   Text,
-  SkeletonTemplate
+  useTokenProvider
 } from '@commercelayer/app-elements'
+import { useFilters } from '@commercelayer/app-elements-hook-form'
 import { Link, useLocation } from 'wouter'
-import { filtersAdapters } from '#data/filters'
+import { useSearch } from 'wouter/use-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
 export function Home(): JSX.Element {
@@ -21,7 +23,12 @@ export function Home(): JSX.Element {
   } = useTokenProvider()
 
   const [, setLocation] = useLocation()
+  const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
+
+  const { adapters, SearchWithNav } = useFilters({
+    instructions
+  })
 
   return (
     <PageLayout
@@ -33,42 +40,44 @@ export function Home(): JSX.Element {
           dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
       }}
     >
-      <Spacer top='4' bottom='14'>
-        <SearchBar
-          placeholder='Search...'
-          onClear={() => {}}
-          onSearch={(hint) => {
-            setLocation(
-              appRoutes.listHistory.makePath(
-                filtersAdapters.fromFormValuesToUrlQuery({
-                  status: [],
-                  market: [],
-                  fulfillmentStatus: [],
-                  paymentStatus: [],
-                  text: hint
-                })
-              )
-            )
-          }}
-        />
-      </Spacer>
+      <SearchWithNav
+        hideFiltersNav
+        onFilterClick={() => {}}
+        onUpdate={(qs) => {
+          setLocation(appRoutes.list.makePath(qs))
+        }}
+        queryString={search}
+      />
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
         <Spacer bottom='14'>
           <List title='Pending'>
-            <Link href={appRoutes.listAwaitingApproval.makePath()}>
+            <Link
+              href={appRoutes.list.makePath(
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.awaitingApproval
+                })
+              )}
+            >
               <ListItem
                 tag='a'
                 icon={<Icon name='arrowDown' background='orange' gap='small' />}
               >
                 <Text weight='semibold'>
-                  Awaiting approval {formatCounter(counters?.awaitingApproval)}
+                  {presets.awaitingApproval.viewTitle}{' '}
+                  {formatCounter(counters?.awaitingApproval)}
                 </Text>
                 <Icon name='caretRight' />
               </ListItem>
             </Link>
 
-            <Link href={appRoutes.listPaymentToCapture.makePath()}>
+            <Link
+              href={appRoutes.list.makePath(
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.paymentToCapture
+                })
+              )}
+            >
               <ListItem
                 tag='a'
                 icon={
@@ -76,13 +85,20 @@ export function Home(): JSX.Element {
                 }
               >
                 <Text weight='semibold'>
-                  Payment to capture {formatCounter(counters?.paymentToCapture)}
+                  {presets.paymentToCapture.viewTitle}{' '}
+                  {formatCounter(counters?.paymentToCapture)}
                 </Text>
                 <Icon name='caretRight' />
               </ListItem>
             </Link>
 
-            <Link href={appRoutes.listFulfillmentInProgress.makePath()}>
+            <Link
+              href={appRoutes.list.makePath(
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.fulfillmentInProgress
+                })
+              )}
+            >
               <ListItem
                 tag='a'
                 icon={
@@ -90,7 +106,7 @@ export function Home(): JSX.Element {
                 }
               >
                 <Text weight='semibold'>
-                  Fulfillment in progress{' '}
+                  {presets.fulfillmentInProgress.viewTitle}{' '}
                   {formatCounter(counters?.fulfillmentInProgress)}
                 </Text>
                 <Icon name='caretRight' />
@@ -101,21 +117,33 @@ export function Home(): JSX.Element {
 
         <Spacer bottom='14'>
           <List title='Browse'>
-            <Link href={appRoutes.listHistory.makePath()}>
+            <Link
+              href={appRoutes.list.makePath(
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.history
+                })
+              )}
+            >
               <ListItem
                 tag='a'
                 icon={<Icon name='asterisk' background='black' gap='small' />}
               >
-                <Text weight='semibold'>Order history</Text>
+                <Text weight='semibold'>{presets.history.viewTitle}</Text>
                 <Icon name='caretRight' />
               </ListItem>
             </Link>
-            <Link href={appRoutes.listArchived.makePath()}>
+            <Link
+              href={appRoutes.list.makePath(
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.archived
+                })
+              )}
+            >
               <ListItem
                 tag='a'
                 icon={<Icon name='minus' background='gray' gap='small' />}
               >
-                <Text weight='semibold'>Archived</Text>
+                <Text weight='semibold'>{presets.archived.viewTitle}</Text>
                 <Icon name='caretRight' />
               </ListItem>
             </Link>

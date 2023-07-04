@@ -72,7 +72,7 @@ export function OrderDetails(): JSX.Element {
         })}`}</SkeletonTemplate>
       }
       onGoBack={() => {
-        setLocation(appRoutes.listHistory.makePath())
+        setLocation(appRoutes.list.makePath())
       }}
     >
       <ScrollToTop />

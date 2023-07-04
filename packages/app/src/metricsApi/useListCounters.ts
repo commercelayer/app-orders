@@ -1,6 +1,7 @@
-import { filtersAdapters } from '#data/filters'
-import { filtersByListType, type ListType } from '#data/lists'
+import { presets, type ListType } from '#data/lists'
 import { useTokenProvider } from '@commercelayer/app-elements'
+import { type FormFullValues } from '@commercelayer/app-elements-hook-form/dist/filters/methods/types'
+import castArray from 'lodash/castArray'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'
 import { getLastYearIsoRange } from './utils'
@@ -60,9 +61,7 @@ const fetchAllCounters = async ({
       return await fetchOrderStats({
         slug,
         accessToken,
-        filters: filtersAdapters.fromFormValuesToMetricsApi(
-          filtersByListType[listType]
-        )
+        filters: fromFormValuesToMetricsApi(presets[listType])
       }).then((r) => r.data.value)
     })
   )
@@ -95,4 +94,33 @@ export function useListCounters(): SWRResponse<{
   )
 
   return swrResponse
+}
+
+/**
+ * Covert FilterFormValues in Metrics API filter object.
+ * Partial implementation: it only supports status, payment_status and fulfillment_status
+ */
+function fromFormValuesToMetricsApi(formValues: FormFullValues): object {
+  return {
+    statuses:
+      formValues.status_in != null && castArray(formValues.status_in).length > 0
+        ? {
+            in: formValues.status_in
+          }
+        : undefined,
+    payment_statuses:
+      formValues.payment_status_in != null &&
+      castArray(formValues.payment_status_in).length > 0
+        ? {
+            in: formValues.payment_status_in
+          }
+        : undefined,
+    fulfillment_statuses:
+      formValues.fulfillment_status_in != null &&
+      castArray(formValues.fulfillment_status_in).length > 0
+        ? {
+            in: formValues.fulfillment_status_in
+          }
+        : undefined
+  }
 }

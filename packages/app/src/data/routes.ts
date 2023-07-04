@@ -9,51 +9,28 @@ export const appRoutes = {
     path: '/',
     makePath: () => '/'
   },
-  listHistory: {
-    path: '/history',
+  list: {
+    path: '/list',
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/history/?${filters}` : `/history`
-  },
-  listArchived: {
-    path: '/archived',
-    makePath: () => '/archived'
-  },
-  listAwaitingApproval: {
-    path: '/awaiting-approval',
-    makePath: () => '/awaiting-approval'
-  },
-  listPaymentToCapture: {
-    path: '/payment-to-capture',
-    makePath: () => '/payment-to-capture'
-  },
-  listFulfillmentInProgress: {
-    path: '/fulfillment-in-progress',
-    makePath: () => '/fulfillment-in-progress'
+      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`
   },
   filters: {
     path: '/filters',
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`
   },
-  filtersTimeRange: {
-    path: '/filters/timerange',
-    makePath: (filters?: string) =>
-      hasFilterQuery(filters)
-        ? `/filters/timerange/?${filters}`
-        : `/filters/timerange`
-  },
   details: {
-    path: '/details/:orderId',
-    makePath: (orderId: string) => `/details/${orderId}`
+    path: '/list/:orderId',
+    makePath: (orderId: string) => `/list/${orderId}`
   },
   editAddress: {
-    path: '/details/:orderId/edit-address/:addressId',
+    path: '/list/:orderId/address/:addressId',
     makePath: (orderId: string, addressId: string) =>
-      `/details/${orderId}/edit-address/${addressId}`
+      `/list/${orderId}/address/${addressId}`
   },
   refund: {
-    path: '/details/:orderId/refund',
-    makePath: (orderId: string) => `/details/${orderId}/refund`
+    path: '/list/:orderId/refund',
+    makePath: (orderId: string) => `/list/${orderId}/refund`
   }
 }
 
