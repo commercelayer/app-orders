@@ -65,11 +65,16 @@ export function OrderDetails(): JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
       description={
-        <SkeletonTemplate isLoading={isLoading}>{`Placed on ${formatDate({
-          isoDate: order.placed_at ?? '',
-          timezone: user?.timezone,
-          format: 'full'
-        })}`}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          <div>
+            {`Placed on ${formatDate({
+              isoDate: order.placed_at ?? '',
+              timezone: user?.timezone,
+              format: 'full'
+            })}`}
+          </div>
+          {order.reference != null && <div>Ref. {order.reference}</div>}
+        </SkeletonTemplate>
       }
       onGoBack={() => {
         setLocation(appRoutes.list.makePath())
