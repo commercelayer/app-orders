@@ -1,9 +1,13 @@
-import { type UITriggerAttributes } from '#data/status'
 import { useOrderDetails } from '#hooks/useOrderDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
+import {
+  useCoreSdkProvider,
+  type getOrderTriggerAttributeName
+} from '@commercelayer/app-elements'
 import { CommerceLayerStatic } from '@commercelayer/sdk'
 import { useCallback, useState } from 'react'
 import { orderIncludeAttribute } from './useOrderDetails'
+
+type UITriggerAttributes = Parameters<typeof getOrderTriggerAttributeName>[0]
 
 interface TriggerAttributeHook {
   isLoading: boolean

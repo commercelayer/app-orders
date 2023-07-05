@@ -3,12 +3,12 @@ import {
   noteReferenceOrigin,
   refundNoteReferenceOrigin
 } from '#data/attachments'
-import { getTransactionPastTense } from '#data/dictionaries'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Legend,
   Spacer,
   Timeline,
+  getOrderTransactionPastTense,
   useCoreSdkProvider,
   useTokenProvider,
   withSkeletonTemplate,
@@ -128,7 +128,7 @@ const useTimelineReducer = (
     function addTransactions() {
       if (order.transactions != null) {
         order.transactions.forEach((transaction) => {
-          const name = getTransactionPastTense(transaction.type)
+          const name = getOrderTransactionPastTense(transaction.type)
           const isFailedCapture =
             transaction.type === 'captures' && !transaction.succeeded
 
