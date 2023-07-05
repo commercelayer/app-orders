@@ -1,13 +1,11 @@
 import {
-  getFulfillmentStatusName,
-  getOrderStatusName,
-  getPaymentStatusName
-} from '#data/dictionaries'
-import {
   Badge,
   Spacer,
   Stack,
   Text,
+  getOrderFulfillmentStatusName,
+  getOrderPaymentStatusName,
+  getOrderStatusName,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { BadgeVariant } from '@commercelayer/app-elements/dist/ui/atoms/Badge'
@@ -90,7 +88,9 @@ export const OrderSteps = withSkeletonTemplate<Props>(
           </Spacer>
           {order.payment_status !== undefined && (
             <Badge
-              label={getPaymentStatusName(order.payment_status).toUpperCase()}
+              label={getOrderPaymentStatusName(
+                order.payment_status
+              ).toUpperCase()}
               variant={getPaymentStatusBadgeVariant(order.payment_status)}
             />
           )}
@@ -103,7 +103,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
           </Spacer>
           {order.fulfillment_status !== undefined && (
             <Badge
-              label={getFulfillmentStatusName(
+              label={getOrderFulfillmentStatusName(
                 order.fulfillment_status
               ).toUpperCase()}
               variant={getFulfillmentStatusBadgeVariant(

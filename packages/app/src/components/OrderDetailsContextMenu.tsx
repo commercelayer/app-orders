@@ -1,10 +1,10 @@
-import { getTriggerAttributeName } from '#data/dictionaries'
 import { appRoutes } from '#data/routes'
-import { getDisplayStatus, type UITriggerAttributes } from '#data/status'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   ContextMenu,
   DropdownMenuItem,
+  getOrderDisplayStatus,
+  getOrderTriggerAttributeName,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
@@ -18,7 +18,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   const { dispatch } = useTriggerAttribute(order.id)
 
   const menuActions = useMemo(() => {
-    const { triggerAttributes } = getDisplayStatus(order)
+    const { triggerAttributes } = getOrderDisplayStatus(order)
     return getTriggerAttributesForUser(canUser).filter((attr) =>
       triggerAttributes.includes(attr)
     )
@@ -33,7 +33,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
       menuItems={menuActions.map((triggerAttribute) => (
         <DropdownMenuItem
           key={triggerAttribute}
-          label={getTriggerAttributeName(triggerAttribute)}
+          label={getOrderTriggerAttributeName(triggerAttribute)}
           onClick={() => {
             // refund action has its own form page
             if (triggerAttribute === '_refund') {
@@ -47,6 +47,8 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
     />
   )
 }
+
+type UITriggerAttributes = Parameters<typeof getOrderTriggerAttributeName>[0]
 
 type CanUserSignature = ReturnType<typeof useTokenProvider>['canUser']
 function getTriggerAttributesForUser(

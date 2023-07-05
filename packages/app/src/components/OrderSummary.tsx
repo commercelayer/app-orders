@@ -1,5 +1,3 @@
-import { getTriggerAttributeName } from '#data/dictionaries'
-import { getDisplayStatus } from '#data/status'
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
@@ -7,6 +5,8 @@ import {
   OrderSummary as OrderSummaryElement,
   Spacer,
   Text,
+  getOrderDisplayStatus,
+  getOrderTriggerAttributeName,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
@@ -18,7 +18,7 @@ interface Props {
 
 export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
-    const { triggerAttributes } = getDisplayStatus(order)
+    const { triggerAttributes } = getOrderDisplayStatus(order)
 
     const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
 
@@ -41,7 +41,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
             )
             .map((triggerAttribute) => {
               return {
-                label: getTriggerAttributeName(triggerAttribute),
+                label: getOrderTriggerAttributeName(triggerAttribute),
                 variant:
                   triggerAttribute === '_cancel' ? 'secondary' : 'primary',
                 disabled: isLoading,
