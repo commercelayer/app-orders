@@ -27,11 +27,13 @@ export function OrderList(): JSX.Element {
 
   const isUserCustomFiltered =
     hasActiveFilter && viewTitle === presets.history.viewTitle
-  const hideFiltersNav = viewTitle !== presets.history.viewTitle
+  const hideFiltersNav = !(
+    viewTitle == null || viewTitle === presets.history.viewTitle
+  )
 
   return (
     <PageLayout
-      title={viewTitle ?? 'Order list'}
+      title={viewTitle ?? presets.history.viewTitle}
       mode={mode}
       gap='only-top'
       onGoBack={() => {
