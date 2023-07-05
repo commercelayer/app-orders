@@ -8,6 +8,7 @@ import { OrderSummary } from '#components/OrderSummary'
 import { OrderTimeline } from '#components/OrderTimeline'
 import { ScrollToTop } from '#components/ScrollToTop'
 import { appRoutes } from '#data/routes'
+import { useBackToList } from '#hooks/useBackToList'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Button,
@@ -29,6 +30,8 @@ export function OrderDetails(): JSX.Element {
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
+  const { goBackToList } = useBackToList()
+
   const orderId = params?.orderId ?? ''
 
   const { order, isLoading } = useOrderDetails(orderId)
@@ -38,14 +41,14 @@ export function OrderDetails(): JSX.Element {
       <PageLayout
         title='Orders'
         onGoBack={() => {
-          setLocation(appRoutes.filters.makePath())
+          setLocation(appRoutes.home.makePath())
         }}
         mode={mode}
       >
         <EmptyState
           title='Not authorized'
           action={
-            <Link href={appRoutes.filters.makePath()}>
+            <Link href={appRoutes.home.makePath()}>
               <Button variant='primary'>Go back</Button>
             </Link>
           }
@@ -76,9 +79,7 @@ export function OrderDetails(): JSX.Element {
           {order.reference != null && <div>Ref. {order.reference}</div>}
         </SkeletonTemplate>
       }
-      onGoBack={() => {
-        setLocation(appRoutes.list.makePath())
-      }}
+      onGoBack={goBackToList}
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>

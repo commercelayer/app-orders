@@ -1,4 +1,5 @@
 import { appRoutes } from '#data/routes'
+import { useBackToList } from '#hooks/useBackToList'
 import { makeOrder } from '#mocks'
 import { ListItemOrder as ListItemOrderElements } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
@@ -15,8 +16,16 @@ export function ListItemOrder({
   isLoading,
   delayMs
 }: Props): JSX.Element {
+  const { setBackToList } = useBackToList()
   return (
-    <Link href={appRoutes.details.makePath(resource.id)}>
+    <Link
+      href={appRoutes.details.makePath(resource.id)}
+      onClick={() => {
+        setBackToList({
+          search: window.location.search
+        })
+      }}
+    >
       <ListItemOrderElements
         order={resource}
         isLoading={isLoading}
