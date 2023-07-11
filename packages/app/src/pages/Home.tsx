@@ -51,7 +51,7 @@ export function Home(): JSX.Element {
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
         <Spacer bottom='14'>
-          <List title='Pending'>
+          <List title='To do'>
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
