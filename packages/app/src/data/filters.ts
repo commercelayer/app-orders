@@ -110,6 +110,20 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
+    label: 'Amount',
+    type: 'currencyRange',
+    sdk: {
+      predicate: 'total_amount_cents'
+    },
+    render: {
+      component: 'inputCurrencyRange',
+      props: {
+        label: 'Amount'
+      }
+    }
+  },
+
+  {
     label: 'Search',
     type: 'textSearch',
     sdk: {
