@@ -10,7 +10,7 @@ export type ListType =
 export const presets: Record<ListType, FormFullValues> = {
   awaitingApproval: {
     status_in: ['placed'],
-    payment_status_in: ['authorized', 'free'],
+    payment_status_in: ['authorized', 'free', 'paid'],
     archived_at_null: 'show',
     viewTitle: 'Awaiting approval'
   },
