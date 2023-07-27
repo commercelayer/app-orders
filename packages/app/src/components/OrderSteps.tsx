@@ -20,6 +20,7 @@ function getOrderStatusBadgeVariant(status: Order['status']): BadgeVariant {
     case 'approved':
       return 'success-solid'
     case 'cancelled':
+    case 'editing':
     case 'draft':
     case 'pending':
       return 'secondary'
