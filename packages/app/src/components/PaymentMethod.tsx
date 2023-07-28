@@ -1,6 +1,6 @@
 import { Spacer, Text } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
-import { type SetNonNullable, type SetRequired } from 'type-fest'
+import type { SetNonNullable, SetRequired } from 'type-fest'
 import { z } from 'zod'
 
 interface Props {
