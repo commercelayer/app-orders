@@ -1,9 +1,10 @@
-import { appRoutes } from '#data/routes'
-import { useBackToList } from '#hooks/useBackToList'
 import { makeOrder } from '#mocks'
-import { ListItemOrder as ListItemOrderElements } from '@commercelayer/app-elements'
+import {
+  ListItemOrder as ListItemOrderElements,
+  navigateToDetail
+} from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
-import { Link } from 'wouter'
+import { useLocation } from 'wouter'
 
 interface Props {
   resource?: Order
@@ -16,22 +17,21 @@ export function ListItemOrder({
   isLoading,
   delayMs
 }: Props): JSX.Element {
-  const { setBackToList } = useBackToList()
+  const [, setLocation] = useLocation()
+
   return (
-    <Link
-      href={appRoutes.details.makePath(resource.id)}
-      onClick={() => {
-        setBackToList({
-          search: window.location.search
-        })
-      }}
-    >
-      <ListItemOrderElements
-        order={resource}
-        isLoading={isLoading}
-        delayMs={delayMs}
-        tag='a'
-      />
-    </Link>
+    <ListItemOrderElements
+      order={resource}
+      isLoading={isLoading}
+      delayMs={delayMs}
+      tag='a'
+      {...navigateToDetail({
+        setLocation,
+        destination: {
+          app: 'orders',
+          resourceId: resource.id
+        }
+      })}
+    />
   )
 }

@@ -1,14 +1,16 @@
 import {
-  formatDate,
   Icon,
   Legend,
   ListItem,
   Text,
+  formatDate,
+  navigateToDetail,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
 import type { SetNonNullable, SetRequired } from 'type-fest'
+import { useLocation } from 'wouter'
 
 interface Props {
   order: Order
@@ -41,10 +43,26 @@ function sanitizeShipmentStatus(status: Shipment['status']): string {
 }
 
 const renderShipment = (shipment: Shipment): JSX.Element => {
-  const { user } = useTokenProvider()
+  const { user, canAccess } = useTokenProvider()
+  const [, setLocation] = useLocation()
+
+  const navigateToShipment = canAccess('customers')
+    ? navigateToDetail({
+        setLocation,
+        destination: {
+          app: 'shipments',
+          resourceId: shipment.id
+        }
+      })
+    : {}
 
   return (
-    <ListItem key={shipment.id} tag='div' icon={getIcon(shipment.status)}>
+    <ListItem
+      key={shipment.id}
+      tag={canAccess('shipments') ? 'a' : 'div'}
+      icon={getIcon(shipment.status)}
+      {...navigateToShipment}
+    >
       <div>
         <Text tag='div' weight='semibold'>
           #{shipment.number}
@@ -58,6 +76,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
           })}
         </Text>
       </div>
+      {canAccess('shipments') && <Icon name='caretRight' />}
     </ListItem>
   )
 }
