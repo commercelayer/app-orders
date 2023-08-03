@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   PageLayout,
+  RadialProgress,
   SkeletonTemplate,
   Spacer,
   Text,
@@ -129,6 +130,18 @@ export function Home(): JSX.Element {
                 icon={<Icon name='asterisk' background='black' gap='small' />}
               >
                 <Text weight='semibold'>{presets.history.viewTitle}</Text>
+                <Icon name='caretRight' />
+              </ListItem>
+            </Link>
+            <Link
+              href={appRoutes.list.makePath(
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.pending
+                })
+              )}
+            >
+              <ListItem tag='a' icon={<RadialProgress size='small' />}>
+                <Text weight='semibold'>{presets.pending.viewTitle}</Text>
                 <Icon name='caretRight' />
               </ListItem>
             </Link>

@@ -31,6 +31,7 @@ export const instructions: FiltersInstructions = [
       props: {
         mode: 'multi',
         options: [
+          { value: 'pending', label: 'Pending', isHidden: true },
           { value: 'placed', label: 'Placed' },
           { value: 'approved', label: 'Approved' },
           { value: 'cancelled', label: 'Cancelled' }

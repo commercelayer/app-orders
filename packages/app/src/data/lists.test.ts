@@ -7,6 +7,7 @@ describe('filtersByListType', () => {
       'paymentToCapture',
       'fulfillmentInProgress',
       'history',
+      'pending',
       'archived'
     ])
   })

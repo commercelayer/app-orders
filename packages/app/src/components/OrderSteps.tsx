@@ -96,23 +96,25 @@ export const OrderSteps = withSkeletonTemplate<Props>(
             />
           )}
         </div>
-        <div>
-          <Spacer bottom='2'>
-            <Text size='small' tag='div' variant='info' weight='semibold'>
-              Fulfillment
-            </Text>
-          </Spacer>
-          {order.fulfillment_status !== undefined && (
-            <Badge
-              label={getOrderFulfillmentStatusName(
-                order.fulfillment_status
-              ).toUpperCase()}
-              variant={getFulfillmentStatusBadgeVariant(
-                order.fulfillment_status
-              )}
-            />
-          )}
-        </div>
+        {order.status !== 'pending' && (
+          <div>
+            <Spacer bottom='2'>
+              <Text size='small' tag='div' variant='info' weight='semibold'>
+                Fulfillment
+              </Text>
+            </Spacer>
+            {order.fulfillment_status !== undefined && (
+              <Badge
+                label={getOrderFulfillmentStatusName(
+                  order.fulfillment_status
+                ).toUpperCase()}
+                variant={getFulfillmentStatusBadgeVariant(
+                  order.fulfillment_status
+                )}
+              />
+            )}
+          </div>
+        )}
       </Stack>
     )
   }
