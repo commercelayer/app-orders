@@ -10,7 +10,6 @@ import {
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
 import type { SetNonNullable, SetRequired } from 'type-fest'
-import { useLocation } from 'wouter'
 
 interface Props {
   order: Order
@@ -43,15 +42,18 @@ function sanitizeShipmentStatus(status: Shipment['status']): string {
 }
 
 const renderShipment = (shipment: Shipment): JSX.Element => {
-  const { user, canAccess } = useTokenProvider()
-  const [, setLocation] = useLocation()
+  const {
+    user,
+    canAccess,
+    settings: { mode }
+  } = useTokenProvider()
 
   const navigateToShipment = canAccess('customers')
     ? navigateToDetail({
-        setLocation,
         destination: {
           app: 'shipments',
-          resourceId: shipment.id
+          resourceId: shipment.id,
+          mode
         }
       })
     : {}
