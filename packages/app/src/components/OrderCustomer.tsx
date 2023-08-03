@@ -8,7 +8,6 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 interface Props {
   order: Order
@@ -16,8 +15,10 @@ interface Props {
 
 export const OrderCustomer = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
-    const [, setLocation] = useLocation()
-    const { canAccess } = useTokenProvider()
+    const {
+      canAccess,
+      settings: { mode }
+    } = useTokenProvider()
 
     if (order.customer == null) {
       return null
@@ -25,10 +26,10 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
 
     const navigateToCustomer = canAccess('customers')
       ? navigateToDetail({
-          setLocation,
           destination: {
             app: 'customers',
-            resourceId: order.customer.id
+            resourceId: order.customer.id,
+            mode
           }
         })
       : {}

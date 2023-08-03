@@ -24,7 +24,7 @@ export const instructions: FiltersInstructions = [
     type: 'options',
     sdk: {
       predicate: 'status_in',
-      restrictToOptions: true
+      defaultOptions: ['placed', 'approved', 'cancelled']
     },
     render: {
       component: 'toggleButtons',
