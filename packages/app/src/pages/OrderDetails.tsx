@@ -8,7 +8,6 @@ import { OrderSummary } from '#components/OrderSummary'
 import { OrderTimeline } from '#components/OrderTimeline'
 import { ScrollToTop } from '#components/ScrollToTop'
 import { appRoutes } from '#data/routes'
-import { useBackToList } from '#hooks/useBackToList'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Button,
@@ -17,6 +16,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDate,
+  goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -29,8 +29,6 @@ export function OrderDetails(): JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
-
-  const { goBackToList } = useBackToList()
 
   const orderId = params?.orderId ?? ''
 
@@ -79,7 +77,12 @@ export function OrderDetails(): JSX.Element {
           {order.reference != null && <div>Ref. {order.reference}</div>}
         </SkeletonTemplate>
       }
-      onGoBack={goBackToList}
+      onGoBack={() => {
+        goBack({
+          setLocation,
+          defaultRelativePath: appRoutes.home.makePath()
+        })
+      }}
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
