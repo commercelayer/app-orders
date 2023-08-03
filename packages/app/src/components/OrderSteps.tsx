@@ -36,6 +36,8 @@ function getPaymentStatusBadgeVariant(
     case 'paid':
     case 'free':
       return 'success-solid'
+    case 'unpaid':
+    case 'partially_paid':
     case 'refunded':
     case 'voided':
     case 'partially_refunded':
@@ -44,9 +46,6 @@ function getPaymentStatusBadgeVariant(
     case 'authorized':
     case 'partially_authorized':
       return 'warning-solid'
-    case 'unpaid':
-    case 'partially_paid':
-      return 'danger-solid'
   }
 }
 
