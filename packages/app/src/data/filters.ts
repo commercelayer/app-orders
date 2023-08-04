@@ -15,7 +15,10 @@ export const instructions: FiltersInstructions = [
         resource: 'markets',
         searchBy: 'name_cont',
         sortBy: { attribute: 'name', direction: 'asc' },
-        previewLimit: 5
+        previewLimit: 5,
+        filters: {
+          disabled_at_null: true
+        }
       }
     }
   },
