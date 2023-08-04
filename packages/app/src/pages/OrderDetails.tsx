@@ -67,13 +67,23 @@ export function OrderDetails(): JSX.Element {
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
-          <div>
-            {`Placed on ${formatDate({
-              isoDate: order.placed_at ?? '',
-              timezone: user?.timezone,
-              format: 'full'
-            })}`}
-          </div>
+          {order.placed_at != null ? (
+            <div>
+              {`Placed on ${formatDate({
+                isoDate: order.placed_at ?? '',
+                timezone: user?.timezone,
+                format: 'full'
+              })}`}
+            </div>
+          ) : order.updated_at != null ? (
+            <div>
+              {`Updated on ${formatDate({
+                isoDate: order.updated_at ?? '',
+                timezone: user?.timezone,
+                format: 'full'
+              })}`}
+            </div>
+          ) : null}
           {order.reference != null && <div>Ref. {order.reference}</div>}
         </SkeletonTemplate>
       }

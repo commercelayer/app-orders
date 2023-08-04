@@ -5,6 +5,7 @@ export type ListType =
   | 'paymentToCapture'
   | 'fulfillmentInProgress'
   | 'archived'
+  | 'pending'
   | 'history'
 
 export const presets: Record<ListType, FormFullValues> = {
@@ -29,6 +30,11 @@ export const presets: Record<ListType, FormFullValues> = {
   history: {
     archived_at_null: 'hide',
     viewTitle: 'Order history'
+  },
+  pending: {
+    status_in: ['pending'],
+    archived_at_null: 'hide',
+    viewTitle: 'Pending orders'
   },
   archived: {
     archived_at_null: 'only',
