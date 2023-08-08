@@ -113,9 +113,11 @@ export function OrderDetails(): JSX.Element {
           <Spacer top='14'>
             <OrderShipments order={order} />
           </Spacer>
-          <Spacer top='14'>
-            <OrderTimeline order={order} />
-          </Spacer>
+          {!['pending', 'draft'].includes(order.status) && (
+            <Spacer top='14'>
+              <OrderTimeline order={order} />
+            </Spacer>
+          )}
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>
