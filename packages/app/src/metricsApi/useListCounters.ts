@@ -42,6 +42,7 @@ const fetchAllCounters = async ({
   accessToken: string
 }): Promise<{
   awaitingApproval: number
+  editing: number
   paymentToCapture: number
   fulfillmentInProgress: number
 }> => {
@@ -52,6 +53,7 @@ const fetchAllCounters = async ({
   // keep proper order since responses will be assigned for each list in the returned object
   const lists: ListType[] = [
     'awaitingApproval',
+    'editing',
     'paymentToCapture',
     'fulfillmentInProgress'
   ]
@@ -68,13 +70,15 @@ const fetchAllCounters = async ({
 
   return {
     awaitingApproval: fulfillResult(allStats[0]),
-    paymentToCapture: fulfillResult(allStats[1]),
-    fulfillmentInProgress: fulfillResult(allStats[2])
+    editing: fulfillResult(allStats[1]),
+    paymentToCapture: fulfillResult(allStats[2]),
+    fulfillmentInProgress: fulfillResult(allStats[3])
   }
 }
 
 export function useListCounters(): SWRResponse<{
   awaitingApproval: number
+  editing: number
   paymentToCapture: number
   fulfillmentInProgress: number
 }> {

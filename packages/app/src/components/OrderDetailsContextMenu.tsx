@@ -40,6 +40,9 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
               setLocation(appRoutes.refund.makePath(order.id))
               return
             }
+            if (triggerAttribute === '_return') {
+              return
+            }
             void dispatch(triggerAttribute)
           }}
         />
