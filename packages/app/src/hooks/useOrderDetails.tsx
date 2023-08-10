@@ -13,7 +13,13 @@ export const orderIncludeAttribute = [
   'returns.origin_address',
   'returns.destination_address',
   'payment_method',
-  'payment_source'
+  'payment_source',
+
+  // order editing
+  'shipments.shipping_method',
+  'shipments.available_shipping_methods',
+  'shipments.stock_location',
+  'shipments.stock_line_items'
 ]
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

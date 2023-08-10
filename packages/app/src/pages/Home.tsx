@@ -113,6 +113,24 @@ export function Home(): JSX.Element {
                 <Icon name='caretRight' />
               </ListItem>
             </Link>
+
+            <Link
+              href={appRoutes.list.makePath(
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.editing
+                })
+              )}
+            >
+              <ListItem
+                tag='a'
+                icon={<Icon name='arrowDown' background='orange' gap='small' />}
+              >
+                <Text weight='semibold'>
+                  {presets.editing.viewTitle} {formatCounter(counters?.editing)}
+                </Text>
+                <Icon name='caretRight' />
+              </ListItem>
+            </Link>
           </List>
         </Spacer>
 

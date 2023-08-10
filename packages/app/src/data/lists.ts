@@ -2,6 +2,7 @@ import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resourc
 
 export type ListType =
   | 'awaitingApproval'
+  | 'editing'
   | 'paymentToCapture'
   | 'fulfillmentInProgress'
   | 'archived'
@@ -14,6 +15,12 @@ export const presets: Record<ListType, FormFullValues> = {
     payment_status_in: ['authorized', 'free', 'paid'],
     archived_at_null: 'show',
     viewTitle: 'Awaiting approval'
+  },
+  editing: {
+    status_in: ['editing'],
+    payment_status_in: [],
+    archived_at_null: 'hide',
+    viewTitle: 'Editing'
   },
   paymentToCapture: {
     status_in: ['approved'],

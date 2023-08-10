@@ -27,7 +27,7 @@ export const instructions: FiltersInstructions = [
     type: 'options',
     sdk: {
       predicate: 'status_in',
-      defaultOptions: ['placed', 'approved', 'cancelled']
+      defaultOptions: ['placed', 'approved', 'cancelled', 'editing']
     },
     render: {
       component: 'inputToggleButton',
@@ -37,7 +37,8 @@ export const instructions: FiltersInstructions = [
           { value: 'pending', label: 'Pending', isHidden: true },
           { value: 'placed', label: 'Placed' },
           { value: 'approved', label: 'Approved' },
-          { value: 'cancelled', label: 'Cancelled' }
+          { value: 'cancelled', label: 'Cancelled' },
+          { value: 'editing', label: 'Editing' }
         ]
       }
     }

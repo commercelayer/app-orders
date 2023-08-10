@@ -22,11 +22,11 @@ function getOrderStatusBadgeVariant(
     case 'approved':
       return 'success-solid'
     case 'cancelled':
-    case 'editing':
     case 'draft':
     case 'pending':
       return 'secondary'
     case 'placed':
+    case 'editing':
       return 'warning-solid'
   }
 }
