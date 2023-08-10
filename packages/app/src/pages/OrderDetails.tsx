@@ -5,8 +5,8 @@ import { OrderPayment } from '#components/OrderPayment'
 import { OrderShipments } from '#components/OrderShipments'
 import { OrderSteps } from '#components/OrderSteps'
 import { OrderSummary } from '#components/OrderSummary'
-import { OrderTimeline } from '#components/OrderTimeline'
 import { ScrollToTop } from '#components/ScrollToTop'
+import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
@@ -115,7 +115,7 @@ export function OrderDetails(): JSX.Element {
           </Spacer>
           {!['pending', 'draft'].includes(order.status) && (
             <Spacer top='14'>
-              <OrderTimeline order={order} />
+              <Timeline order={order} />
             </Spacer>
           )}
         </Spacer>

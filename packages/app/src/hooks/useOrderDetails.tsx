@@ -1,7 +1,5 @@
 import { isMockedId, makeOrder } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
 
 export const orderIncludeAttribute = [
   'market',
@@ -10,23 +8,17 @@ export const orderIncludeAttribute = [
   'shipping_address',
   'billing_address',
   'shipments',
-
-  // Timeline
-  'transactions',
   'payment_method',
-  'payment_source',
-  'attachments'
+  'payment_source'
 ]
 
-export function useOrderDetails(id: string): {
-  order: Order
-  isLoading: boolean
-  mutateOrder: KeyedMutator<Order>
-} {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function useOrderDetails(id: string) {
   const {
     data: order,
     isLoading,
-    mutate: mutateOrder
+    mutate: mutateOrder,
+    isValidating
   } = useCoreApi(
     'orders',
     'retrieve',
@@ -42,5 +34,5 @@ export function useOrderDetails(id: string): {
     }
   )
 
-  return { order, isLoading, mutateOrder }
+  return { order, isLoading, mutateOrder, isValidating }
 }
