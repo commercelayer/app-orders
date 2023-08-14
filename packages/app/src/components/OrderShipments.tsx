@@ -33,8 +33,7 @@ function getIcon(status: Shipment['status']): JSX.Element | undefined {
     case 'shipped':
       return <Icon name='check' background='green' gap='large' />
     case 'upcoming':
-      // TODO: use `truck` as soon as we update to latest `elements`
-      return <RadialProgress icon='cloud' />
+      return <RadialProgress icon='truck' />
   }
 }
 

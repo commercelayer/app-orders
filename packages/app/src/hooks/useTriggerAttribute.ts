@@ -1,14 +1,11 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
+import {
+  useCoreSdkProvider,
+  type TriggerAttribute
+} from '@commercelayer/app-elements'
 import { CommerceLayerStatic, type OrderUpdate } from '@commercelayer/sdk'
-import type { ResourceUpdate } from '@commercelayer/sdk/lib/cjs/resource'
 import { useCallback, useState } from 'react'
 import { orderIncludeAttribute } from './useOrderDetails'
-
-type TriggerAttribute<Resource extends ResourceUpdate> = Extract<
-  keyof Resource,
-  `_${string}`
->
 
 interface TriggerAttributeHook {
   isLoading: boolean
