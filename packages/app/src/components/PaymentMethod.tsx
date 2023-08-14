@@ -20,9 +20,11 @@ export function PaymentMethod({ order }: Props): JSX.Element {
           <span>
             {paymentInstrument.data.card_type}{' '}
             {paymentInstrument.data.issuer_type}
-            <Spacer left='2' style={{ display: 'inline-block' }}>
-              ··{paymentInstrument.data.card_last_digits}
-            </Spacer>
+            {paymentInstrument.data.card_last_digits != null && (
+              <Spacer left='2' style={{ display: 'inline-block' }}>
+                ··{paymentInstrument.data.card_last_digits}
+              </Spacer>
+            )}
           </span>
         ) : (
           paymentInstrument.data.issuer_type
