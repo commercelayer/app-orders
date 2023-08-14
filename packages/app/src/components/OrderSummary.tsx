@@ -1,4 +1,5 @@
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
+import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Button,
@@ -12,19 +13,25 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
+import { useMemo } from 'react'
 import { useCaptureOverlay } from '../hooks/useCaptureOverlay'
 
 interface Props {
   order: Order
 }
 
+type FooterActions = NonNullable<
+  Parameters<typeof ResourceOrderSummary>[0]['footerActions']
+>
+
 export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
+    const { mutateOrder } = useOrderDetails(order.id)
     const { triggerAttributes } = getOrderDisplayStatus(order)
 
-    const { sdkClient } = useCoreSdkProvider()
-
     const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
+
+    const { sdkClient } = useCoreSdkProvider()
 
     const { show: showCaptureOverlay, Overlay: CaptureOverlay } =
       useCaptureOverlay()
@@ -36,6 +43,85 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         ?.length ?? 0) > 0
 
     console.log(hasInvalidShipments)
+
+    const editingFooterActions: FooterActions = useMemo(() => {
+      if (order.status !== 'editing') {
+        return []
+      }
+
+      const cancelAction: FooterActions[number] = {
+        label: getOrderTriggerAttributeName('_cancel'),
+        variant: 'secondary',
+        disabled: isLoading,
+        onClick: () => {
+          showCancelOverlay()
+        }
+      }
+
+      const continueAction: FooterActions[number] = {
+        label: 'Continue',
+        disabled: isLoading,
+        onClick: () => {
+          alert('Show shipments')
+        }
+      }
+
+      const finishAction: FooterActions[number] = {
+        label: 'Finish',
+        disabled: isLoading,
+        onClick: () => {
+          void dispatch('_stop_editing')
+        }
+      }
+
+      return [cancelAction, hasInvalidShipments ? continueAction : finishAction]
+    }, [
+      getOrderTriggerAttributeName,
+      isLoading,
+      order.status,
+      showCancelOverlay
+    ])
+
+    const standardFooterActions: FooterActions = useMemo(() => {
+      return triggerAttributes
+        .filter(
+          (
+            triggerAttribute
+          ): triggerAttribute is Exclude<
+            typeof triggerAttribute,
+            '_archive' | '_unarchive' | '_refund' | '_return'
+          > =>
+            !['_archive', '_unarchive', '_refund', '_return'].includes(
+              triggerAttribute
+            )
+        )
+        .map((triggerAttribute) => {
+          return {
+            label: getOrderTriggerAttributeName(triggerAttribute),
+            variant: triggerAttribute === '_cancel' ? 'secondary' : 'primary',
+            disabled: isLoading,
+            onClick: () => {
+              if (triggerAttribute === '_capture') {
+                showCaptureOverlay()
+                return
+              }
+              if (triggerAttribute === '_cancel') {
+                showCancelOverlay()
+                return
+              }
+
+              void dispatch(triggerAttribute)
+            }
+          }
+        })
+    }, [
+      dispatch,
+      getOrderTriggerAttributeName,
+      isLoading,
+      showCancelOverlay,
+      showCaptureOverlay,
+      triggerAttributes
+    ])
 
     return (
       <Section
@@ -79,27 +165,28 @@ export const OrderSummary = withSkeletonTemplate<Props>(
                   Update
                 </Button>
                 &nbsp;
-                {hasInvalidShipments ? (
-                  <Button
-                    variant='link'
-                    onClick={(e) => {
-                      e.preventDefault()
-                      alert('Show shipments')
-                    }}
-                  >
-                    Continue
-                  </Button>
-                ) : (
-                  <Button
-                    variant='link'
-                    onClick={(e) => {
-                      e.preventDefault()
-                      void dispatch('_stop_editing')
-                    }}
-                  >
-                    Finish
-                  </Button>
-                )}
+                <Button
+                  variant='link'
+                  onClick={(e) => {
+                    e.preventDefault()
+                    alert('Show shipments')
+                  }}
+                >
+                  Edit
+                </Button>
+              </>
+            )}
+
+            {order.status === 'editing' && (
+              <>
+                <Button
+                  variant='link'
+                  onClick={() => {
+                    alert('Add item overlay')
+                  }}
+                >
+                  Add item
+                </Button>
               </>
             )}
           </>
@@ -107,38 +194,11 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       >
         <ResourceOrderSummary
           order={order}
-          footerActions={triggerAttributes
-            .filter(
-              (
-                triggerAttribute
-              ): triggerAttribute is Exclude<
-                typeof triggerAttribute,
-                '_archive' | '_unarchive' | '_refund' | '_return'
-              > =>
-                !['_archive', '_unarchive', '_refund', '_return'].includes(
-                  triggerAttribute
-                )
-            )
-            .map((triggerAttribute) => {
-              return {
-                label: getOrderTriggerAttributeName(triggerAttribute),
-                variant:
-                  triggerAttribute === '_cancel' ? 'secondary' : 'primary',
-                disabled: isLoading,
-                onClick: () => {
-                  if (triggerAttribute === '_capture') {
-                    showCaptureOverlay()
-                    return
-                  }
-                  if (triggerAttribute === '_cancel') {
-                    showCancelOverlay()
-                    return
-                  }
-
-                  void dispatch(triggerAttribute)
-                }
-              }
-            })}
+          editable={order.status === 'editing'}
+          onChange={() => {
+            void mutateOrder()
+          }}
+          footerActions={[...standardFooterActions, ...editingFooterActions]}
         />
 
         {renderErrorMessages(errors)}
