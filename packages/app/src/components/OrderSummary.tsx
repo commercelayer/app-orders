@@ -1,3 +1,4 @@
+import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
@@ -26,23 +27,25 @@ type FooterActions = NonNullable<
 
 export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
+    const { sdkClient } = useCoreSdkProvider()
     const { mutateOrder } = useOrderDetails(order.id)
     const { triggerAttributes } = getOrderDisplayStatus(order)
 
     const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
 
-    const { sdkClient } = useCoreSdkProvider()
-
     const { show: showCaptureOverlay, Overlay: CaptureOverlay } =
       useCaptureOverlay()
     const { show: showCancelOverlay, Overlay: CancelOverlay } =
       useCancelOverlay()
+    const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
+      useAddItemOverlay()
 
-    const hasInvalidShipments =
-      (order.shipments?.filter((shipment) => shipment.status === 'draft')
-        ?.length ?? 0) > 0
-
-    console.log(hasInvalidShipments)
+    const hasInvalidShipments = useMemo(
+      () =>
+        (order.shipments?.filter((shipment) => shipment.status === 'draft')
+          ?.length ?? 0) > 0,
+      [order]
+    )
 
     const editingFooterActions: FooterActions = useMemo(() => {
       if (order.status !== 'editing') {
@@ -79,7 +82,9 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       getOrderTriggerAttributeName,
       isLoading,
       order.status,
-      showCancelOverlay
+      showCancelOverlay,
+      hasInvalidShipments,
+      dispatch
     ])
 
     const standardFooterActions: FooterActions = useMemo(() => {
@@ -146,43 +151,8 @@ export const OrderSummary = withSkeletonTemplate<Props>(
               <>
                 <Button
                   variant='link'
-                  onClick={(e) => {
-                    e.preventDefault()
-                    const lineItem = order.line_items?.filter(
-                      (l) => l.item_type === 'skus'
-                    )?.[0]
-
-                    if (lineItem != null) {
-                      void sdkClient.line_items.update({
-                        id: lineItem.id,
-                        quantity: lineItem.quantity
-                      })
-
-                      console.log('lineItemId', lineItem.id)
-                    }
-                  }}
-                >
-                  Update
-                </Button>
-                &nbsp;
-                <Button
-                  variant='link'
-                  onClick={(e) => {
-                    e.preventDefault()
-                    alert('Show shipments')
-                  }}
-                >
-                  Edit
-                </Button>
-              </>
-            )}
-
-            {order.status === 'editing' && (
-              <>
-                <Button
-                  variant='link'
                   onClick={() => {
-                    alert('Add item overlay')
+                    showAddItemOverlay()
                   }}
                 >
                   Add item
@@ -214,6 +184,22 @@ export const OrderSummary = withSkeletonTemplate<Props>(
           order={order}
           onConfirm={() => {
             void dispatch('_cancel')
+          }}
+        />
+
+        <AddItemOverlay
+          onConfirm={({ type, code }) => {
+            void sdkClient.line_items
+              .create({
+                order: sdkClient.orders.relationship(order.id),
+                quantity: 1,
+                ...(type === 'skus'
+                  ? { sku_code: code }
+                  : { bundle_code: code })
+              })
+              .then(async () => {
+                return await mutateOrder()
+              })
           }}
         />
       </Section>
