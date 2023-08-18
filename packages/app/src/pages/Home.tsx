@@ -123,7 +123,9 @@ export function Home(): JSX.Element {
             >
               <ListItem
                 tag='a'
-                icon={<Icon name='arrowDown' background='orange' gap='small' />}
+                icon={
+                  <Icon name='pencilSimple' background='orange' gap='small' />
+                }
               >
                 <Text weight='semibold'>
                   {presets.editing.viewTitle} {formatCounter(counters?.editing)}
