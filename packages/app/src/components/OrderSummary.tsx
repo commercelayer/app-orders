@@ -1,6 +1,7 @@
 import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useOrderDetails } from '#hooks/useOrderDetails'
+import { useSelectShippingMethodOverlay } from '#hooks/useSelectShippingMethodOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Button,
@@ -39,13 +40,26 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       useCancelOverlay()
     const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
       useAddItemOverlay()
+    const {
+      show: showSelectShippingMethodOverlay,
+      Overlay: SelectShippingMethodOverlay
+    } = useSelectShippingMethodOverlay()
 
     const hasInvalidShipments = useMemo(
       () =>
-        (order.shipments?.filter((shipment) => shipment.status === 'draft')
+        (order.shipments?.filter((shipment) => shipment.shipping_method == null)
           ?.length ?? 0) > 0,
       [order]
     )
+
+    const hasInvalidOrderAmount = useMemo(
+      () => false,
+      // () => (order.total_amount_cents ?? Infinity) > 9900,
+      [order]
+    )
+
+    const canEdit =
+      order.status === 'placed' && order.payment_status !== 'unpaid'
 
     const editingFooterActions: FooterActions = useMemo(() => {
       if (order.status !== 'editing') {
@@ -65,7 +79,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         label: 'Continue',
         disabled: isLoading,
         onClick: () => {
-          alert('Show shipments')
+          showSelectShippingMethodOverlay()
         }
       }
 
@@ -77,13 +91,19 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         }
       }
 
-      return [cancelAction, hasInvalidShipments ? continueAction : finishAction]
+      return [
+        cancelAction,
+        hasInvalidShipments || hasInvalidOrderAmount
+          ? continueAction
+          : finishAction
+      ]
     }, [
       getOrderTriggerAttributeName,
       isLoading,
       order.status,
       showCancelOverlay,
       hasInvalidShipments,
+      hasInvalidOrderAmount,
       dispatch
     ])
 
@@ -133,7 +153,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         title='Summary'
         actionButton={
           <>
-            {order.status === 'placed' && (
+            {canEdit && (
               <>
                 <Button
                   variant='link'
@@ -200,6 +220,13 @@ export const OrderSummary = withSkeletonTemplate<Props>(
               .then(async () => {
                 return await mutateOrder()
               })
+          }}
+        />
+
+        <SelectShippingMethodOverlay
+          order={order}
+          onConfirm={() => {
+            alert('asd')
           }}
         />
       </Section>

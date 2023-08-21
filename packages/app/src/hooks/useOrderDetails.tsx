@@ -15,7 +15,8 @@ export const orderIncludeAttribute = [
   'shipments.shipping_method',
   'shipments.available_shipping_methods',
   'shipments.stock_location',
-  'shipments.stock_line_items'
+  'shipments.stock_line_items',
+  'shipments.stock_line_items.sku'
 ]
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
