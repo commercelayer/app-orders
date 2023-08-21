@@ -12,7 +12,7 @@ import {
   Text,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
-import type { Bundle, Order, Sku } from '@commercelayer/sdk'
+import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { Controller, Form, useForm } from 'react-hook-form'
@@ -23,7 +23,6 @@ interface OverlayHook {
   show: () => void
   Overlay: React.FC<{
     order: Order
-    onConfirm: (resource: Sku | Bundle) => void
   }>
 }
 
@@ -58,7 +57,11 @@ export function useSelectShippingMethodOverlay(): OverlayHook {
       const { mutateOrder } = useOrderDetails(order.id)
       const { sdkClient } = useCoreSdkProvider()
 
-      return isVisible ? (
+      if (!isVisible) {
+        return null
+      }
+
+      return (
         <OverlayElement>
           <PageHeading
             gap='only-top'
@@ -160,7 +163,7 @@ export function useSelectShippingMethodOverlay(): OverlayHook {
             </Spacer>
           </Form>
         </OverlayElement>
-      ) : null
+      )
     },
     [isVisible]
   )
