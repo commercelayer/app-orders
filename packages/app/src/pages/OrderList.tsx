@@ -63,6 +63,7 @@ export function OrderList(): JSX.Element {
                 'id',
                 'number',
                 'updated_at',
+                'placed_at',
                 'formatted_total_amount',
                 'status',
                 'payment_status',

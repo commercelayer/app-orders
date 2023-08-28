@@ -107,7 +107,7 @@ export const instructions: FiltersInstructions = [
     label: 'Time Range',
     type: 'timeRange',
     sdk: {
-      predicate: 'updated_at'
+      predicate: 'placed_at'
     },
     render: {
       component: 'dateRangePicker'
