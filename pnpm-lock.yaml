@@ -27,11 +27,11 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@commercelayer/app-elements':
-        specifier: ^0.0.76
-        version: 0.0.76(@commercelayer/sdk@5.10.0)(wouter@2.11.0)
+        specifier: ^0.0.77
+        version: 0.0.77(@commercelayer/sdk@5.10.0)(wouter@2.11.0)
       '@commercelayer/app-elements-hook-form':
-        specifier: ^0.0.76
-        version: 0.0.76(@commercelayer/app-elements@0.0.76)(@commercelayer/sdk@5.10.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.45.2)(react@18.2.0)
+        specifier: ^0.0.77
+        version: 0.0.77(@commercelayer/app-elements@0.0.77)(@commercelayer/sdk@5.10.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.45.2)(react@18.2.0)
       '@commercelayer/sdk':
         specifier: 5.10.0
         version: 5.10.0
@@ -348,18 +348,18 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements-hook-form@0.0.76(@commercelayer/app-elements@0.0.76)(@commercelayer/sdk@5.10.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.45.2)(react@18.2.0):
-    resolution: {integrity: sha512-669ooqmHHTm4bSWySRZlahvx40b7g6yye1C1GGq4Gdj1Z6DrGSa/R2aO2mvdQXHaPHMZVTU3Da0OuOnvD+DRaA==}
+  /@commercelayer/app-elements-hook-form@0.0.77(@commercelayer/app-elements@0.0.77)(@commercelayer/sdk@5.10.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.45.2)(react@18.2.0):
+    resolution: {integrity: sha512-6fHt/VdtUnoXaY4QgNTheKtFvnxmMCUvlNZAJlC+9S4P1LHGEjGSdKN7FLhWF7vVM42cQ6XmoOPstgZGEKrcjw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
-      '@commercelayer/app-elements': 0.0.76
+      '@commercelayer/app-elements': 0.0.77
       '@commercelayer/sdk': ^5.x
       query-string: ^8.1.x
       react: ^18.2.x
       react-dom: ^18.2.x
       react-hook-form: ^7.43.x
     dependencies:
-      '@commercelayer/app-elements': 0.0.76(@commercelayer/sdk@5.10.0)(wouter@2.11.0)
+      '@commercelayer/app-elements': 0.0.77(@commercelayer/sdk@5.10.0)(wouter@2.11.0)
       '@commercelayer/sdk': 5.10.0
       query-string: 8.1.0
       react: 18.2.0
@@ -367,8 +367,8 @@ packages:
       react-hook-form: 7.45.2(react@18.2.0)
     dev: false
 
-  /@commercelayer/app-elements@0.0.76(@commercelayer/sdk@5.10.0)(wouter@2.11.0):
-    resolution: {integrity: sha512-qqgEWU21fn661l2DHEZJilcnKCHkH6/kQmboJVQNQEirplcobLUhSmoDi+Br90snMgULn60g8drmIqtdTcdj4A==}
+  /@commercelayer/app-elements@0.0.77(@commercelayer/sdk@5.10.0)(wouter@2.11.0):
+    resolution: {integrity: sha512-OwbKizVRbd5nW7n5R0SPLqwYGaN58UpOEKeQb6nXrcOkei+x0h0QX/PdEhvxudLgQi5q8dUdMqK0aVo0+pxCeQ==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x
