@@ -9,10 +9,12 @@ import { ScrollToTop } from '#components/ScrollToTop'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
+import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceTags,
   SkeletonTemplate,
   Spacer,
   formatDate,
@@ -93,11 +95,23 @@ export function OrderDetails(): JSX.Element {
           defaultRelativePath: appRoutes.home.makePath()
         })
       }}
+      gap='only-top'
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
-          <OrderSteps order={order} />
+          {!isMockedId(order.id) && (
+            <Spacer top='6'>
+              <ResourceTags
+                resourceType='orders'
+                resourceId={order.id}
+                overlay={{ title: pageTitle }}
+              />
+            </Spacer>
+          )}
+          <Spacer top='14'>
+            <OrderSteps order={order} />
+          </Spacer>
           <Spacer top='14'>
             <OrderSummary order={order} />
           </Spacer>
