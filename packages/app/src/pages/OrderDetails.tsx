@@ -105,7 +105,10 @@ export function OrderDetails(): JSX.Element {
               <ResourceTags
                 resourceType='orders'
                 resourceId={order.id}
-                overlay={{ title: pageTitle }}
+                overlay={{ title: 'Edit tags', description: pageTitle }}
+                onTagClick={(tagId) => {
+                  setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
+                }}
               />
             </Spacer>
           )}
