@@ -1,7 +1,6 @@
 import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
-import { PageLayout } from '@commercelayer/app-elements'
-import { useFilters } from '@commercelayer/app-elements-hook-form'
+import { PageLayout, useFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
 export function Filters(): JSX.Element {

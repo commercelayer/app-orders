@@ -3,17 +3,15 @@ import { appRoutes } from '#data/routes'
 import {
   Button,
   formatCentsToCurrency,
+  HookedForm,
+  HookedInput,
+  HookedInputCurrency,
+  HookedValidationApiError,
   ListDetails,
   ListDetailsItem,
   PageLayout,
   Spacer
 } from '@commercelayer/app-elements'
-import {
-  Form,
-  Input,
-  InputCurrency,
-  ValidationApiError
-} from '@commercelayer/app-elements-hook-form'
 import type { CurrencyCode } from '@commercelayer/app-elements/dist/ui/forms/InputCurrency/currencies'
 import type { Capture, Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -71,12 +69,12 @@ export function RefundForm({
         }
       }}
     >
-      <Form {...methods} onSubmit={onSubmit}>
+      <HookedForm {...methods} onSubmit={onSubmit}>
         {step === 'fields' ? (
           <>
             <Spacer bottom='8'>
               {order.currency_code != null ? (
-                <InputCurrency
+                <HookedInputCurrency
                   currencyCode={order.currency_code as Uppercase<CurrencyCode>}
                   name='amountCents'
                   label='Amount'
@@ -91,7 +89,11 @@ export function RefundForm({
               )}
             </Spacer>
             <Spacer bottom='8'>
-              <Input name='note' label='Note' placeholder='Leave a note' />
+              <HookedInput
+                name='note'
+                label='Note'
+                placeholder='Leave a note'
+              />
             </Spacer>
 
             <Spacer top='14'>
@@ -112,7 +114,7 @@ export function RefundForm({
               >
                 Proceed with refund
               </Button>
-              <ValidationApiError
+              <HookedValidationApiError
                 apiError={apiError}
                 fieldMap={{
                   _refund_amount_cents: 'amountCents'
@@ -155,7 +157,7 @@ export function RefundForm({
             </Spacer>
           </>
         ) : null}
-      </Form>
+      </HookedForm>
     </PageLayout>
   )
 }
