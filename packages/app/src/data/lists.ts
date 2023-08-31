@@ -1,4 +1,4 @@
-import type { FormFullValues } from '@commercelayer/app-elements-hook-form/dist/filters/methods/types'
+import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/Filters/types'
 
 export type ListType =
   | 'awaitingApproval'

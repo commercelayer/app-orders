@@ -1,4 +1,4 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements-hook-form/dist/filters/methods/types'
+import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/Filters/types'
 
 export const instructions: FiltersInstructions = [
   {

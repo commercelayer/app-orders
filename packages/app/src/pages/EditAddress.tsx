@@ -1,23 +1,23 @@
+import { AddressForm, type AddressFormValues } from '#components/AddressForm'
+import { ScrollToTop } from '#components/ScrollToTop'
+import { appRoutes } from '#data/routes'
+import { isMock, makeOrder } from '#mocks'
 import {
-  PageLayout,
-  useCoreSdkProvider,
-  SkeletonTemplate,
   Button,
   EmptyState,
-  useTokenProvider,
-  Spacer
+  PageLayout,
+  SkeletonTemplate,
+  Spacer,
+  useCoreSdkProvider,
+  useTokenProvider
 } from '@commercelayer/app-elements'
-import { useEffect, useMemo, useState } from 'react'
-import { appRoutes } from '#data/routes'
-import { useRoute, useLocation, Link } from 'wouter'
-import { isMock, makeOrder } from '#mocks'
 import {
   type Address,
   type AddressUpdate,
   type Order
 } from '@commercelayer/sdk'
-import { AddressForm, type AddressFormValues } from '#components/AddressForm'
-import { ScrollToTop } from '#components/ScrollToTop'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useLocation, useRoute } from 'wouter'
 
 export function EditAddress(): JSX.Element {
   const { canUser } = useTokenProvider()

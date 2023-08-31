@@ -1,11 +1,13 @@
 import { Countries } from '@ac-dev/countries-service'
-import { Button, Grid, Spacer } from '@commercelayer/app-elements'
 import {
-  Form,
-  Input,
-  InputSelect,
-  ValidationApiError
-} from '@commercelayer/app-elements-hook-form'
+  Button,
+  Grid,
+  HookedForm,
+  HookedInput,
+  HookedInputSelect,
+  HookedValidationApiError,
+  Spacer
+} from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ReactNode } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
@@ -65,39 +67,39 @@ export function AddressForm({
   }))
 
   return (
-    <Form
+    <HookedForm
       {...methods}
       onSubmit={(formValues) => {
         onSubmit(formValues, methods.setError)
       }}
     >
       <FieldRow columns='2'>
-        <Input name='first_name' label='First name' />
-        <Input name='last_name' label='Last name' />
+        <HookedInput name='first_name' label='First name' />
+        <HookedInput name='last_name' label='Last name' />
       </FieldRow>
 
       <FieldRow columns='1'>
-        <Input name='company' label='Company' />
+        <HookedInput name='company' label='Company' />
       </FieldRow>
 
       <FieldRow columns='1'>
-        <Input name='line_1' label='Address line 1' />
+        <HookedInput name='line_1' label='Address line 1' />
       </FieldRow>
 
       <FieldRow columns='1'>
-        <Input name='line_2' label='Address line 2' />
+        <HookedInput name='line_2' label='Address line 2' />
       </FieldRow>
 
       <FieldRow columns='2'>
-        <Input name='city' label='City' />
+        <HookedInput name='city' label='City' />
         <Grid columns='2'>
-          <Input name='zip_code' label='ZIP code' />
-          <Input name='state_code' label='State code' />
+          <HookedInput name='zip_code' label='ZIP code' />
+          <HookedInput name='state_code' label='State code' />
         </Grid>
       </FieldRow>
 
       <FieldRow columns='1'>
-        <InputSelect
+        <HookedInputSelect
           name='country_code'
           label='Country'
           initialValues={countries}
@@ -106,12 +108,12 @@ export function AddressForm({
       </FieldRow>
 
       <FieldRow columns='1'>
-        <Input name='phone' label='Phone' />
+        <HookedInput name='phone' label='Phone' />
       </FieldRow>
 
       {showBillingInfo === true && (
         <FieldRow columns='1'>
-          <Input name='billing_info' label='Billing info' />
+          <HookedInput name='billing_info' label='Billing info' />
         </FieldRow>
       )}
 
@@ -119,9 +121,9 @@ export function AddressForm({
         <Button type='submit' disabled={isSubmitting}>
           Update address
         </Button>
-        <ValidationApiError apiError={apiError} />
+        <HookedValidationApiError apiError={apiError} />
       </Spacer>
-    </Form>
+    </HookedForm>
   )
 }
 

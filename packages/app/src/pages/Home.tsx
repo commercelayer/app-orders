@@ -10,9 +10,9 @@ import {
   SkeletonTemplate,
   Spacer,
   Text,
+  useFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { useFilters } from '@commercelayer/app-elements-hook-form'
 import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-location'
 import { useListCounters } from '../metricsApi/useListCounters'
