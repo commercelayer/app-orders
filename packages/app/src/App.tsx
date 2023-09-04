@@ -16,6 +16,10 @@ import { Route, Router, Switch } from 'wouter'
 import { appRoutes } from './data/routes'
 
 const isDev = Boolean(import.meta.env.DEV)
+const basePath =
+  import.meta.env.PUBLIC_PROJECT_PATH != null
+    ? `/${import.meta.env.PUBLIC_PROJECT_PATH}`
+    : undefined
 
 export function App(): JSX.Element {
   return (
@@ -35,7 +39,7 @@ export function App(): JSX.Element {
         >
           <MetaTags />
           <CoreSdkProvider>
-            <Router base='/orders'>
+            <Router base={basePath}>
               <Switch>
                 <Route path={appRoutes.home.path}>
                   <Home />
