@@ -1,7 +1,7 @@
 import {
   Icon,
-  Legend,
   ListItem,
+  Section,
   Text,
   navigateToDetail,
   useTokenProvider,
@@ -35,8 +35,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
       : {}
 
     return (
-      <>
-        <Legend title='Customer' />
+      <Section title='Customer'>
         <ListItem
           tag={canAccess('customers') ? 'a' : 'div'}
           icon={<Icon name='user' background='teal' gap='large' />}
@@ -52,7 +51,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
           </div>
           {canAccess('customers') && <Icon name='caretRight' />}
         </ListItem>
-      </>
+      </Section>
     )
   }
 )

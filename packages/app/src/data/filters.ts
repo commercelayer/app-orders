@@ -8,7 +8,7 @@ export const instructions: FiltersInstructions = [
       predicate: 'market_id_in'
     },
     render: {
-      component: 'relationshipSelector',
+      component: 'inputResourceGroup',
       props: {
         fieldForLabel: 'name',
         fieldForValue: 'id',
@@ -30,7 +30,7 @@ export const instructions: FiltersInstructions = [
       defaultOptions: ['placed', 'approved', 'cancelled']
     },
     render: {
-      component: 'toggleButtons',
+      component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
@@ -49,7 +49,7 @@ export const instructions: FiltersInstructions = [
       predicate: 'payment_status_in'
     },
     render: {
-      component: 'toggleButtons',
+      component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
@@ -70,7 +70,7 @@ export const instructions: FiltersInstructions = [
       predicate: 'fulfillment_status_in'
     },
     render: {
-      component: 'toggleButtons',
+      component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
@@ -92,7 +92,7 @@ export const instructions: FiltersInstructions = [
     },
     hidden: true,
     render: {
-      component: 'toggleButtons',
+      component: 'inputToggleButton',
       props: {
         mode: 'single',
         options: [
@@ -133,7 +133,7 @@ export const instructions: FiltersInstructions = [
       predicate: 'tags_id_in'
     },
     render: {
-      component: 'relationshipSelector',
+      component: 'inputResourceGroup',
       props: {
         fieldForLabel: 'name',
         fieldForValue: 'id',

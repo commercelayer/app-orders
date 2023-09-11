@@ -162,10 +162,10 @@ export function RefundForm({
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const makeFormSchema = (
   maxRefundableAmount: number,
   formattedMaxRefundableAmount: string
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) =>
   z.object({
     amountCents: z

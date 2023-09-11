@@ -1,8 +1,8 @@
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
-  Legend,
   OrderSummary as OrderSummaryElement,
+  Section,
   Spacer,
   Text,
   getOrderDisplayStatus,
@@ -28,8 +28,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       useCancelOverlay()
 
     return (
-      <>
-        <Legend title='Summary' />
+      <Section title='Summary'>
         <OrderSummaryElement
           order={order}
           footerActions={triggerAttributes
@@ -76,7 +75,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
             void dispatch('_cancel')
           }}
         />
-      </>
+      </Section>
     )
   }
 )
