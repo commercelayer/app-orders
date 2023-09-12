@@ -15,7 +15,7 @@ You need a local Node.JS (version 18+) environment and some React.JS knowledge t
 2. Clone the forked repository like so:
 
 ```bash
-git clone https://github.com/<your username>/app-orders.git && cd mfe-cart
+git clone https://github.com/<your username>/app-orders.git && cd app-orders
 ```
 
 3. (Optional) Set your environment with `.env.local` starting from `.env.local.sample`.
