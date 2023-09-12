@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -23,8 +27,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@commercelayer/app-elements':
-        specifier: ^0.1.0
-        version: 0.1.0(@commercelayer/sdk@5.13.2)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.46.1)(react@18.2.0)(wouter@2.11.0)
+        specifier: ^0.1.1
+        version: 0.1.1(@commercelayer/sdk@5.13.2)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.46.1)(react@18.2.0)(wouter@2.11.0)
       '@commercelayer/sdk':
         specifier: 5.13.2
         version: 5.13.2
@@ -337,8 +341,8 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements@0.1.0(@commercelayer/sdk@5.13.2)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.46.1)(react@18.2.0)(wouter@2.11.0):
-    resolution: {integrity: sha512-/Iz3S4mTaoDdWDMx6kmEtD4tUH4ZLs4fqJhermpoeVaBewCsjD/FkwxhBSNApFCTqfiIkhacmtjKUYBbN95Bcg==}
+  /@commercelayer/app-elements@0.1.1(@commercelayer/sdk@5.13.2)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.46.1)(react@18.2.0)(wouter@2.11.0):
+    resolution: {integrity: sha512-BwDW2JwR9r9cV7lMPn0U1x4s1Dt9xX1c4uRFTS41CT96jSs3IERm8K98G/Tp1qRhvEDeyAY0NSHM8mGyPm0fRw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x
@@ -8045,7 +8049,3 @@ packages:
   /zod@3.22.2:
     resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
