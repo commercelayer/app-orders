@@ -1,7 +1,7 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
-  Legend,
   OrderTimeline,
+  Section,
   Spacer,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -15,8 +15,7 @@ export const Timeline = withSkeletonTemplate<Props>(({ order }) => {
   const { isValidating } = useOrderDetails(order.id)
 
   return (
-    <>
-      <Legend title='Timeline' />
+    <Section title='Timeline'>
       <Spacer top='8'>
         <OrderTimeline
           orderId={order.id}
@@ -26,6 +25,6 @@ export const Timeline = withSkeletonTemplate<Props>(({ order }) => {
           }}
         />
       </Spacer>
-    </>
+    </Section>
   )
 })

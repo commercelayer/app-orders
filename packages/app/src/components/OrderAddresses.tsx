@@ -1,6 +1,6 @@
 import { appRoutes } from '#data/routes'
 import {
-  Legend,
+  Section,
   Spacer,
   Stack,
   Text,
@@ -96,8 +96,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
       order.shipping_address?.id === order.billing_address?.id
 
     return (
-      <>
-        <Legend border='none' title='Addresses' />
+      <Section border='none' title='Addresses'>
         <Stack>
           {renderAddress({
             label: 'Billing address',
@@ -113,7 +112,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
             isSameAsBilling
           })}
         </Stack>
-      </>
+      </Section>
     )
   }
 )

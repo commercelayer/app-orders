@@ -2,8 +2,8 @@ import { PaymentMethod } from '#components/PaymentMethod'
 import {
   Avatar,
   Icon,
-  Legend,
   ListItem,
+  Section,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { AvatarProps } from '@commercelayer/app-elements/dist/ui/atoms/Avatar'
@@ -58,11 +58,10 @@ export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
   }
 
   return (
-    <>
-      <Legend title='Payment method' />
+    <Section title='Payment method'>
       <ListItem tag='div' icon={icon}>
         <PaymentMethod order={order} />
       </ListItem>
-    </>
+    </Section>
   )
 })

@@ -1,7 +1,7 @@
 import {
   Icon,
-  Legend,
   ListItem,
+  Section,
   Text,
   formatDate,
   navigateToDetail,
@@ -101,9 +101,8 @@ export const OrderShipments = withSkeletonTemplate<Props>(({ order }) => {
   }
 
   return (
-    <>
-      <Legend title='Shipments' />
+    <Section title='Shipments'>
       {order.shipments.map((shipment) => renderShipment(shipment))}
-    </>
+    </Section>
   )
 })
