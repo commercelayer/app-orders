@@ -4,7 +4,7 @@ Commerce Layer application for managing orders.
 Any Commerce Layer account comes with a hosted version of this application, as part of the Dashboard HUB, and it is automatically enabled for admin role.
 An admin can then enable the app for other organization members giving each member full access to all app capabilities or read only access.
 
-It's possible to fork this hub and add it to your Dashboard HUB, in order to customize every part of the code and start using your own and self-hosted version.
+It's possible to fork this app and add it to your Dashboard HUB, in order to customize every part of the code and start using your own and self-hosted version.
 
 
 ## Getting started
