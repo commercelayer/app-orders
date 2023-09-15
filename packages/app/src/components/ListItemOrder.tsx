@@ -1,8 +1,5 @@
 import { makeOrder } from '#mocks'
-import {
-  ListItemOrder as ListItemOrderElements,
-  navigateToDetail
-} from '@commercelayer/app-elements'
+import { ResourceListItem, navigateTo } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
 
@@ -20,12 +17,12 @@ export function ListItemOrder({
   const [, setLocation] = useLocation()
 
   return (
-    <ListItemOrderElements
-      order={resource}
+    <ResourceListItem
+      resource={resource}
       isLoading={isLoading}
       delayMs={delayMs}
       tag='a'
-      {...navigateToDetail({
+      {...navigateTo({
         setLocation,
         destination: {
           app: 'orders',

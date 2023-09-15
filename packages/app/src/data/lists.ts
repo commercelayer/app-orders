@@ -1,4 +1,4 @@
-import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/Filters/types'
+import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 
 export type ListType =
   | 'awaitingApproval'

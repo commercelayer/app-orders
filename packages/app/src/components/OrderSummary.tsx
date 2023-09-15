@@ -1,7 +1,7 @@
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
-  OrderSummary as OrderSummaryElement,
+  ResourceOrderSummary,
   Section,
   Spacer,
   Text,
@@ -29,7 +29,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
 
     return (
       <Section title='Summary'>
-        <OrderSummaryElement
+        <ResourceOrderSummary
           order={order}
           footerActions={triggerAttributes
             .filter(

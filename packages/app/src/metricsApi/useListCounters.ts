@@ -1,6 +1,6 @@
 import { presets, type ListType } from '#data/lists'
 import { useTokenProvider } from '@commercelayer/app-elements'
-import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/Filters/types'
+import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import castArray from 'lodash/castArray'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'

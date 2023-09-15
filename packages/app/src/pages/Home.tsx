@@ -10,7 +10,7 @@ import {
   SkeletonTemplate,
   Spacer,
   Text,
-  useFilters,
+  useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
@@ -27,7 +27,7 @@ export function Home(): JSX.Element {
   const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
-  const { adapters, SearchWithNav } = useFilters({
+  const { adapters, SearchWithNav } = useResourceFilters({
     instructions
   })
 

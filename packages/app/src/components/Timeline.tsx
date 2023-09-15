@@ -1,6 +1,6 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
-  OrderTimeline,
+  ResourceOrderTimeline,
   Section,
   Spacer,
   withSkeletonTemplate
@@ -17,7 +17,7 @@ export const Timeline = withSkeletonTemplate<Props>(({ order }) => {
   return (
     <Section title='Timeline'>
       <Spacer top='8'>
-        <OrderTimeline
+        <ResourceOrderTimeline
           orderId={order.id}
           refresh={isValidating}
           attachmentOption={{
