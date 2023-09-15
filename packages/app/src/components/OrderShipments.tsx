@@ -4,7 +4,7 @@ import {
   Section,
   Text,
   formatDate,
-  navigateToDetail,
+  navigateTo,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -49,7 +49,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
   } = useTokenProvider()
 
   const navigateToShipment = canAccess('customers')
-    ? navigateToDetail({
+    ? navigateTo({
         destination: {
           app: 'shipments',
           resourceId: shipment.id,

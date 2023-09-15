@@ -3,7 +3,7 @@ import {
   ListItem,
   Section,
   Text,
-  navigateToDetail,
+  navigateTo,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -25,7 +25,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
     }
 
     const navigateToCustomer = canAccess('customers')
-      ? navigateToDetail({
+      ? navigateTo({
           destination: {
             app: 'customers',
             resourceId: order.customer.id,

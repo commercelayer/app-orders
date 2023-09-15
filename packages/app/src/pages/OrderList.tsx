@@ -6,7 +6,7 @@ import { appRoutes } from '#data/routes'
 import {
   PageLayout,
   Spacer,
-  useFilters,
+  useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
@@ -21,7 +21,7 @@ export function OrderList(): JSX.Element {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
-    useFilters({
+    useResourceFilters({
       instructions
     })
 
@@ -56,7 +56,7 @@ export function OrderList(): JSX.Element {
       <Spacer bottom='14'>
         <FilteredList
           type='orders'
-          Item={ListItemOrder}
+          ItemTemplate={ListItemOrder}
           query={{
             fields: {
               orders: [

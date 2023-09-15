@@ -1,11 +1,11 @@
 import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
-import { PageLayout, useFilters } from '@commercelayer/app-elements'
+import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
 export function Filters(): JSX.Element {
   const [, setLocation] = useLocation()
-  const { FiltersForm, adapters } = useFilters({
+  const { FiltersForm, adapters } = useResourceFilters({
     instructions
   })
 

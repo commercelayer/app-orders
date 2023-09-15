@@ -1,4 +1,4 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/Filters/types'
+import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 
 export const instructions: FiltersInstructions = [
   {
