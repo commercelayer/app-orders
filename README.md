@@ -6,6 +6,13 @@ An admin can then enable the app for other organization members giving each memb
 
 It's possible to fork this app and add it to your Dashboard HUB, in order to customize every part of the code and start using your own and self-hosted version.
 
+## Table of contents
+
+- [Getting started](#getting-started)
+- [Running on Windows](#running-on-windows)
+- [Help and support](#need-help)
+- [License](#license)
+
 
 ## Getting started
 You need a local Node.JS (version 18+) environment and some React.JS knowledge to customize the app code.
@@ -36,3 +43,22 @@ Integration access token is only required (and will work only) for development m
 [<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="35">](https://app.netlify.com/start/deploy?repository=https://github.com/commercelayer/app-orders#PUBLIC_SELF_HOSTED_SLUG) [<img src="https://vercel.com/button" alt="Deploy to Vercel" height="35">](https://vercel.com/new/clone?repository-url=https://github.com/commercelayer/app-orders&build-command=pnpm%20build&output-directory=packages%2Fapp%2Fdist&env=PUBLIC_SELF_HOSTED_SLUG&envDescription=your%20organization%20slug) 
 
 7. Complete the configuration in the Dashboard HUB by setting your app URL.
+
+## Running on Windows
+When working on Microsoft Windows, we suggest to use the PowerShell terminal or any alternative shell with the ability to run scripts as admin user.
+
+This is required to install `pnpm` following the instruction [here](https://pnpm.io/installation#on-windows).
+
+Once done, install globally the `touch-cli` package by running `pnpm add -g touch-cli` in order to successfully execute the `prepare` script.
+
+## Need help?
+
+1. Join [Commerce Layer's Slack community](https://slack.commercelayer.app).
+
+2. Create an [issue](https://github.com/commercelayer/mfe-cart/issues) in this repository.
+
+3. Ping us [on Twitter](https://twitter.com/commercelayer).
+
+## License
+
+This repository is published under the [MIT](LICENSE) license
