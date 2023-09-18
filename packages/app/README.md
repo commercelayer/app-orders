@@ -1,10 +1,11 @@
 # App Orders
 
 Commerce Layer application for managing orders. 
-Any Commerce Layer account comes with a hosted version of this application, as part of the Dashboard HUB, and it is automatically enabled for admin role.
-An admin can then enable the app for other organization members giving each member full access to all app capabilities or read only access.
 
-It's possible to fork this app and add it to your Dashboard HUB, in order to customize every part of the code and start using your own and self-hosted version.
+Any Commerce Layer account comes with a hosted version of this application, as part of the Dashboard hub, and it is automatically enabled for admin users.
+An admin can then enable the app for other organization members giving each member full or read-only access.
+
+It's possible to fork this app and add it to your Dashboard hub, in order to customize every part of the code and start using your own and self-hosted version.
 
 ## Table of contents
 
@@ -25,7 +26,7 @@ You need a local Node.JS (version 18+) environment and some React.JS knowledge t
 git clone https://github.com/<your username>/app-orders.git && cd app-orders
 ```
 
-3. (Optional) Set your environment with `.env.local` starting from `.env.local.sample`.
+3. Set your environment by creating a new `/src/app/.env.local` file starting from `/src/app/.env.local.sample` (not required for local development).
 
 4. Install dependencies and run the development server:
 
@@ -36,20 +37,20 @@ pnpm dev
 
 5. The app will run in development mode at the following address `http://localhost:5173/`. 
 In order to authenticate the app, you need to add an integration access token as URL query param. Example: `http://localhost:5173/?accessToken=<integration-token-for-local-dev>`.
-Integration access token is only required (and will work only) for development mode. In production mode the Commerce Layer Dashboard HUB will generate a valid access token, base on the current user,
+Integration access token is only required (and will work only) for development mode. In production mode the Commerce Layer Dashboard hub will generate a valid access token, based on the current user.
 
-6. Deploy the forked repository to your preferred hosting service. You can deploy with one click below:
+6. Modify the app to satisfy your requirements. 
+All our Dashboard apps are built using a shared component library [@commercelayer/app-elements](https://github.com/commercelayer/app-elements).
+You can browse the [official documentation](https://github.com/commercelayer/app-elements) to discover more about this topic.
+
+7. Deploy the forked repository to your preferred hosting service. You can deploy with one click below:
 
 [<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="35">](https://app.netlify.com/start/deploy?repository=https://github.com/commercelayer/app-orders#PUBLIC_SELF_HOSTED_SLUG) [<img src="https://vercel.com/button" alt="Deploy to Vercel" height="35">](https://vercel.com/new/clone?repository-url=https://github.com/commercelayer/app-orders&build-command=pnpm%20build&output-directory=packages%2Fapp%2Fdist&env=PUBLIC_SELF_HOSTED_SLUG&envDescription=your%20organization%20slug) 
 
-7. Complete the configuration in the Dashboard HUB by setting your app URL.
+8. Complete the configuration in the Dashboard hub by setting your app URL.
 
 ## Running on Windows
-When working on Microsoft Windows, we suggest to use the PowerShell terminal or any alternative shell with the ability to run scripts as admin user.
-
-This is required to install `pnpm` following the instruction [here](https://pnpm.io/installation#on-windows).
-
-Once done, install globally the `touch-cli` package by running `pnpm add -g touch-cli` in order to successfully execute the `prepare` script.
+[Read more](https://github.com/commercelayer/.github/blob/main/PNPM_ON_WINDOWS.md)
 
 ## Need help?
 
