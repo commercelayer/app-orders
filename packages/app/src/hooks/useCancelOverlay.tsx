@@ -15,8 +15,9 @@ export function useCancelOverlay(): OverlayHook {
       return (
         <OverlayElement>
           <PageHeading
-            title={`Confirm that you want to cancel order ${order.market?.name ?? ''
-              } #${order.number ?? ''}`}
+            title={`Confirm that you want to cancel order ${
+              order.market?.name ?? ''
+            } #${order.number ?? ''}`}
             onGoBack={() => {
               close()
             }}
