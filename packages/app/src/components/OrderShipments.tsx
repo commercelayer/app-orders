@@ -51,12 +51,12 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
 
   const navigateToShipment = canAccess('shipments')
     ? navigateTo({
-      destination: {
-        app: 'shipments',
-        resourceId: shipment.id,
-        mode
-      }
-    })
+        destination: {
+          app: 'shipments',
+          resourceId: shipment.id,
+          mode
+        }
+      })
     : {}
 
   return (

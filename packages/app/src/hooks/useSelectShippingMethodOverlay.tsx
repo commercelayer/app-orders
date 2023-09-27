@@ -3,18 +3,17 @@ import {
   Card,
   Hr,
   InputRadioGroup,
-  Legend,
-  LineItems,
   ListItem,
-  Overlay as OverlayElement,
   PageHeading,
+  ResourceLineItems,
+  Section,
   Spacer,
   Text,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useOverlay
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useState } from 'react'
 import { Controller, Form, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useOrderDetails } from './useOrderDetails'
@@ -31,35 +30,31 @@ const zodString = z.string({
 })
 
 export function useSelectShippingMethodOverlay(): OverlayHook {
-  const [isVisible, setIsVisible] = useState(false)
+  const { Overlay: OverlayElement, open, close } = useOverlay()
 
-  const show = useCallback(() => {
-    setIsVisible(true)
-  }, [])
-
-  const Overlay: OverlayHook['Overlay'] = useCallback(
-    ({ order }) => {
+  return {
+    show: open,
+    Overlay: ({ order }) => {
       const methods = useForm<Record<string, string>>({
         defaultValues:
-          order.shipments?.reduce((acc, shipment) => {
-            if (shipment.shipping_method?.id == null) {
-              return acc
-            }
+          order.shipments?.reduce(
+            (acc, shipment) => {
+              if (shipment.shipping_method?.id == null) {
+                return acc
+              }
 
-            return {
-              ...acc,
-              [shipment.id]: shipment.shipping_method?.id
-            }
-          }, {} satisfies Record<string, string>) ?? {},
+              return {
+                ...acc,
+                [shipment.id]: shipment.shipping_method?.id
+              }
+            },
+            {} satisfies Record<string, string>
+          ) ?? {},
         resolver: zodResolver(z.object({}).catchall(zodString))
       })
 
       const { mutateOrder } = useOrderDetails(order.id)
       const { sdkClient } = useCoreSdkProvider()
-
-      if (!isVisible) {
-        return null
-      }
 
       return (
         <OverlayElement>
@@ -67,7 +62,7 @@ export function useSelectShippingMethodOverlay(): OverlayHook {
             gap='only-top'
             title='Select a shipping method'
             onGoBack={() => {
-              setIsVisible(false)
+              close()
             }}
           />
 
@@ -88,7 +83,7 @@ export function useSelectShippingMethodOverlay(): OverlayHook {
               )
                 .then(async () => await mutateOrder())
                 .then(() => {
-                  setIsVisible(false)
+                  close()
                 })
             }}
           >
@@ -99,56 +94,54 @@ export function useSelectShippingMethodOverlay(): OverlayHook {
 
               return (
                 <Spacer key={shipment.id} top='14'>
-                  <Legend
-                    title={`Shipment #${shipment.number}`}
-                    border='none'
-                  />
-                  <Card>
-                    <Spacer bottom='4'>
-                      <Text variant='info'>Shipping method:</Text>
-                    </Spacer>
-                    <Controller
-                      control={methods.control}
-                      name={shipment.id}
-                      render={({ field: { name, onChange, value } }) => (
-                        <InputRadioGroup
-                          name={name}
-                          defaultValue={value}
-                          onChange={onChange}
-                          options={
-                            shipment.available_shipping_methods?.map(
-                              (availableShippingMethod) => ({
-                                content: (
-                                  <ListItem
-                                    tag='div'
-                                    borderStyle='none'
-                                    padding='none'
-                                  >
-                                    <Text weight='semibold'>
-                                      {availableShippingMethod.name}
-                                    </Text>
-                                    <Text weight='semibold'>
-                                      {
-                                        availableShippingMethod.formatted_price_amount
-                                      }
-                                    </Text>
-                                  </ListItem>
-                                ),
-                                value: availableShippingMethod.id
-                              })
-                            ) ?? []
-                          }
-                        />
-                      )}
-                    />
-                    <Spacer top='6'>
-                      <Hr />
-                      <LineItems
-                        size='small'
-                        items={shipment.stock_line_items ?? []}
+                  <Section title={`Shipment #${shipment.number}`} border='none'>
+                    <Card>
+                      <Spacer bottom='4'>
+                        <Text variant='info'>Shipping method:</Text>
+                      </Spacer>
+                      <Controller
+                        control={methods.control}
+                        name={shipment.id}
+                        render={({ field: { name, onChange, value } }) => (
+                          <InputRadioGroup
+                            name={name}
+                            defaultValue={value}
+                            onChange={onChange}
+                            options={
+                              shipment.available_shipping_methods?.map(
+                                (availableShippingMethod) => ({
+                                  content: (
+                                    <ListItem
+                                      tag='div'
+                                      borderStyle='none'
+                                      padding='none'
+                                    >
+                                      <Text weight='semibold'>
+                                        {availableShippingMethod.name}
+                                      </Text>
+                                      <Text weight='semibold'>
+                                        {
+                                          availableShippingMethod.formatted_price_amount
+                                        }
+                                      </Text>
+                                    </ListItem>
+                                  ),
+                                  value: availableShippingMethod.id
+                                })
+                              ) ?? []
+                            }
+                          />
+                        )}
                       />
-                    </Spacer>
-                  </Card>
+                      <Spacer top='6'>
+                        <Hr />
+                        <ResourceLineItems
+                          size='small'
+                          items={shipment.stock_line_items ?? []}
+                        />
+                      </Spacer>
+                    </Card>
+                  </Section>
                 </Spacer>
               )
             })}
@@ -164,12 +157,6 @@ export function useSelectShippingMethodOverlay(): OverlayHook {
           </Form>
         </OverlayElement>
       )
-    },
-    [isVisible]
-  )
-
-  return {
-    show,
-    Overlay
+    }
   }
 }

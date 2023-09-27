@@ -1,13 +1,12 @@
 import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemSkuBundle } from '#components/ListItemSkuBundle'
 import {
-  Overlay as OverlayElement,
   PageHeading,
-  Spacer
+  Spacer,
+  useOverlay,
+  useResourceFilters
 } from '@commercelayer/app-elements'
-import { useFilters } from '@commercelayer/app-elements-hook-form'
 import type { Bundle, Sku } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
 import { navigate, useSearch } from 'wouter/use-location'
 
 interface OverlayHook {
@@ -16,16 +15,13 @@ interface OverlayHook {
 }
 
 export function useAddItemOverlay(): OverlayHook {
-  const [isVisible, setIsVisible] = useState(false)
+  const { Overlay: OverlayElement, open, close } = useOverlay()
 
-  const show = useCallback(() => {
-    setIsVisible(true)
-  }, [])
-
-  const Overlay: OverlayHook['Overlay'] = useCallback(
-    ({ onConfirm }) => {
+  return {
+    show: open,
+    Overlay: ({ onConfirm }) => {
       const queryString = useSearch()
-      const { SearchWithNav, FilteredList } = useFilters({
+      const { SearchWithNav, FilteredList } = useResourceFilters({
         instructions: [
           {
             label: 'Search',
@@ -40,13 +36,13 @@ export function useAddItemOverlay(): OverlayHook {
         ]
       })
 
-      return isVisible ? (
+      return (
         <OverlayElement>
           <PageHeading
             gap='only-top'
             title='Add item'
             onGoBack={() => {
-              setIsVisible(false)
+              close()
             }}
           />
 
@@ -65,11 +61,11 @@ export function useAddItemOverlay(): OverlayHook {
           <Spacer top='14'>
             <FilteredList
               type='skus'
-              Item={(props) => (
+              ItemTemplate={(props) => (
                 <ListItemSkuBundle
                   onSelect={(resource) => {
                     onConfirm(resource)
-                    setIsVisible(false)
+                    close()
                     navigate(`?`, {
                       replace: true
                     })
@@ -81,13 +77,7 @@ export function useAddItemOverlay(): OverlayHook {
             />
           </Spacer>
         </OverlayElement>
-      ) : null
-    },
-    [isVisible]
-  )
-
-  return {
-    show,
-    Overlay
+      )
+    }
   }
 }
