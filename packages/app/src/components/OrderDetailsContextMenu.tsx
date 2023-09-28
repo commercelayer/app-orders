@@ -1,8 +1,8 @@
 import { appRoutes } from '#data/routes'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
-  ContextMenu,
-  DropdownMenuItem,
+  Dropdown,
+  DropdownItem,
   getOrderDisplayStatus,
   getOrderTriggerAttributeName,
   useTokenProvider
@@ -29,9 +29,9 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   }
 
   return (
-    <ContextMenu
-      menuItems={menuActions.map((triggerAttribute) => (
-        <DropdownMenuItem
+    <Dropdown
+      dropdownItems={menuActions.map((triggerAttribute) => (
+        <DropdownItem
           key={triggerAttribute}
           label={getOrderTriggerAttributeName(triggerAttribute)}
           onClick={() => {

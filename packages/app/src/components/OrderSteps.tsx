@@ -74,10 +74,9 @@ export const OrderSteps = withSkeletonTemplate<Props>(
             </Text>
           </Spacer>
           {order.status !== undefined && (
-            <Badge
-              label={getOrderStatusName(order.status).toUpperCase()}
-              variant={getOrderStatusBadgeVariant(order.status)}
-            />
+            <Badge variant={getOrderStatusBadgeVariant(order.status)}>
+              {getOrderStatusName(order.status).toUpperCase()}
+            </Badge>
           )}
         </div>
         <div>
@@ -87,12 +86,9 @@ export const OrderSteps = withSkeletonTemplate<Props>(
             </Text>
           </Spacer>
           {order.payment_status !== undefined && (
-            <Badge
-              label={getOrderPaymentStatusName(
-                order.payment_status
-              ).toUpperCase()}
-              variant={getPaymentStatusBadgeVariant(order.payment_status)}
-            />
+            <Badge variant={getPaymentStatusBadgeVariant(order.payment_status)}>
+              {getOrderPaymentStatusName(order.payment_status).toUpperCase()}
+            </Badge>
           )}
         </div>
         {order.status !== 'pending' && (
@@ -104,13 +100,14 @@ export const OrderSteps = withSkeletonTemplate<Props>(
             </Spacer>
             {order.fulfillment_status !== undefined && (
               <Badge
-                label={getOrderFulfillmentStatusName(
-                  order.fulfillment_status
-                ).toUpperCase()}
                 variant={getFulfillmentStatusBadgeVariant(
                   order.fulfillment_status
                 )}
-              />
+              >
+                {getOrderFulfillmentStatusName(
+                  order.fulfillment_status
+                ).toUpperCase()}
+              </Badge>
             )}
           </div>
         )}
