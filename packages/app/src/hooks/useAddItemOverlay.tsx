@@ -7,18 +7,23 @@ import {
   useResourceFilters
 } from '@commercelayer/app-elements'
 import type { Bundle, Sku } from '@commercelayer/sdk'
+import { useRef } from 'react'
 import { navigate, useSearch } from 'wouter/use-location'
 
 interface OverlayHook {
-  show: () => void
+  show: (type: 'skus' | 'bundles') => void
   Overlay: React.FC<{ onConfirm: (resource: Sku | Bundle) => void }>
 }
 
 export function useAddItemOverlay(): OverlayHook {
   const { Overlay: OverlayElement, open, close } = useOverlay()
+  const filterType = useRef<'skus' | 'bundles'>('skus')
 
   return {
-    show: open,
+    show: (type) => {
+      filterType.current = type
+      open()
+    },
     Overlay: ({ onConfirm }) => {
       const queryString = useSearch()
       const { SearchWithNav, FilteredList } = useResourceFilters({
@@ -40,7 +45,7 @@ export function useAddItemOverlay(): OverlayHook {
         <OverlayElement>
           <PageHeading
             gap='only-top'
-            title='Add item'
+            title={filterType.current === 'skus' ? 'Add a SKU' : 'Add a bundle'}
             onGoBack={() => {
               close()
             }}
@@ -60,7 +65,7 @@ export function useAddItemOverlay(): OverlayHook {
 
           <Spacer top='14'>
             <FilteredList
-              type='skus'
+              type={filterType.current}
               ItemTemplate={(props) => (
                 <ListItemSkuBundle
                   onSelect={(resource) => {
@@ -73,7 +78,11 @@ export function useAddItemOverlay(): OverlayHook {
                   {...props}
                 />
               )}
-              emptyState={<ListEmptyState />}
+              emptyState={
+                <ListEmptyState
+                  scope={filterType.current === 'skus' ? 'noSKUs' : 'noBundles'}
+                />
+              }
             />
           </Spacer>
         </OverlayElement>

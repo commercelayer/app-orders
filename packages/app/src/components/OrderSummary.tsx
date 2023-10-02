@@ -5,6 +5,8 @@ import { useSelectShippingMethodOverlay } from '#hooks/useSelectShippingMethodOv
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Button,
+  Dropdown,
+  DropdownItem,
   ResourceOrderSummary,
   Section,
   Spacer,
@@ -223,14 +225,25 @@ const ActionButton: React.FC<{ order: Order }> = ({ order }) => {
               })
           }}
         />
-        <Button
-          variant='link'
-          onClick={() => {
-            showAddItemOverlay()
-          }}
-        >
-          Add item
-        </Button>
+        <Dropdown
+          dropdownLabel='Add item'
+          dropdownItems={
+            <>
+              <DropdownItem
+                label='Add a SKU'
+                onClick={() => {
+                  showAddItemOverlay('skus')
+                }}
+              />
+              <DropdownItem
+                label='Add a bundle'
+                onClick={() => {
+                  showAddItemOverlay('bundles')
+                }}
+              />
+            </>
+          }
+        />
       </>
     )
   }
