@@ -37,7 +37,7 @@ export const ListItemSkuBundle = withSkeletonTemplate<Props>(
           <Text tag='div' weight='bold'>
             {resource.name}{' '}
             {resource.type === 'bundles' && (
-              <Badge label='Bundle' variant='teal' />
+              <Badge variant='teal'>Bundle</Badge>
             )}
           </Text>
         </div>
