@@ -188,7 +188,7 @@ const ActionButton: React.FC<{ order: Order }> = ({ order }) => {
   const { dispatch } = useTriggerAttribute(order.id)
   const { mutateOrder } = useOrderDetails(order.id)
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
-    useAddItemOverlay()
+    useAddItemOverlay(order)
 
   const canEdit = order.status === 'placed' && order.payment_status !== 'unpaid'
   const isEditing = order.status === 'editing'
