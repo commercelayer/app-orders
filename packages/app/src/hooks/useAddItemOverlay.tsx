@@ -6,7 +6,8 @@ import {
   useOverlay,
   useResourceFilters
 } from '@commercelayer/app-elements'
-import type { Bundle, Sku } from '@commercelayer/sdk'
+import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
+import type { Bundle, Order, Sku } from '@commercelayer/sdk'
 import { useRef } from 'react'
 import { navigate, useSearch } from 'wouter/use-location'
 
@@ -15,9 +16,41 @@ interface OverlayHook {
   Overlay: React.FC<{ onConfirm: (resource: Sku | Bundle) => void }>
 }
 
-export function useAddItemOverlay(): OverlayHook {
+export function useAddItemOverlay(order: Order): OverlayHook {
   const { Overlay: OverlayElement, open, close } = useOverlay()
   const filterType = useRef<'skus' | 'bundles'>('skus')
+
+  const instructions: FiltersInstructions = [
+    {
+      label: 'Search',
+      type: 'textSearch',
+      sdk: {
+        predicate: ['name', 'code'].join('_or_') + '_cont'
+      },
+      render: {
+        component: 'searchBar'
+      }
+    }
+  ]
+
+  if (filterType.current === 'bundles') {
+    instructions.push({
+      label: 'Markets',
+      type: 'options',
+      sdk: {
+        predicate: 'market_id_eq',
+        defaultOptions: order.market?.id != null ? [order.market?.id] : []
+      },
+      hidden: true,
+      render: {
+        component: 'inputToggleButton',
+        props: {
+          mode: 'multi',
+          options: []
+        }
+      }
+    })
+  }
 
   return {
     show: (type) => {
@@ -27,18 +60,7 @@ export function useAddItemOverlay(): OverlayHook {
     Overlay: ({ onConfirm }) => {
       const queryString = useSearch()
       const { SearchWithNav, FilteredList } = useResourceFilters({
-        instructions: [
-          {
-            label: 'Search',
-            type: 'textSearch',
-            sdk: {
-              predicate: ['name', 'code'].join('_or_') + '_cont'
-            },
-            render: {
-              component: 'searchBar'
-            }
-          }
-        ]
+        instructions
       })
 
       return (
@@ -66,6 +88,18 @@ export function useAddItemOverlay(): OverlayHook {
           <Spacer top='14'>
             <FilteredList
               type={filterType.current}
+              query={{
+                fields: {
+                  customers: [
+                    'id',
+                    'email',
+                    'total_orders_count',
+                    'created_at',
+                    'updated_at',
+                    'customer_group'
+                  ]
+                }
+              }}
               ItemTemplate={(props) => (
                 <ListItemSkuBundle
                   onSelect={(resource) => {
