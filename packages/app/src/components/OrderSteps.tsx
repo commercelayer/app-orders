@@ -1,3 +1,4 @@
+import type { BadgeProps } from '@commercelayer/app-elements'
 import {
   Badge,
   Spacer,
@@ -8,14 +9,15 @@ import {
   getOrderStatusName,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import type { BadgeVariant } from '@commercelayer/app-elements/dist/ui/atoms/Badge'
 import type { Order } from '@commercelayer/sdk'
 
 interface Props {
   order: Order
 }
 
-function getOrderStatusBadgeVariant(status: Order['status']): BadgeVariant {
+function getOrderStatusBadgeVariant(
+  status: Order['status']
+): BadgeProps['variant'] {
   switch (status) {
     case 'approved':
       return 'success-solid'
@@ -31,7 +33,7 @@ function getOrderStatusBadgeVariant(status: Order['status']): BadgeVariant {
 
 function getPaymentStatusBadgeVariant(
   status: Order['payment_status']
-): BadgeVariant {
+): BadgeProps['variant'] {
   switch (status) {
     case 'paid':
     case 'free':
@@ -51,7 +53,7 @@ function getPaymentStatusBadgeVariant(
 
 function getFulfillmentStatusBadgeVariant(
   status: Order['fulfillment_status']
-): BadgeVariant {
+): BadgeProps['variant'] {
   switch (status) {
     case 'fulfilled':
       return 'success-solid'

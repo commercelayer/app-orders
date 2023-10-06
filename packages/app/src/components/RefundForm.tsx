@@ -10,9 +10,9 @@ import {
   ListDetails,
   ListDetailsItem,
   PageLayout,
-  Spacer
+  Spacer,
+  type CurrencyCode
 } from '@commercelayer/app-elements'
-import type { CurrencyCode } from '@commercelayer/app-elements/dist/ui/forms/InputCurrency/currencies'
 import type { Capture, Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'

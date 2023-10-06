@@ -1,4 +1,5 @@
 import { PaymentMethod } from '#components/PaymentMethod'
+import type { AvatarProps } from '@commercelayer/app-elements'
 import {
   Avatar,
   Icon,
@@ -6,7 +7,6 @@ import {
   Section,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import type { AvatarProps } from '@commercelayer/app-elements/dist/ui/atoms/Avatar'
 import type { Order } from '@commercelayer/sdk'
 import { hasPaymentMethod } from './PaymentMethod'
 
