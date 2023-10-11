@@ -23,8 +23,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@commercelayer/app-elements':
-        specifier: ^1.1.0
-        version: 1.1.0(@commercelayer/sdk@5.15.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.47.0)(react@18.2.0)(wouter@2.12.0)
+        specifier: ^1.2.0
+        version: 1.2.0(@commercelayer/sdk@5.15.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.47.0)(react@18.2.0)(wouter@2.12.0)
       '@commercelayer/sdk':
         specifier: 5.15.0
         version: 5.15.0
@@ -358,8 +358,8 @@ packages:
     dev: true
     optional: true
 
-  /@commercelayer/app-elements@1.1.0(@commercelayer/sdk@5.15.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.47.0)(react@18.2.0)(wouter@2.12.0):
-    resolution: {integrity: sha512-mi3c3q0RD3oV+7ZhIN9Wtv4NKaX8xJ5J+hDYVg7D8blobyf5eXI3j8Sj12gsv4IbN6miWBsCPx9i10tmjXN1IA==}
+  /@commercelayer/app-elements@1.2.0(@commercelayer/sdk@5.15.0)(query-string@8.1.0)(react-dom@18.2.0)(react-hook-form@7.47.0)(react@18.2.0)(wouter@2.12.0):
+    resolution: {integrity: sha512-4nwX+U+aDh9zJQPc3gidxDegsSOqCWrAhP3p06RLSy6Ua8vjmGGnqlyF031kGG+al/TXARj+fsDr+aDxyNUAuA==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x
@@ -2000,6 +2000,17 @@ packages:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
+    dev: false
+
+  /axios@1.5.1:
+    resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
+    dependencies:
+      follow-redirects: 1.15.2
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: true
 
   /babel-plugin-macros@3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
@@ -5634,7 +5645,7 @@ packages:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.46
       '@zkochan/js-yaml': 0.0.6
-      axios: 1.5.0
+      axios: 1.5.1
       chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
