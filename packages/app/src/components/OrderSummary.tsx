@@ -4,6 +4,7 @@ import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useSelectShippingMethodOverlay } from '#hooks/useSelectShippingMethodOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
+  Alert,
   Button,
   Dropdown,
   DropdownItem,
@@ -11,10 +12,12 @@ import {
   Section,
   Spacer,
   Text,
+  formatCentsToCurrency,
   getOrderDisplayStatus,
   getOrderTriggerAttributeName,
   useCoreSdkProvider,
-  withSkeletonTemplate
+  withSkeletonTemplate,
+  type CurrencyCode
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 import { useMemo } from 'react'
@@ -43,6 +46,12 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       show: showSelectShippingMethodOverlay,
       Overlay: SelectShippingMethodOverlay
     } = useSelectShippingMethodOverlay()
+
+    const diffTotalAndPlacedTotal =
+      (order.total_amount_with_taxes_cents ?? 0) -
+      (order.place_total_amount_cents ?? 0)
+
+    const isOriginalOrderAmountExceeded = diffTotalAndPlacedTotal > 0
 
     const standardFooterActions: FooterActions = useMemo(() => {
       return triggerAttributes
@@ -109,7 +118,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
 
       const finishAction: FooterActions[number] = {
         label: 'Finish',
-        disabled: isLoading,
+        disabled: isLoading || isOriginalOrderAmountExceeded,
         onClick: () => {
           void dispatch('_stop_editing')
         }
@@ -137,34 +146,50 @@ export const OrderSummary = withSkeletonTemplate<Props>(
     ])
 
     return (
-      <Section title='Summary' actionButton={<ActionButton order={order} />}>
-        <ResourceOrderSummary
-          order={order}
-          editable={order.status === 'editing'}
-          onChange={() => {
-            void mutateOrder()
-          }}
-          footerActions={[...standardFooterActions, ...editingFooterActions]}
-        />
+      <>
+        {isOriginalOrderAmountExceeded && order.currency_code != null && (
+          <Spacer bottom='14'>
+            <Alert status='warning'>
+              The new total is {order.formatted_total_amount_with_taxes},{' '}
+              {formatCentsToCurrency(
+                diffTotalAndPlacedTotal,
+                order.currency_code as Uppercase<CurrencyCode>
+              )}{' '}
+              more than the original total.
+              <br />
+              Adjust the total to make it equal or less.
+            </Alert>
+          </Spacer>
+        )}
+        <Section title='Summary' actionButton={<ActionButton order={order} />}>
+          <ResourceOrderSummary
+            order={order}
+            editable={order.status === 'editing'}
+            onChange={() => {
+              void mutateOrder()
+            }}
+            footerActions={[...standardFooterActions, ...editingFooterActions]}
+          />
 
-        {renderErrorMessages(errors)}
+          {renderErrorMessages(errors)}
 
-        <CaptureOverlay
-          order={order}
-          onConfirm={() => {
-            void dispatch('_capture')
-          }}
-        />
+          <CaptureOverlay
+            order={order}
+            onConfirm={() => {
+              void dispatch('_capture')
+            }}
+          />
 
-        <CancelOverlay
-          order={order}
-          onConfirm={() => {
-            void dispatch('_cancel')
-          }}
-        />
+          <CancelOverlay
+            order={order}
+            onConfirm={() => {
+              void dispatch('_cancel')
+            }}
+          />
 
-        <SelectShippingMethodOverlay order={order} />
-      </Section>
+          <SelectShippingMethodOverlay order={order} />
+        </Section>
+      </>
     )
   }
 )
