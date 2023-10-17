@@ -51,7 +51,8 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       (order.total_amount_with_taxes_cents ?? 0) -
       (order.place_total_amount_cents ?? 0)
 
-    const isOriginalOrderAmountExceeded = diffTotalAndPlacedTotal > 0
+    const isOriginalOrderAmountExceeded =
+      order.status === 'editing' && diffTotalAndPlacedTotal > 0
 
     const standardFooterActions: FooterActions = useMemo(() => {
       return triggerAttributes
