@@ -16,6 +16,7 @@ import {
   getOrderDisplayStatus,
   getOrderTriggerAttributeName,
   useCoreSdkProvider,
+  useTokenProvider,
   withSkeletonTemplate,
   type CurrencyCode
 } from '@commercelayer/app-elements'
@@ -209,15 +210,26 @@ function renderErrorMessages(errors?: string[]): JSX.Element {
   )
 }
 
+function arrayOf<T>(arr: T[]): T[] {
+  return arr
+}
+
 const ActionButton: React.FC<{ order: Order }> = ({ order }) => {
   const { sdkClient } = useCoreSdkProvider()
+  const { canUser } = useTokenProvider()
   const { dispatch } = useTriggerAttribute(order.id)
   const { mutateOrder } = useOrderDetails(order.id)
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
     useAddItemOverlay(order)
 
-  const canEdit = order.status === 'placed' && order.payment_status !== 'unpaid'
-  const isEditing = order.status === 'editing'
+  const canEdit =
+    order.status === 'placed' &&
+    arrayOf<Order['payment_status']>(['free', 'authorized', 'paid']).includes(
+      order.payment_status
+    ) &&
+    canUser('update', 'orders')
+
+  const isEditing = order.status === 'editing' && canUser('update', 'orders')
 
   if (canEdit) {
     return (

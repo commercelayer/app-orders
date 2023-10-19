@@ -58,6 +58,7 @@ export const instructions: FiltersInstructions = [
           { value: 'paid', label: 'Paid' },
           { value: 'voided', label: 'Voided' },
           { value: 'refunded', label: 'Refunded' },
+          { value: 'partially_refunded', label: 'Partially refunded' },
           { value: 'free', label: 'Free' },
           { value: 'unpaid', label: 'Unpaid' }
         ]
