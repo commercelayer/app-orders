@@ -4,13 +4,15 @@ import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Dropdown,
   DropdownItem,
-  getOrderDisplayStatus,
-  getOrderTriggerAttributeName,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 import { useMemo, type FC } from 'react'
 import { useLocation } from 'wouter'
+import {
+  getTriggerAttributeName,
+  getTriggerAttributes
+} from './OrderSummary/orderDictionary'
 
 export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   const { canUser } = useTokenProvider()
@@ -37,7 +39,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
 
   const excludedTriggerAttributes = ['_return']
   const triggerMenuActions = useMemo(() => {
-    const { triggerAttributes } = getOrderDisplayStatus(order)
+    const triggerAttributes = getTriggerAttributes(order)
     return getTriggerAttributesForUser(canUser).filter(
       (attr) =>
         triggerAttributes.includes(attr) &&
@@ -50,16 +52,14 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
       triggerAttribute !== '_return' && (
         <DropdownItem
           key={triggerAttribute}
-          label={getOrderTriggerAttributeName(triggerAttribute)}
+          label={getTriggerAttributeName(triggerAttribute)}
           onClick={() => {
             // refund action has its own form page
             if (triggerAttribute === '_refund') {
               setLocation(appRoutes.refund.makePath(order.id))
               return
             }
-            if (triggerAttribute === '_return') {
-              return
-            }
+
             void dispatch(triggerAttribute)
           }}
         />
@@ -79,7 +79,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   )
 }
 
-type UITriggerAttributes = Parameters<typeof getOrderTriggerAttributeName>[0]
+type UITriggerAttributes = Parameters<typeof getTriggerAttributeName>[0]
 
 type CanUserSignature = ReturnType<typeof useTokenProvider>['canUser']
 function getTriggerAttributesForUser(

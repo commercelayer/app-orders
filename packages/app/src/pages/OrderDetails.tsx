@@ -6,6 +6,7 @@ import { OrderReturns } from '#components/OrderReturns'
 import { OrderShipments } from '#components/OrderShipments'
 import { OrderSteps } from '#components/OrderSteps'
 import { OrderSummary } from '#components/OrderSummary'
+import { OrderSummaryFromElements } from '#components/OrderSummaryFromElements'
 import { ScrollToTop } from '#components/ScrollToTop'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
@@ -121,6 +122,9 @@ export function OrderDetails(): JSX.Element {
           </Spacer>
           <Spacer top='14'>
             <OrderSummary order={order} />
+          </Spacer>
+          <Spacer top='14'>
+            <OrderSummaryFromElements order={order} />
           </Spacer>
           <Spacer top='14'>
             <OrderCustomer order={order} />

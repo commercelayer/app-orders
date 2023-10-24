@@ -1,7 +1,7 @@
-import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
+import { useAddItemOverlay } from '#components/OrderSummary/hooks/useAddItemOverlay'
+import { useSelectShippingMethodOverlay } from '#components/OrderSummary/hooks/useSelectShippingMethodOverlay'
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useOrderDetails } from '#hooks/useOrderDetails'
-import { useSelectShippingMethodOverlay } from '#hooks/useSelectShippingMethodOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Alert,
@@ -13,8 +13,6 @@ import {
   Spacer,
   Text,
   formatCentsToCurrency,
-  getOrderDisplayStatus,
-  getOrderTriggerAttributeName,
   useCoreSdkProvider,
   useTokenProvider,
   withSkeletonTemplate,
@@ -23,6 +21,10 @@ import {
 import { type Order } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 import { useCaptureOverlay } from '../hooks/useCaptureOverlay'
+import {
+  getTriggerAttributeName,
+  getTriggerAttributes
+} from './OrderSummary/orderDictionary'
 
 interface Props {
   order: Order
@@ -32,10 +34,10 @@ type FooterActions = NonNullable<
   Parameters<typeof ResourceOrderSummary>[0]['footerActions']
 >
 
-export const OrderSummary = withSkeletonTemplate<Props>(
+export const OrderSummaryFromElements = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
     const { mutateOrder } = useOrderDetails(order.id)
-    const { triggerAttributes } = getOrderDisplayStatus(order)
+    const triggerAttributes = getTriggerAttributes(order)
 
     const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
 
@@ -70,7 +72,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         )
         .map((triggerAttribute) => {
           return {
-            label: getOrderTriggerAttributeName(triggerAttribute),
+            label: getTriggerAttributeName(triggerAttribute),
             variant: triggerAttribute === '_cancel' ? 'secondary' : 'primary',
             disabled: isLoading,
             onClick: () => {
@@ -89,7 +91,6 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         })
     }, [
       dispatch,
-      getOrderTriggerAttributeName,
       isLoading,
       showCancelOverlay,
       showCaptureOverlay,
@@ -102,7 +103,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       }
 
       const cancelAction: FooterActions[number] = {
-        label: getOrderTriggerAttributeName('_cancel'),
+        label: getTriggerAttributeName('_cancel'),
         variant: 'secondary',
         disabled: isLoading,
         onClick: () => {
@@ -139,13 +140,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
           ? continueAction
           : finishAction
       ]
-    }, [
-      getOrderTriggerAttributeName,
-      isLoading,
-      order,
-      showCancelOverlay,
-      dispatch
-    ])
+    }, [isLoading, order, showCancelOverlay, dispatch])
 
     return (
       <>

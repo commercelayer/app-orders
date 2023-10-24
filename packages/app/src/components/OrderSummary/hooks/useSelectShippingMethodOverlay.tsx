@@ -16,7 +16,7 @@ import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, Form, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { useOrderDetails } from './useOrderDetails'
+import { useOrderDetails } from '../../../hooks/useOrderDetails'
 
 interface OverlayHook {
   show: () => void
