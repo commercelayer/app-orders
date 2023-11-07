@@ -31,6 +31,10 @@ export const appRoutes = {
   refund: {
     path: '/list/:orderId/refund',
     makePath: (orderId: string) => `/list/${orderId}/refund`
+  },
+  return: {
+    path: '/list/:orderId/return',
+    makePath: (orderId: string) => `/list/${orderId}/return`
   }
 }
 

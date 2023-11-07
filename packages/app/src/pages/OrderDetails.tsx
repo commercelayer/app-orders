@@ -2,6 +2,7 @@ import { OrderAddresses } from '#components/OrderAddresses'
 import { OrderCustomer } from '#components/OrderCustomer'
 import { OrderDetailsContextMenu } from '#components/OrderDetailsContextMenu'
 import { OrderPayment } from '#components/OrderPayment'
+import { OrderReturns } from '#components/OrderReturns'
 import { OrderShipments } from '#components/OrderShipments'
 import { OrderSteps } from '#components/OrderSteps'
 import { OrderSummary } from '#components/OrderSummary'
@@ -129,6 +130,9 @@ export function OrderDetails(): JSX.Element {
           </Spacer>
           <Spacer top='14'>
             <OrderShipments order={order} />
+          </Spacer>
+          <Spacer top='14'>
+            <OrderReturns order={order} />
           </Spacer>
           {!['pending', 'draft'].includes(order.status) && (
             <Spacer top='14'>

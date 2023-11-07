@@ -8,6 +8,10 @@ export const orderIncludeAttribute = [
   'shipping_address',
   'billing_address',
   'shipments',
+  'returns',
+  'returns.return_line_items',
+  'returns.origin_address',
+  'returns.destination_address',
   'payment_method',
   'payment_source'
 ]
