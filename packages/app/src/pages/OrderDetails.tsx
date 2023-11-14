@@ -18,7 +18,7 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  formatDate,
+  formatDateWithPredicate,
   goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -72,19 +72,19 @@ export function OrderDetails(): JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>
           {order.placed_at != null ? (
             <div>
-              {`Placed on ${formatDate({
+              {formatDateWithPredicate({
+                predicate: 'Placed',
                 isoDate: order.placed_at ?? '',
-                timezone: user?.timezone,
-                format: 'full'
-              })}`}
+                timezone: user?.timezone
+              })}
             </div>
           ) : order.updated_at != null ? (
             <div>
-              {`Updated on ${formatDate({
-                isoDate: order.updated_at ?? '',
-                timezone: user?.timezone,
-                format: 'full'
-              })}`}
+              {formatDateWithPredicate({
+                predicate: 'Updated',
+                isoDate: order.placed_at ?? '',
+                timezone: user?.timezone
+              })}
             </div>
           ) : null}
           {order.reference != null && <div>Ref. {order.reference}</div>}
