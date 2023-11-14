@@ -10,6 +10,7 @@ import { ScrollToTop } from '#components/ScrollToTop'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
+import { useOrderReturns } from '#hooks/useOrderReturns'
 import { isMockedId } from '#mocks'
 import {
   Button,
@@ -37,6 +38,7 @@ export function OrderDetails(): JSX.Element {
   const orderId = params?.orderId ?? ''
 
   const { order, isLoading } = useOrderDetails(orderId)
+  const { returns, isLoadingReturns } = useOrderReturns(orderId)
 
   if (orderId === undefined || !canUser('read', 'orders')) {
     return (
@@ -132,9 +134,11 @@ export function OrderDetails(): JSX.Element {
           <Spacer top='14'>
             <OrderShipments order={order} />
           </Spacer>
-          <Spacer top='14'>
-            <OrderReturns order={order} />
-          </Spacer>
+          {!isLoadingReturns && (
+            <Spacer top='14'>
+              <OrderReturns returns={returns} />
+            </Spacer>
+          )}
           {!isMockedId(order.id) && (
             <Spacer top='14'>
               <ResourceMetadata

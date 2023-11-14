@@ -5,11 +5,10 @@ import {
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import type { Order, Return } from '@commercelayer/sdk'
-import type { SetNonNullable, SetRequired } from 'type-fest'
+import type { Return } from '@commercelayer/sdk'
 
 interface Props {
-  order: Order
+  returns?: Return[]
 }
 
 const returnStatuses = [
@@ -47,26 +46,23 @@ const renderReturn: React.FC<Return> = (returnObj) => {
     )
 }
 
-function hasReturns(
-  order: Order
-): order is SetRequired<SetNonNullable<Order, 'returns'>, 'returns'> {
+function hasReturns(returns: Return[]): boolean {
   return (
-    order.returns != null &&
-    order.returns.length > 0 &&
-    order.returns.filter((returnObj) =>
-      returnStatuses.includes(returnObj.status)
-    ).length > 0
+    returns != null &&
+    returns.length > 0 &&
+    returns.filter((returnObj) => returnStatuses.includes(returnObj.status))
+      .length > 0
   )
 }
 
-export const OrderReturns = withSkeletonTemplate<Props>(({ order }) => {
-  if (!hasReturns(order)) {
+export const OrderReturns = withSkeletonTemplate<Props>(({ returns }) => {
+  if (returns == null || !hasReturns(returns)) {
     return null
   }
 
   return (
     <Section title='Returns'>
-      {order.returns.map((returnObj) => renderReturn(returnObj))}
+      {returns.map((returnObj) => renderReturn(returnObj))}
     </Section>
   )
 })
