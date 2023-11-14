@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@ac-dev/countries-service": "^1.2.0",
-    "@commercelayer/app-elements": "^1.4.5",
-    "@commercelayer/sdk": "5.19.1",
+    "@commercelayer/app-elements": "^1.6.3",
+    "@commercelayer/sdk": "5.21.1",
     "@hookform/resolvers": "^3.3.2",
     "lodash": "^4.17.21",
     "query-string": "^8.1.0",
