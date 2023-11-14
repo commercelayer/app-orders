@@ -15,6 +15,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceMetadata,
   ResourceTags,
   SkeletonTemplate,
   Spacer,
@@ -134,6 +135,17 @@ export function OrderDetails(): JSX.Element {
           <Spacer top='14'>
             <OrderReturns order={order} />
           </Spacer>
+          {!isMockedId(order.id) && (
+            <Spacer top='14'>
+              <ResourceMetadata
+                resourceType='orders'
+                resourceId={order.id}
+                overlay={{
+                  title: pageTitle
+                }}
+              />
+            </Spacer>
+          )}
           {!['pending', 'draft'].includes(order.status) && (
             <Spacer top='14'>
               <Timeline order={order} />
