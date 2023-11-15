@@ -10,15 +10,17 @@ import { ScrollToTop } from '#components/ScrollToTop'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
+import { useOrderReturns } from '#hooks/useOrderReturns'
 import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceMetadata,
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  formatDate,
+  formatDateWithPredicate,
   goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -36,6 +38,7 @@ export function OrderDetails(): JSX.Element {
   const orderId = params?.orderId ?? ''
 
   const { order, isLoading } = useOrderDetails(orderId)
+  const { returns, isLoadingReturns } = useOrderReturns(orderId)
 
   if (orderId === undefined || !canUser('read', 'orders')) {
     return (
@@ -72,19 +75,19 @@ export function OrderDetails(): JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>
           {order.placed_at != null ? (
             <div>
-              {`Placed on ${formatDate({
+              {formatDateWithPredicate({
+                predicate: 'Placed',
                 isoDate: order.placed_at ?? '',
-                timezone: user?.timezone,
-                format: 'full'
-              })}`}
+                timezone: user?.timezone
+              })}
             </div>
           ) : order.updated_at != null ? (
             <div>
-              {`Updated on ${formatDate({
-                isoDate: order.updated_at ?? '',
-                timezone: user?.timezone,
-                format: 'full'
-              })}`}
+              {formatDateWithPredicate({
+                predicate: 'Updated',
+                isoDate: order.placed_at ?? '',
+                timezone: user?.timezone
+              })}
             </div>
           ) : null}
           {order.reference != null && <div>Ref. {order.reference}</div>}
@@ -131,9 +134,22 @@ export function OrderDetails(): JSX.Element {
           <Spacer top='14'>
             <OrderShipments order={order} />
           </Spacer>
-          <Spacer top='14'>
-            <OrderReturns order={order} />
-          </Spacer>
+          {!isLoadingReturns && (
+            <Spacer top='14'>
+              <OrderReturns returns={returns} />
+            </Spacer>
+          )}
+          {!isMockedId(order.id) && (
+            <Spacer top='14'>
+              <ResourceMetadata
+                resourceType='orders'
+                resourceId={order.id}
+                overlay={{
+                  title: pageTitle
+                }}
+              />
+            </Spacer>
+          )}
           {!['pending', 'draft'].includes(order.status) && (
             <Spacer top='14'>
               <Timeline order={order} />
