@@ -1,14 +1,15 @@
 import {
   RemoveButton,
   useCoreSdkProvider,
-  withSkeletonTemplate,
-  type ResourceOrderSummaryProps
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
+import type { Order } from '@commercelayer/sdk'
 import { useState } from 'react'
 
-export const DeleteCouponButton = withSkeletonTemplate<
-  Pick<ResourceOrderSummaryProps, 'onChange' | 'order'>
->(({ order, onChange }) => {
+export const DeleteCouponButton = withSkeletonTemplate<{
+  order: Order
+  onChange: () => void
+}>(({ order, onChange }) => {
   const { sdkClient } = useCoreSdkProvider()
   const [isDeleting, setIsDeleting] = useState(false)
   return (
