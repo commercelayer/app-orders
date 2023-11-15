@@ -1,17 +1,10 @@
 import type { TriggerAttribute } from '@commercelayer/app-elements'
 import type { Order, OrderUpdate } from '@commercelayer/sdk'
 
-type UITriggerAttributes =
-  | Extract<
-      TriggerAttribute<OrderUpdate>,
-      | '_approve'
-      | '_cancel'
-      | '_capture'
-      | '_refund'
-      | '_archive'
-      | '_unarchive'
-    >
-  | '_return'
+type UITriggerAttributes = Extract<
+  TriggerAttribute<OrderUpdate>,
+  '_approve' | '_cancel' | '_capture' | '_refund' | '_archive' | '_unarchive'
+>
 
 export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
   const archiveTriggerAttribute: Extract<
@@ -51,11 +44,11 @@ export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
 
     case 'approved:paid:fulfilled':
     case 'approved:partially_refunded:fulfilled':
-      return ['_refund', '_return', archiveTriggerAttribute]
+      return ['_refund', archiveTriggerAttribute]
 
     case 'approved:free:fulfilled': // TODO: This could be a gift-card and what If i do return?
     case 'cancelled:refunded:fulfilled':
-      return ['_return', archiveTriggerAttribute]
+      return [archiveTriggerAttribute]
 
     case 'approved:paid:not_required':
     case 'approved:partially_refunded:not_required':
@@ -83,7 +76,6 @@ export function getTriggerAttributeName(
     _cancel: 'Cancel',
     _capture: 'Capture payment',
     _refund: 'Refund',
-    _return: 'Return',
     _unarchive: 'Unarchive'
   }
 

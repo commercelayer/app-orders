@@ -1,6 +1,5 @@
 import {
-  Button,
-  Icon,
+  RemoveButton,
   useCoreSdkProvider,
   withSkeletonTemplate,
   type ResourceOrderSummaryProps
@@ -13,10 +12,8 @@ export const DeleteCouponButton = withSkeletonTemplate<
   const { sdkClient } = useCoreSdkProvider()
   const [isDeleting, setIsDeleting] = useState(false)
   return (
-    <Button
+    <RemoveButton
       disabled={isDeleting}
-      variant='link'
-      className='block'
       onClick={() => {
         setIsDeleting(true)
         void sdkClient.orders
@@ -29,8 +26,6 @@ export const DeleteCouponButton = withSkeletonTemplate<
             onChange?.()
           })
       }}
-    >
-      <Icon name='truck' style={{ fontSize: '18px', fontWeight: 'bold' }} />
-    </Button>
+    />
   )
 })

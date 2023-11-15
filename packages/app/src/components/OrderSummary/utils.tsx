@@ -130,3 +130,7 @@ export function renderAdjustments(order: Order): JSX.Element | null {
     </>
   )
 }
+
+export function arrayOf<T>(arr: T[]): T[] {
+  return arr
+}

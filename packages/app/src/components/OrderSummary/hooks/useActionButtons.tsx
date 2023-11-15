@@ -12,11 +12,11 @@ import { useOrderStatus } from './useOrderStatus'
 import { useSelectShippingMethodOverlay } from './useSelectShippingMethodOverlay'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const useFooterActions = ({ order }: { order: Order }) => {
+export const useActionButtons = ({ order }: { order: Order }) => {
   const triggerAttributes = getTriggerAttributes(order)
 
   const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
-  const { hasInvalidShipments } = useOrderStatus(order)
+  const { hasInvalidShipments, hasLineItems } = useOrderStatus(order)
 
   const { show: showCaptureOverlay, Overlay: CaptureOverlay } =
     useCaptureOverlay()
@@ -40,11 +40,8 @@ export const useFooterActions = ({ order }: { order: Order }) => {
           triggerAttribute
         ): triggerAttribute is Exclude<
           typeof triggerAttribute,
-          '_archive' | '_unarchive' | '_refund' | '_return'
-        > =>
-          !['_archive', '_unarchive', '_refund', '_return'].includes(
-            triggerAttribute
-          )
+          '_archive' | '_unarchive' | '_refund'
+        > => !['_archive', '_unarchive', '_refund'].includes(triggerAttribute)
       )
       .map((triggerAttribute) => {
         return {
@@ -89,7 +86,7 @@ export const useFooterActions = ({ order }: { order: Order }) => {
 
     const continueAction: ActionButtonsProps['actions'][number] = {
       label: 'Continue',
-      disabled: isLoading,
+      disabled: isLoading || !hasLineItems,
       onClick: () => {
         showSelectShippingMethodOverlay()
       }
@@ -97,22 +94,21 @@ export const useFooterActions = ({ order }: { order: Order }) => {
 
     const finishAction: ActionButtonsProps['actions'][number] = {
       label: 'Finish',
-      disabled: isLoading || isOriginalOrderAmountExceeded,
+      disabled: isLoading || isOriginalOrderAmountExceeded || !hasLineItems,
       onClick: () => {
         void dispatch('_stop_editing')
       }
     }
 
-    const hasInvalidOrderAmount = false
-    // const hasInvalidOrderAmount = (order.total_amount_cents ?? Infinity) > 9900
-
-    return [
-      cancelAction,
-      hasInvalidShipments || hasInvalidOrderAmount
-        ? continueAction
-        : finishAction
-    ]
-  }, [isLoading, order, showCancelOverlay, dispatch])
+    return [cancelAction, hasInvalidShipments ? continueAction : finishAction]
+  }, [
+    isLoading,
+    hasLineItems,
+    order,
+    showCancelOverlay,
+    showSelectShippingMethodOverlay,
+    dispatch
+  ])
 
   return {
     actions: [...standardFooterActions, ...editingFooterActions],

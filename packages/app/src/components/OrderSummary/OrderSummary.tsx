@@ -1,24 +1,18 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   ActionButtons,
-  Alert,
-  Button,
   ResourceLineItems,
   Section,
   Spacer,
   Text,
   useTokenProvider,
-  withSkeletonTemplate,
-  type ResourceLineItemsProps
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
-import { DeleteCouponButton } from './DeleteCouponButton'
 import { HeaderActions } from './HeaderActions'
-import { SummaryRows } from './SummaryRows'
-import { useAddCouponOverlay } from './hooks/useAddCouponOverlay'
-import { useFooterActions } from './hooks/useFooterActions'
+import { useActionButtons } from './hooks/useActionButtons'
 import { useOrderStatus } from './hooks/useOrderStatus'
-import { renderTotalRow } from './utils'
+import { useSummaryRows } from './hooks/useSummaryRows'
 
 interface Props {
   order: Order
@@ -28,6 +22,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
     const { canUser } = useTokenProvider()
     const { mutateOrder } = useOrderDetails(order.id)
+    const { summaryRows } = useSummaryRows(order)
     const {
       actions,
       errors,
@@ -35,72 +30,9 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       CancelOverlay,
       CaptureOverlay,
       SelectShippingMethodOverlay
-    } = useFooterActions({ order })
+    } = useActionButtons({ order })
 
-    const { isEditing, diffTotalAndPlacedTotal } = useOrderStatus(order)
-
-    const { Overlay: AddCouponOverlay, open: openAddCouponOverlay } =
-      useAddCouponOverlay(order, () => {
-        void mutateOrder()
-      })
-
-    const footer: ResourceLineItemsProps['footer'] = []
-
-    if (isEditing || order.coupon_code != null) {
-      footer.push({
-        key: 'coupon',
-        element: (
-          <Spacer top='4' bottom='4'>
-            <AddCouponOverlay />
-            {renderTotalRow({
-              label: 'Coupon',
-              value:
-                order.coupon_code == null ? (
-                  <Button
-                    variant='link'
-                    onClick={() => {
-                      openAddCouponOverlay()
-                    }}
-                  >
-                    Add coupon
-                  </Button>
-                ) : (
-                  <div className='flex gap-3'>
-                    {order.coupon_code}
-                    {isEditing && (
-                      <DeleteCouponButton
-                        order={order}
-                        onChange={() => {
-                          void mutateOrder()
-                        }}
-                      />
-                    )}
-                  </div>
-                )
-            })}
-          </Spacer>
-        )
-      })
-    }
-
-    footer.push({
-      key: 'summary',
-      element: (
-        <>
-          <SummaryRows order={order} editable={isEditing} />
-          {diffTotalAndPlacedTotal != null && (
-            <Spacer bottom='8'>
-              <Alert status='warning'>
-                The new total is {order.formatted_total_amount_with_taxes},{' '}
-                {diffTotalAndPlacedTotal} more than the original total.
-                <br />
-                Adjust the total to make it equal or less.
-              </Alert>
-            </Spacer>
-          )}
-        </>
-      )
-    })
+    const { isEditing } = useOrderStatus(order)
 
     return (
       <Section title='Summary' actionButton={<HeaderActions order={order} />}>
@@ -110,7 +42,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
           onChange={() => {
             void mutateOrder()
           }}
-          footer={footer}
+          footer={summaryRows}
         />
 
         {canUser('update', 'orders') && <ActionButtons actions={actions} />}

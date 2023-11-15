@@ -10,6 +10,7 @@ import {
 import { type Order } from '@commercelayer/sdk'
 import { useAddItemOverlay } from './hooks/useAddItemOverlay'
 import { useOrderStatus } from './hooks/useOrderStatus'
+import { arrayOf } from './utils'
 
 export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
   const { sdkClient } = useCoreSdkProvider()
@@ -36,7 +37,9 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
         variant='link'
         onClick={(e) => {
           e.preventDefault()
-          void dispatch('_start_editing')
+          void dispatch('_start_editing').catch(() => {
+            void mutateOrder()
+          })
         }}
       >
         Edit
@@ -86,8 +89,4 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
   }
 
   return null
-}
-
-function arrayOf<T>(arr: T[]): T[] {
-  return arr
 }

@@ -34,7 +34,7 @@ export function useAdjustTotalOverlay(order: Order, onChange?: () => void) {
   )
   const formMethods = useForm({
     defaultValues: {
-      adjustTotal: manualAdjustment?.total_amount_cents ?? 0
+      adjustTotal: manualAdjustment?.total_amount_cents
     },
     resolver: zodResolver(validationSchema)
   })
@@ -54,7 +54,7 @@ export function useAdjustTotalOverlay(order: Order, onChange?: () => void) {
               await createManualAdjustmentLineItem({
                 sdkClient,
                 order,
-                amount: values.adjustTotal
+                amount: values.adjustTotal ?? 0
               }).then(() => {
                 onChange?.()
                 close()
@@ -64,7 +64,7 @@ export function useAdjustTotalOverlay(order: Order, onChange?: () => void) {
                 sdkClient,
                 order,
                 lineItemId: manualAdjustment.id,
-                amount: values.adjustTotal
+                amount: values.adjustTotal ?? 0
               }).then(() => {
                 onChange?.()
                 close()
@@ -81,7 +81,7 @@ export function useAdjustTotalOverlay(order: Order, onChange?: () => void) {
             <Spacer bottom='8'>
               <HookedInputCurrency
                 isClearable
-                allowNegativeValue
+                sign='-+'
                 disabled={isSubmitting}
                 currencyCode={currencyCode}
                 label='Amount'

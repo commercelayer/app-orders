@@ -41,6 +41,7 @@ export function useTriggerAttribute(orderId: string): TriggerAttributeHook {
             ? error.errors.map(({ detail }) => detail)
             : ['Could not cancel this order']
         )
+        await Promise.reject(error)
       } finally {
         setIsLoading(false)
       }

@@ -1,5 +1,5 @@
 import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemSkuBundle } from '#components/ListItemSkuBundle'
+import { ListItemSkuBundle } from '#components/OrderSummary/ListItemSkuBundle'
 import {
   PageHeading,
   Spacer,
