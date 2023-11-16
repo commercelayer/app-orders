@@ -2,6 +2,7 @@ import { isMockedId } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
 
 export const orderIncludeAttribute = [
+  'stock_location',
   'order',
   'order.market',
   'return_line_items'
