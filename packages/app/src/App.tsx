@@ -9,6 +9,7 @@ import { Refund } from '#pages/Refund'
 import {
   CoreSdkProvider,
   ErrorBoundary,
+  GTMProvider,
   MetaTags,
   TokenProvider
 } from '@commercelayer/app-elements'
@@ -39,37 +40,39 @@ export function App(): JSX.Element {
           loadingElement={<div />}
           organizationSlug={import.meta.env.PUBLIC_SELF_HOSTED_SLUG}
         >
-          <MetaTags />
-          <CoreSdkProvider>
-            <Router base={basePath}>
-              <Switch>
-                <Route path={appRoutes.home.path}>
-                  <Home />
-                </Route>
-                <Route path={appRoutes.list.path}>
-                  <OrderList />
-                </Route>
-                <Route path={appRoutes.filters.path}>
-                  <Filters />
-                </Route>
-                <Route path={appRoutes.details.path}>
-                  <OrderDetails />
-                </Route>
-                <Route path={appRoutes.editAddress.path}>
-                  <EditAddress />
-                </Route>
-                <Route path={appRoutes.refund.path}>
-                  <Refund />
-                </Route>
-                <Route path={appRoutes.return.path}>
-                  <CreateReturn />
-                </Route>
-                <Route>
-                  <ErrorNotFound />
-                </Route>
-              </Switch>
-            </Router>
-          </CoreSdkProvider>
+          <GTMProvider gtmId={window.clAppConfig.gtmId}>
+            <MetaTags />
+            <CoreSdkProvider>
+              <Router base={basePath}>
+                <Switch>
+                  <Route path={appRoutes.home.path}>
+                    <Home />
+                  </Route>
+                  <Route path={appRoutes.list.path}>
+                    <OrderList />
+                  </Route>
+                  <Route path={appRoutes.filters.path}>
+                    <Filters />
+                  </Route>
+                  <Route path={appRoutes.details.path}>
+                    <OrderDetails />
+                  </Route>
+                  <Route path={appRoutes.editAddress.path}>
+                    <EditAddress />
+                  </Route>
+                  <Route path={appRoutes.refund.path}>
+                    <Refund />
+                  </Route>
+                  <Route path={appRoutes.return.path}>
+                    <CreateReturn />
+                  </Route>
+                  <Route>
+                    <ErrorNotFound />
+                  </Route>
+                </Switch>
+              </Router>
+            </CoreSdkProvider>
+          </GTMProvider>
         </TokenProvider>
       </SWRConfig>
     </ErrorBoundary>
