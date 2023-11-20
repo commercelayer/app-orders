@@ -15,12 +15,10 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@ac-dev/countries-service": "^1.2.0",
     "@commercelayer/app-elements": "1.7.1",
     "@commercelayer/sdk": "5.22.1",
     "@hookform/resolvers": "^3.3.2",
     "lodash": "^4.17.21",
-    "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",

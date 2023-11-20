@@ -1,5 +1,4 @@
 import { CreateReturn } from '#pages/CreateReturn'
-import { EditAddress } from '#pages/EditAddress'
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
 import { Home } from '#pages/Home'
@@ -56,9 +55,6 @@ export function App(): JSX.Element {
                   </Route>
                   <Route path={appRoutes.details.path}>
                     <OrderDetails />
-                  </Route>
-                  <Route path={appRoutes.editAddress.path}>
-                    <EditAddress />
                   </Route>
                   <Route path={appRoutes.refund.path}>
                     <Refund />
