@@ -2,8 +2,10 @@ import {
   Button,
   HookedForm,
   HookedInputCurrency,
+  HookedInputSelect,
   PageLayout,
   Spacer,
+  Text,
   useCoreSdkProvider,
   useOverlay,
   type CurrencyCode
@@ -15,26 +17,53 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { getManualAdjustment, manualAdjustmentReferenceOrigin } from '../utils'
 
+interface Props {
+  order: Order
+  onChange?: () => void
+  close: () => void
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function useAdjustTotalOverlay(order: Order, onChange?: () => void) {
+export function useAdjustTotalOverlay(
+  order: Props['order'],
+  onChange?: Props['onChange']
+) {
+  const { Overlay, open, close } = useOverlay()
+
+  return {
+    close,
+    open,
+    Overlay: () => (
+      <Overlay>
+        <Form order={order} onChange={onChange} close={close} />
+      </Overlay>
+    )
+  }
+}
+
+const Form: React.FC<Props> = ({ order, onChange, close }) => {
   const currencyCode = order.currency_code as Uppercase<CurrencyCode>
   const manualAdjustment = getManualAdjustment(order)
   const { sdkClient } = useCoreSdkProvider()
-  const { Overlay, open, close } = useOverlay()
 
   const validationSchema = useMemo(
     () =>
       z.object({
+        type: z.literal('-').or(z.literal('+')),
         adjustTotal: z.number({
-          required_error: 'Please enter a negative or positive value.',
-          invalid_type_error: 'Please enter a negative or positive value.'
+          required_error: 'Please enter an amount.',
+          invalid_type_error: 'Please enter an amount.'
         })
       }),
     []
   )
   const formMethods = useForm({
     defaultValues: {
-      adjustTotal: manualAdjustment?.total_amount_cents
+      type: (manualAdjustment?.total_amount_cents ?? -1) > 0 ? '+' : '-',
+      adjustTotal:
+        manualAdjustment?.total_amount_cents != null
+          ? Math.abs(manualAdjustment?.total_amount_cents)
+          : null
     },
     resolver: zodResolver(validationSchema)
   })
@@ -42,60 +71,81 @@ export function useAdjustTotalOverlay(order: Order, onChange?: () => void) {
     formState: { isSubmitting }
   } = formMethods
 
-  return {
-    close,
-    open,
-    Overlay: () => (
-      <Overlay>
-        <HookedForm
-          {...formMethods}
-          onSubmit={async (values) => {
-            if (manualAdjustment == null) {
-              await createManualAdjustmentLineItem({
-                sdkClient,
-                order,
-                amount: values.adjustTotal ?? 0
-              }).then(() => {
-                onChange?.()
-                close()
-              })
-            } else {
-              await updateManualAdjustmentLineItem({
-                sdkClient,
-                order,
-                lineItemId: manualAdjustment.id,
-                amount: values.adjustTotal ?? 0
-              }).then(() => {
-                onChange?.()
-                close()
-              })
-            }
-          }}
-        >
-          <PageLayout
-            title='Adjust total'
-            onGoBack={() => {
-              close()
-            }}
-          >
-            <Spacer bottom='8'>
-              <HookedInputCurrency
-                isClearable
-                sign='-+'
-                disabled={isSubmitting}
-                currencyCode={currencyCode}
-                label='Amount'
-                name='adjustTotal'
-              />
-            </Spacer>
-            <Button type='submit' fullWidth disabled={isSubmitting}>
-              Apply
-            </Button>
-          </PageLayout>
-        </HookedForm>
-      </Overlay>
-    )
-  }
+  return (
+    <HookedForm
+      {...formMethods}
+      onSubmit={async (values) => {
+        if (manualAdjustment == null) {
+          await createManualAdjustmentLineItem({
+            sdkClient,
+            order,
+            amount: (values.adjustTotal ?? 0) * parseInt(`${values.type}1`)
+          }).then(() => {
+            onChange?.()
+            close()
+          })
+        } else {
+          await updateManualAdjustmentLineItem({
+            sdkClient,
+            order,
+            lineItemId: manualAdjustment.id,
+            amount: (values.adjustTotal ?? 0) * parseInt(`${values.type}1`)
+          }).then(() => {
+            onChange?.()
+            close()
+          })
+        }
+      }}
+    >
+      <PageLayout
+        title='Adjust total'
+        onGoBack={() => {
+          close()
+        }}
+      >
+        <div style={{ display: 'flex', width: '100%', gap: '1rem' }}>
+          <div style={{ flexBasis: '6rem' }}>
+            <HookedInputSelect
+              name='type'
+              label='Type'
+              initialValues={[
+                {
+                  label: '-',
+                  value: '-'
+                },
+                {
+                  label: '+',
+                  value: '+'
+                }
+              ]}
+              isClearable={false}
+              isSearchable={false}
+            />
+          </div>
+          <div style={{ flexGrow: '1' }}>
+            <HookedInputCurrency
+              isClearable
+              sign='+'
+              disabled={isSubmitting}
+              currencyCode={currencyCode}
+              label='Amount'
+              name='adjustTotal'
+            />
+          </div>
+        </div>
+        <Spacer top='2'>
+          <Text variant='info'>
+            Select a positive amount type to increase the order total.
+          </Text>
+        </Spacer>
+        <Spacer top='14'>
+          <Button type='submit' fullWidth disabled={isSubmitting}>
+            Apply
+          </Button>
+        </Spacer>
+      </PageLayout>
+    </HookedForm>
+  )
 }
 
 async function createManualAdjustmentLineItem({
