@@ -24,11 +24,6 @@ export function useOrderStatus(order: Order) {
   const isOriginalOrderAmountExceeded =
     order.status === 'editing' && diffTotalAndPlacedTotal > 0
 
-  const hasInvalidShipments =
-    (order.shipments?.length ?? 0) <= 0 ||
-    (order.shipments?.filter((shipment) => shipment.shipping_method == null)
-      ?.length ?? 0) > 0
-
   function isGiftCard(
     item: LineItem
   ): item is Extract<LineItem, LineItem> & { item_type: 'gift_cards' } {
@@ -40,13 +35,28 @@ export function useOrderStatus(order: Order) {
     )
   }
 
-  const hasLineItems =
-    (order.line_items?.filter(
+  const shoppableLineItems =
+    order.line_items?.filter(
       (lineItem) =>
         arrayOf<LineItem['item_type']>(['skus', 'bundles']).includes(
           lineItem.item_type
         ) || isGiftCard(lineItem)
-    )?.length ?? 0) > 0
+    ) ?? []
+
+  const hasLineItems = shoppableLineItems.length > 0
+
+  const shippableLineItems = shoppableLineItems.filter(
+    (lineItem) => lineItem.sku?.do_not_ship !== true
+  )
+
+  const hasShippableLineItems = shippableLineItems.length > 0
+
+  const hasInvalidShipments =
+    !hasLineItems ||
+    (hasShippableLineItems &&
+      ((order.shipments?.length ?? 0) <= 0 ||
+        (order.shipments?.filter((shipment) => shipment.shipping_method == null)
+          ?.length ?? 0) > 0))
 
   return {
     /** Order is in `editing` status and user has permission to update it. */
@@ -55,6 +65,8 @@ export function useOrderStatus(order: Order) {
     hasLineItems,
     /** `true` when there's one or not shipments without a selected `shipping_method`. */
     hasInvalidShipments,
+    /** `true` when there's at least one shippable (do_not_ship = `false`) item. */
+    hasShippableLineItems,
     /** Difference between the current `total_amount` and the `place_total_amount`. */
     diffTotalAndPlacedTotal:
       isOriginalOrderAmountExceeded && currencyCode != null

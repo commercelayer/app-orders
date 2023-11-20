@@ -24,7 +24,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
 }) => {
   const { canUser } = useTokenProvider()
   const { mutateOrder } = useOrderDetails(order.id)
-  const { hasInvalidShipments } = useOrderStatus(order)
+  const { hasInvalidShipments, hasShippableLineItems } = useOrderStatus(order)
 
   const { Overlay: AdjustTotalOverlay, open: openAdjustTotalOverlay } =
     useAdjustTotalOverlay(order, () => {
@@ -81,6 +81,10 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
   }, [manualAdjustment])
 
   const shippingMethodRow = useMemo(() => {
+    if (!hasShippableLineItems) {
+      return
+    }
+
     const shippingMethodText =
       order.shipping_amount_cents !== 0 ? (
         order.formatted_shipping_amount

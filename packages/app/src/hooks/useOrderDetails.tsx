@@ -16,6 +16,7 @@ export const orderIncludeAttribute = [
   'payment_source',
 
   // order editing
+  'line_items.sku',
   'shipments.shipping_method',
   'shipments.available_shipping_methods',
   'shipments.stock_location',
