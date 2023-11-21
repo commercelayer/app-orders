@@ -109,13 +109,11 @@ export function CreateReturn(): JSX.Element {
                       title='Origin'
                       resource={returnObj.origin_address}
                       editable
-                      editPosition='bottom'
                     />
                     <ResourceAddress
                       title='Destination'
                       resource={returnObj.destination_address}
                       editable
-                      editPosition='bottom'
                     />
                   </Stack>
                 </Section>
