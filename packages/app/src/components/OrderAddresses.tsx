@@ -25,7 +25,6 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
               resource={order.billing_address}
               showBillingInfo
               editable
-              editPosition='bottom'
             />
           )}
           {order.shipping_address != null && (
@@ -33,7 +32,6 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
               title='Shipping address'
               resource={order.shipping_address}
               editable
-              editPosition='bottom'
             />
           )}
         </Stack>
