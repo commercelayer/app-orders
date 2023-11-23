@@ -1,5 +1,6 @@
-import { isMockedId, makeOrder } from '#mocks'
+import { makeOrder } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
+import isEmpty from 'lodash/isEmpty'
 
 export const orderIncludeAttribute = [
   'market',
@@ -8,10 +9,6 @@ export const orderIncludeAttribute = [
   'shipping_address',
   'billing_address',
   'shipments',
-  'returns',
-  'returns.return_line_items',
-  'returns.origin_address',
-  'returns.destination_address',
   'payment_method',
   'payment_source',
 
@@ -34,14 +31,15 @@ export function useOrderDetails(id: string) {
   } = useCoreApi(
     'orders',
     'retrieve',
-    [
-      id,
-      {
-        include: orderIncludeAttribute
-      }
-    ],
+    !isEmpty(id)
+      ? [
+          id,
+          {
+            include: orderIncludeAttribute
+          }
+        ]
+      : null,
     {
-      isPaused: () => isMockedId(id),
       fallbackData: makeOrder()
     }
   )
