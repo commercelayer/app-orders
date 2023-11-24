@@ -47,12 +47,14 @@ export function CreateReturn(): JSX.Element {
     isCreatingReturnLineItems
   } = useCreateReturnLineItems()
 
+  const [stockLocation, setStockLocation] = useState<StockLocation>()
   const [destinationAddress, setDestinationAddress] = useState<Address>()
   useEffect(() => {
     if (
       destinationAddress === undefined &&
       returnObj?.stock_location?.address != null
     ) {
+      setStockLocation(returnObj?.stock_location)
       setDestinationAddress(returnObj?.stock_location?.address)
     }
   }, [destinationAddress, returnObj])
@@ -89,7 +91,12 @@ export function CreateReturn(): JSX.Element {
     []
   )
 
-  if (returnObj == null || isMock(order) || destinationAddress == null)
+  if (
+    isMock(order) ||
+    returnObj == null ||
+    stockLocation == null ||
+    destinationAddress == null
+  )
     return <></>
 
   if (
@@ -141,6 +148,7 @@ export function CreateReturn(): JSX.Element {
             onSelect={(selectedOption) => {
               if (isSingleValueSelected(selectedOption)) {
                 if (selectedOption?.meta?.address != null) {
+                  setStockLocation(selectedOption?.meta as StockLocation)
                   setDestinationAddress(selectedOption?.meta?.address)
                 }
               }
@@ -161,7 +169,11 @@ export function CreateReturn(): JSX.Element {
               lineItems={returnableLineItems}
               apiError={createReturnLineItemsError}
               onSubmit={(formValues) => {
-                void createReturnLineItems(returnObj, formValues).then(() => {
+                void createReturnLineItems(
+                  returnObj,
+                  stockLocation,
+                  formValues
+                ).then(() => {
                   void mutateOrder().finally(() => {
                     setLocation(goBackUrl)
                   })
