@@ -1,6 +1,7 @@
 import {
   Icon,
   ListItem,
+  RadialProgress,
   Section,
   Text,
   formatDate,
@@ -32,7 +33,7 @@ function getIcon(status: Shipment['status']): JSX.Element | undefined {
     case 'shipped':
       return <Icon name='check' background='green' gap='large' />
     case 'upcoming':
-      return <Icon name='minus' background='gray' gap='large' />
+      return <RadialProgress icon='truck' />
   }
 }
 
@@ -48,7 +49,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
     settings: { mode }
   } = useTokenProvider()
 
-  const navigateToShipment = canAccess('customers')
+  const navigateToShipment = canAccess('shipments')
     ? navigateTo({
         destination: {
           app: 'shipments',
@@ -70,12 +71,13 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
           #{shipment.number}
         </Text>
         <Text size='small' tag='div' variant='info' weight='medium'>
-          {sanitizeShipmentStatus(shipment.status)} ·{' '}
           {formatDate({
             isoDate: shipment.updated_at,
             timezone: user?.timezone,
             format: 'date'
-          })}
+          })}{' '}
+          · {shipment.shipping_method?.name} ·{' '}
+          {sanitizeShipmentStatus(shipment.status)}
         </Text>
       </div>
       {canAccess('shipments') && <Icon name='caretRight' />}
@@ -90,7 +92,7 @@ function hasShipments(
     order.shipments != null &&
     order.shipments.length > 0 &&
     order.shipments.filter((shipment) =>
-      ['draft', 'upcoming', 'cancelled'].includes(shipment.status)
+      ['draft', 'cancelled'].includes(shipment.status)
     ).length === 0
   )
 }

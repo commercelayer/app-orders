@@ -4,23 +4,27 @@ import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Dropdown,
   DropdownItem,
-  getOrderDisplayStatus,
-  getOrderTriggerAttributeName,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 import { useMemo, type FC } from 'react'
 import { useLocation } from 'wouter'
+import {
+  getTriggerAttributeName,
+  getTriggerAttributes
+} from './OrderSummary/orderDictionary'
 
 export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
 
   const returnableLineItems = useReturnableList(order)
+
   const showReturnDropDownItem =
     canUser('create', 'returns') &&
     order.fulfillment_status === 'fulfilled' &&
     returnableLineItems.length > 0
+
   const createReturnDropDownItem = useMemo(() => {
     return showReturnDropDownItem ? (
       <DropdownItem
@@ -31,37 +35,32 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
         }}
       />
     ) : undefined
-  }, [order, returnableLineItems])
+  }, [order, returnableLineItems, showReturnDropDownItem])
 
   const { dispatch } = useTriggerAttribute(order.id)
 
-  const excludedTriggerAttributes = ['_return']
   const triggerMenuActions = useMemo(() => {
-    const { triggerAttributes } = getOrderDisplayStatus(order)
-    return getTriggerAttributesForUser(canUser).filter(
-      (attr) =>
-        triggerAttributes.includes(attr) &&
-        !excludedTriggerAttributes.includes(attr)
+    const triggerAttributes = getTriggerAttributes(order)
+    return getTriggerAttributesForUser(canUser).filter((attr) =>
+      triggerAttributes.includes(attr)
     )
   }, [order])
 
-  const triggerDropDownItems = triggerMenuActions.map(
-    (triggerAttribute) =>
-      triggerAttribute !== '_return' && (
-        <DropdownItem
-          key={triggerAttribute}
-          label={getOrderTriggerAttributeName(triggerAttribute)}
-          onClick={() => {
-            // refund action has its own form page
-            if (triggerAttribute === '_refund') {
-              setLocation(appRoutes.refund.makePath(order.id))
-              return
-            }
-            void dispatch(triggerAttribute)
-          }}
-        />
-      )
-  )
+  const triggerDropDownItems = triggerMenuActions.map((triggerAttribute) => (
+    <DropdownItem
+      key={triggerAttribute}
+      label={getTriggerAttributeName(triggerAttribute)}
+      onClick={() => {
+        // refund action has its own form page
+        if (triggerAttribute === '_refund') {
+          setLocation(appRoutes.refund.makePath(order.id))
+          return
+        }
+
+        void dispatch(triggerAttribute)
+      }}
+    />
+  ))
 
   if (!showReturnDropDownItem && triggerMenuActions.length === 0) {
     return null
@@ -76,7 +75,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   )
 }
 
-type UITriggerAttributes = Parameters<typeof getOrderTriggerAttributeName>[0]
+type UITriggerAttributes = Parameters<typeof getTriggerAttributeName>[0]
 
 type CanUserSignature = ReturnType<typeof useTokenProvider>['canUser']
 function getTriggerAttributesForUser(

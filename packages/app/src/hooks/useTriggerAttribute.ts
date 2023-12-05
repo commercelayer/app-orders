@@ -1,18 +1,16 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   useCoreSdkProvider,
-  type getOrderTriggerAttributeName
+  type TriggerAttribute
 } from '@commercelayer/app-elements'
-import { CommerceLayerStatic } from '@commercelayer/sdk'
+import { CommerceLayerStatic, type OrderUpdate } from '@commercelayer/sdk'
 import { useCallback, useState } from 'react'
 import { orderIncludeAttribute } from './useOrderDetails'
-
-type UITriggerAttributes = Parameters<typeof getOrderTriggerAttributeName>[0]
 
 interface TriggerAttributeHook {
   isLoading: boolean
   errors?: string[]
-  dispatch: (triggerAttribute: UITriggerAttributes) => Promise<void>
+  dispatch: (triggerAttribute: TriggerAttribute<OrderUpdate>) => Promise<void>
 }
 
 export function useTriggerAttribute(orderId: string): TriggerAttributeHook {
@@ -43,6 +41,7 @@ export function useTriggerAttribute(orderId: string): TriggerAttributeHook {
             ? error.errors.map(({ detail }) => detail)
             : ['Could not cancel this order']
         )
+        await Promise.reject(error)
       } finally {
         setIsLoading(false)
       }
