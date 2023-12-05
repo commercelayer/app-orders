@@ -29,7 +29,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
     canUser('update', 'orders')
 
   /** Define whether the `editing` feature is on or off. */
-  const editFeature = false
+  const editFeature = true
 
   if (editFeature && canEdit) {
     return (
