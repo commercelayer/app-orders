@@ -5,6 +5,7 @@ export const orderIncludeAttribute = [
   'market',
   'customer',
   'line_items',
+  'line_items.line_item_options',
   'shipping_address',
   'billing_address',
   'shipments',
