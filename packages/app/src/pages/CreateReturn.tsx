@@ -2,6 +2,7 @@ import { FormReturn } from '#components/FormReturn'
 import { ScrollToTop } from '#components/ScrollToTop'
 import { appRoutes } from '#data/routes'
 import { useCreateReturnLineItems } from '#hooks/useCreateReturnLineItems'
+import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useReturn } from '#hooks/useReturn'
 import { useReturnableList } from '#hooks/useReturnableList'
@@ -9,14 +10,19 @@ import { isMock } from '#mocks'
 import {
   Button,
   EmptyState,
+  InputSelect,
   PageLayout,
   ResourceAddress,
   Section,
   SkeletonTemplate,
   Spacer,
   Stack,
-  useTokenProvider
+  isSingleValueSelected,
+  useTokenProvider,
+  type InputSelectValue
 } from '@commercelayer/app-elements'
+import type { Address, StockLocation } from '@commercelayer/sdk'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
 export function CreateReturn(): JSX.Element {
@@ -24,13 +30,14 @@ export function CreateReturn(): JSX.Element {
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.return.path)
 
-  const orderId = params?.orderId
+  const orderId = params?.orderId ?? ''
   const goBackUrl =
     orderId != null
       ? appRoutes.details.makePath(orderId)
       : appRoutes.home.makePath()
 
-  const { order, isLoading, mutateOrder } = useOrderDetails(orderId ?? '')
+  const { order, isLoading, mutateOrder } = useOrderDetails(orderId)
+  const { inventoryModel } = useMarketInventoryModel(order.market?.id)
   const returnObj = useReturn(order)
 
   const returnableLineItems = useReturnableList(order)
@@ -40,7 +47,57 @@ export function CreateReturn(): JSX.Element {
     isCreatingReturnLineItems
   } = useCreateReturnLineItems()
 
-  if (returnObj == null || isMock(order)) return <></>
+  const [stockLocation, setStockLocation] = useState<StockLocation>()
+  const [destinationAddress, setDestinationAddress] = useState<Address>()
+  useEffect(() => {
+    if (
+      destinationAddress === undefined &&
+      returnObj?.stock_location?.address != null
+    ) {
+      setStockLocation(returnObj?.stock_location)
+      setDestinationAddress(returnObj?.stock_location?.address)
+    }
+  }, [destinationAddress, returnObj])
+
+  const orderInventoryReturnLocations =
+    inventoryModel?.inventory_return_locations ?? []
+
+  const stockLocations = orderInventoryReturnLocations
+    .filter((item) => item.stock_location != null)
+    .map((item) => {
+      return item.stock_location as StockLocation
+    })
+
+  const stockLocationToSelectOption = useCallback(
+    (stockLocation: StockLocation): InputSelectValue => {
+      return {
+        value: stockLocation.id,
+        label: `${stockLocation.name}`,
+        meta: stockLocation
+      }
+    },
+    []
+  )
+
+  const stockLocationsToSelectOptions = useCallback(
+    (stockLocations: StockLocation[]): InputSelectValue[] =>
+      stockLocations.map((stockLocation) => {
+        return {
+          value: stockLocation.id,
+          label: `${stockLocation.name}`,
+          meta: stockLocation
+        }
+      }),
+    []
+  )
+
+  if (
+    isMock(order) ||
+    returnObj == null ||
+    stockLocation == null ||
+    destinationAddress == null
+  )
+    return <></>
 
   if (
     order.fulfillment_status !== 'fulfilled' ||
@@ -79,6 +136,26 @@ export function CreateReturn(): JSX.Element {
       }}
     >
       <ScrollToTop />
+      {stockLocations.length > 1 && (
+        <Spacer bottom='12'>
+          <InputSelect
+            label='To'
+            isClearable={false}
+            initialValues={stockLocationsToSelectOptions(stockLocations)}
+            defaultValue={stockLocationToSelectOption(
+              returnObj.stock_location as StockLocation
+            )}
+            onSelect={(selectedOption) => {
+              if (isSingleValueSelected(selectedOption)) {
+                if (selectedOption?.meta?.address != null) {
+                  setStockLocation(selectedOption?.meta as StockLocation)
+                  setDestinationAddress(selectedOption?.meta?.address)
+                }
+              }
+            }}
+          />
+        </Spacer>
+      )}
       {returnableLineItems != null && returnableLineItems.length !== 0 && (
         <>
           <Spacer bottom='12'>
@@ -92,7 +169,11 @@ export function CreateReturn(): JSX.Element {
               lineItems={returnableLineItems}
               apiError={createReturnLineItemsError}
               onSubmit={(formValues) => {
-                void createReturnLineItems(returnObj, formValues).then(() => {
+                void createReturnLineItems(
+                  returnObj,
+                  stockLocation,
+                  formValues
+                ).then(() => {
                   void mutateOrder().finally(() => {
                     setLocation(goBackUrl)
                   })
@@ -101,7 +182,7 @@ export function CreateReturn(): JSX.Element {
             />
           </Spacer>
           {returnObj.origin_address != null &&
-            returnObj.destination_address != null && (
+            returnObj?.stock_location?.address != null && (
               <Spacer bottom='12'>
                 <Section title='Addresses' border='none'>
                   <Stack>
@@ -112,8 +193,7 @@ export function CreateReturn(): JSX.Element {
                     />
                     <ResourceAddress
                       title='Destination'
-                      resource={returnObj.destination_address}
-                      editable
+                      resource={destinationAddress}
                     />
                   </Stack>
                 </Section>

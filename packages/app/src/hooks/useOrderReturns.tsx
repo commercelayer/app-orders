@@ -2,10 +2,12 @@ import { isMockedId } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
 
 export const orderIncludeAttribute = [
-  'stock_location',
   'order',
   'order.market',
-  'return_line_items'
+  'return_line_items',
+  'origin_address',
+  'stock_location',
+  'stock_location.address'
 ]
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -20,10 +22,7 @@ export function useOrderReturns(id: string) {
           {
             include: orderIncludeAttribute
           }
-        ],
-    {
-      isPaused: () => isMockedId(id)
-    }
+        ]
   )
 
   return { returns, isLoadingReturns }

@@ -1,4 +1,5 @@
 import { appRoutes } from '#data/routes'
+import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
 import { useReturnableList } from '#hooks/useReturnableList'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
@@ -17,12 +18,14 @@ import {
 export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
-
+  const { inventoryModel } = useMarketInventoryModel(order.market?.id)
   const returnableLineItems = useReturnableList(order)
-
+  const orderReturnStockLocation =
+    inventoryModel?.inventory_return_locations ?? []
   const showReturnDropDownItem =
     canUser('create', 'returns') &&
     order.fulfillment_status === 'fulfilled' &&
+    orderReturnStockLocation.length > 0 &&
     returnableLineItems.length > 0
 
   const createReturnDropDownItem = useMemo(() => {

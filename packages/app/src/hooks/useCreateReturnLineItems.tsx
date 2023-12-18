@@ -3,7 +3,8 @@ import { useCoreSdkProvider } from '@commercelayer/app-elements'
 import type {
   CommerceLayerClient,
   Return,
-  ReturnLineItem
+  ReturnLineItem,
+  StockLocation
 } from '@commercelayer/sdk'
 import { useCallback, useState } from 'react'
 
@@ -12,6 +13,7 @@ interface CreateReturnLineItemsHook {
   createReturnLineItemsError?: any
   createReturnLineItems: (
     returnObj: Return,
+    stockLocation: StockLocation,
     formValues: ReturnFormValues
   ) => Promise<void>
 }
@@ -25,7 +27,7 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
     useState<CreateReturnLineItemsHook['createReturnLineItemsError']>()
 
   const createReturnLineItems: CreateReturnLineItemsHook['createReturnLineItems'] =
-    useCallback(async (returnObj, formValues) => {
+    useCallback(async (returnObj, stockLocation, formValues) => {
       setIsCreatingReturnLineItems(true)
       setCreateReturnLineItemsError(undefined)
       const returnLineItems: ReturnLineItem[] = []
@@ -43,10 +45,16 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
                 .then((lineItem) => returnLineItems.push(lineItem))
           )
         )
-        await sdkClient.returns.update({
-          id: returnObj.id,
-          _request: true
-        })
+        await sdkClient.returns.update(
+          {
+            id: returnObj.id,
+            stock_location: sdkClient.stock_locations.relationship(
+              stockLocation.id
+            ),
+            _request: true
+          },
+          { include: ['stock_location'] }
+        )
       } catch (err) {
         // delete line items and return if they were partially created
         if (returnLineItems?.length > 0) {
