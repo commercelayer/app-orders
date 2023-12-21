@@ -6,7 +6,6 @@ import { OrderReturns } from '#components/OrderReturns'
 import { OrderShipments } from '#components/OrderShipments'
 import { OrderSteps } from '#components/OrderSteps'
 import { OrderSummary } from '#components/OrderSummary'
-import { ScrollToTop } from '#components/ScrollToTop'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
@@ -104,8 +103,8 @@ export function OrderDetails(): JSX.Element {
         icon: 'arrowLeft'
       }}
       gap='only-top'
+      scrollToTop
     >
-      <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
           {!isMockedId(order.id) && (

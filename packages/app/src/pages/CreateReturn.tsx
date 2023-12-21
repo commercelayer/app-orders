@@ -1,5 +1,4 @@
 import { FormReturn } from '#components/FormReturn'
-import { ScrollToTop } from '#components/ScrollToTop'
 import { appRoutes } from '#data/routes'
 import { useCreateReturnLineItems } from '#hooks/useCreateReturnLineItems'
 import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
@@ -149,8 +148,8 @@ export function CreateReturn(): JSX.Element {
         label: orderId != null ? getOrderTitle(order) : 'Orders',
         icon: 'arrowLeft'
       }}
+      scrollToTop
     >
-      <ScrollToTop />
       {stockLocations.length > 1 && (
         <Spacer bottom='12'>
           <InputSelect
