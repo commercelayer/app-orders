@@ -23,8 +23,12 @@ export function useCaptureOverlay(): OverlayHook {
       <Overlay>
         <PageHeading
           title='Confirm capture'
-          onGoBack={() => {
-            close()
+          navigationButton={{
+            onClick: () => {
+              close()
+            },
+            label: 'Cancel',
+            icon: 'x'
           }}
           description='This action cannot be undone, proceed with caution.'
         />

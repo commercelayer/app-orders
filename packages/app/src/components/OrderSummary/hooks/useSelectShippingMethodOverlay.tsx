@@ -98,8 +98,12 @@ const Form: React.FC<Props> = ({ order, close }) => {
     >
       <PageLayout
         title='Select a shipping method'
-        onGoBack={() => {
-          close()
+        navigationButton={{
+          onClick: () => {
+            close()
+          },
+          label: 'Cancel',
+          icon: 'x'
         }}
       >
         {order.shipments?.map((shipment) => {

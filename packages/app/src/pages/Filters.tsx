@@ -9,17 +9,26 @@ export function Filters(): JSX.Element {
     instructions
   })
 
+  const searchParams = new URLSearchParams(location.search)
+
   return (
     <PageLayout
       title='Filters'
-      onGoBack={() => {
-        setLocation(
-          appRoutes.list.makePath(
-            adapters.adaptUrlQueryToUrlQuery({
-              queryString: location.search
-            })
+      navigationButton={{
+        onClick: () => {
+          setLocation(
+            appRoutes.list.makePath(
+              adapters.adaptUrlQueryToUrlQuery({
+                queryString: location.search
+              })
+            )
           )
-        )
+        },
+        label: searchParams.has('viewTitle')
+          ? // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+            (searchParams.get('viewTitle') as string)
+          : 'Orders',
+        icon: 'arrowLeft'
       }}
     >
       <FiltersForm

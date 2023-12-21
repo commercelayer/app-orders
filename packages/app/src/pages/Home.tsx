@@ -36,9 +36,13 @@ export function Home(): JSX.Element {
       title='Orders'
       mode={mode}
       gap='only-top'
-      onGoBack={() => {
-        window.location.href =
-          dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
+      navigationButton={{
+        onClick: () => {
+          window.location.href =
+            dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
+        },
+        label: 'Hub',
+        icon: 'arrowLeft'
       }}
     >
       <SearchWithNav

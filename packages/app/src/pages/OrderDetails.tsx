@@ -12,6 +12,7 @@ import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useOrderReturns } from '#hooks/useOrderReturns'
 import { isMockedId } from '#mocks'
+import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   EmptyState,
@@ -21,7 +22,6 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
-  goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -44,8 +44,12 @@ export function OrderDetails(): JSX.Element {
     return (
       <PageLayout
         title='Orders'
-        onGoBack={() => {
-          setLocation(appRoutes.home.makePath())
+        navigationButton={{
+          onClick: () => {
+            setLocation(appRoutes.home.makePath())
+          },
+          label: 'Orders',
+          icon: 'arrowLeft'
         }}
         mode={mode}
       >
@@ -61,8 +65,7 @@ export function OrderDetails(): JSX.Element {
     )
   }
 
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  const pageTitle = `${order.market?.name} #${order.number}`
+  const pageTitle = getOrderTitle(order)
 
   return (
     <PageLayout
@@ -93,11 +96,12 @@ export function OrderDetails(): JSX.Element {
           {order.reference != null && <div>Ref. {order.reference}</div>}
         </SkeletonTemplate>
       }
-      onGoBack={() => {
-        goBack({
-          setLocation,
-          defaultRelativePath: appRoutes.home.makePath()
-        })
+      navigationButton={{
+        onClick: () => {
+          setLocation(appRoutes.home.makePath())
+        },
+        label: 'Orders',
+        icon: 'arrowLeft'
       }}
       gap='only-top'
     >

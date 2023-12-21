@@ -83,14 +83,19 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
             close()
           })
           .catch((error) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             setApiError(error)
           })
       }}
     >
       <PageLayout
         title='Add coupon'
-        onGoBack={() => {
-          close()
+        navigationButton={{
+          onClick: () => {
+            close()
+          },
+          label: 'Cancel',
+          icon: 'x'
         }}
       >
         <Spacer bottom='8'>

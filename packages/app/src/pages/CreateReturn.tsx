@@ -7,6 +7,7 @@ import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useReturn } from '#hooks/useReturn'
 import { useReturnableList } from '#hooks/useReturnableList'
 import { isMock } from '#mocks'
+import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   EmptyState,
@@ -65,6 +66,7 @@ export function CreateReturn(): JSX.Element {
   const stockLocations = orderInventoryReturnLocations
     .filter((item) => item.stock_location != null)
     .map((item) => {
+      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
       return item.stock_location as StockLocation
     })
 
@@ -91,6 +93,11 @@ export function CreateReturn(): JSX.Element {
     []
   )
 
+  // const goBackUrl =
+  //   orderId != null
+  //     ? appRoutes.details.makePath(orderId)
+  //     : appRoutes.home.makePath()
+
   if (
     isMock(order) ||
     returnObj == null ||
@@ -107,8 +114,12 @@ export function CreateReturn(): JSX.Element {
     return (
       <PageLayout
         title='Request return'
-        onGoBack={() => {
-          setLocation(goBackUrl)
+        navigationButton={{
+          onClick: () => {
+            setLocation(goBackUrl)
+          },
+          label: orderId != null ? 'TODO Order title' : 'Orders',
+          icon: 'arrowLeft'
         }}
       >
         <EmptyState
@@ -131,8 +142,12 @@ export function CreateReturn(): JSX.Element {
           Request return
         </SkeletonTemplate>
       }
-      onGoBack={() => {
-        setLocation(goBackUrl)
+      navigationButton={{
+        onClick: () => {
+          setLocation(goBackUrl)
+        },
+        label: orderId != null ? getOrderTitle(order) : 'Orders',
+        icon: 'arrowLeft'
       }}
     >
       <ScrollToTop />
@@ -143,13 +158,16 @@ export function CreateReturn(): JSX.Element {
             isClearable={false}
             initialValues={stockLocationsToSelectOptions(stockLocations)}
             defaultValue={stockLocationToSelectOption(
+              // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
               returnObj.stock_location as StockLocation
             )}
             onSelect={(selectedOption) => {
               if (isSingleValueSelected(selectedOption)) {
                 if (selectedOption?.meta?.address != null) {
                   setStockLocation(selectedOption?.meta as StockLocation)
-                  setDestinationAddress(selectedOption?.meta?.address)
+                  setDestinationAddress(
+                    selectedOption?.meta?.address as Address
+                  )
                 }
               }
             }}

@@ -46,6 +46,9 @@
       "#hooks/*": [
         "src/hooks/*"
       ],
+      "#utils/*": [
+        "src/utils/*"
+      ]
     }
   },
   "include": [

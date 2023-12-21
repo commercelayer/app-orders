@@ -60,15 +60,19 @@ function returnsToReturnLineItems(returns: Return[]): ReturnLineItem[] {
         break
       }
 
+      const returnLineItemSkuCode = returnLineItem.sku_code ?? ''
+      const returnLineItemBundleCode = returnLineItem.bundle_code ?? ''
       const returnLineItemKey =
-        returnLineItem.sku_code ?? returnLineItem.bundle_code
+        returnLineItemSkuCode.length > 0
+          ? returnLineItemSkuCode
+          : returnLineItemBundleCode
 
-      const currentReturnLineItem = returnLineItems[returnLineItemKey as string]
+      const currentReturnLineItem = returnLineItems[returnLineItemKey]
 
       if (currentReturnLineItem != null) {
         currentReturnLineItem.quantity += currentReturnLineItem.quantity
       } else {
-        returnLineItems[returnLineItemKey as string] = {
+        returnLineItems[returnLineItemKey] = {
           ...returnLineItem,
           type: 'return_line_items',
           name: returnLineItem.name,

@@ -68,8 +68,12 @@ export function useAddItemOverlay(order: Order): OverlayHook {
           <PageHeading
             gap='only-top'
             title={filterType.current === 'skus' ? 'Add a SKU' : 'Add a bundle'}
-            onGoBack={() => {
-              close()
+            navigationButton={{
+              onClick: () => {
+                close()
+              },
+              label: 'Cancel',
+              icon: 'x'
             }}
           />
 
