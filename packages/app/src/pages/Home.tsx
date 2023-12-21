@@ -2,13 +2,13 @@ import { instructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
-  Icon,
   List,
   ListItem,
   PageLayout,
   RadialProgress,
   SkeletonTemplate,
   Spacer,
+  StatusIcon,
   Text,
   useResourceFilters,
   useTokenProvider
@@ -62,13 +62,19 @@ export function Home(): JSX.Element {
             >
               <ListItem
                 tag='a'
-                icon={<Icon name='arrowDown' background='orange' gap='small' />}
+                icon={
+                  <StatusIcon
+                    name='arrowDown'
+                    background='orange'
+                    gap='small'
+                  />
+                }
               >
                 <Text weight='semibold'>
                   {presets.awaitingApproval.viewTitle}{' '}
                   {formatCounter(counters?.awaitingApproval)}
                 </Text>
-                <Icon name='caretRight' />
+                <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
 
@@ -82,14 +88,18 @@ export function Home(): JSX.Element {
               <ListItem
                 tag='a'
                 icon={
-                  <Icon name='creditCard' background='orange' gap='small' />
+                  <StatusIcon
+                    name='creditCard'
+                    background='orange'
+                    gap='small'
+                  />
                 }
               >
                 <Text weight='semibold'>
                   {presets.paymentToCapture.viewTitle}{' '}
                   {formatCounter(counters?.paymentToCapture)}
                 </Text>
-                <Icon name='caretRight' />
+                <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
 
@@ -103,14 +113,18 @@ export function Home(): JSX.Element {
               <ListItem
                 tag='a'
                 icon={
-                  <Icon name='arrowClockwise' background='orange' gap='small' />
+                  <StatusIcon
+                    name='arrowClockwise'
+                    background='orange'
+                    gap='small'
+                  />
                 }
               >
                 <Text weight='semibold'>
                   {presets.fulfillmentInProgress.viewTitle}{' '}
                   {formatCounter(counters?.fulfillmentInProgress)}
                 </Text>
-                <Icon name='caretRight' />
+                <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
 
@@ -124,13 +138,17 @@ export function Home(): JSX.Element {
               <ListItem
                 tag='a'
                 icon={
-                  <Icon name='pencilSimple' background='orange' gap='small' />
+                  <StatusIcon
+                    name='pencilSimple'
+                    background='orange'
+                    gap='small'
+                  />
                 }
               >
                 <Text weight='semibold'>
                   {presets.editing.viewTitle} {formatCounter(counters?.editing)}
                 </Text>
-                <Icon name='caretRight' />
+                <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
           </List>
@@ -147,10 +165,12 @@ export function Home(): JSX.Element {
             >
               <ListItem
                 tag='a'
-                icon={<Icon name='asterisk' background='black' gap='small' />}
+                icon={
+                  <StatusIcon name='asterisk' background='black' gap='small' />
+                }
               >
                 <Text weight='semibold'>{presets.history.viewTitle}</Text>
-                <Icon name='caretRight' />
+                <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
             <Link
@@ -162,7 +182,7 @@ export function Home(): JSX.Element {
             >
               <ListItem tag='a' icon={<RadialProgress size='small' />}>
                 <Text weight='semibold'>{presets.pending.viewTitle}</Text>
-                <Icon name='caretRight' />
+                <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
             <Link
@@ -174,10 +194,10 @@ export function Home(): JSX.Element {
             >
               <ListItem
                 tag='a'
-                icon={<Icon name='minus' background='gray' gap='small' />}
+                icon={<StatusIcon name='minus' background='gray' gap='small' />}
               >
                 <Text weight='semibold'>{presets.archived.viewTitle}</Text>
-                <Icon name='caretRight' />
+                <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
           </List>

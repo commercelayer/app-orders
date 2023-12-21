@@ -1,8 +1,8 @@
 import {
   Avatar,
   Badge,
-  Icon,
   ListItem,
+  StatusIcon,
   Text,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -41,7 +41,7 @@ export const ListItemSkuBundle = withSkeletonTemplate<Props>(
             )}
           </Text>
         </div>
-        <Icon name='caretRight' />
+        <StatusIcon name='caretRight' />
       </ListItem>
     )
   }

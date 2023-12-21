@@ -2,9 +2,9 @@ import { PaymentMethod } from '#components/PaymentMethod'
 import type { AvatarProps } from '@commercelayer/app-elements'
 import {
   Avatar,
-  Icon,
   ListItem,
   Section,
+  StatusIcon,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
@@ -50,7 +50,7 @@ export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
         size='small'
       />
     ) : (
-      <Icon name='creditCard' background='teal' gap='large' />
+      <StatusIcon name='creditCard' background='teal' gap='large' />
     )
 
   if (!hasPaymentMethod(order) || order.payment_status === 'free') {

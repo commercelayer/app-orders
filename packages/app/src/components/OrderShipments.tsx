@@ -1,8 +1,8 @@
 import {
-  Icon,
   ListItem,
   RadialProgress,
   Section,
+  StatusIcon,
   Text,
   formatDate,
   navigateTo,
@@ -19,19 +19,19 @@ interface Props {
 function getIcon(status: Shipment['status']): JSX.Element | undefined {
   switch (status) {
     case 'cancelled':
-      return <Icon name='x' background='gray' gap='large' />
+      return <StatusIcon name='x' background='gray' gap='large' />
     case 'draft':
-      return <Icon name='minus' background='gray' gap='large' />
+      return <StatusIcon name='minus' background='gray' gap='large' />
     case 'on_hold':
-      return <Icon name='hourglass' background='orange' gap='large' />
+      return <StatusIcon name='hourglass' background='orange' gap='large' />
     case 'packing':
-      return <Icon name='package' background='orange' gap='large' />
+      return <StatusIcon name='package' background='orange' gap='large' />
     case 'picking':
-      return <Icon name='arrowDown' background='orange' gap='large' />
+      return <StatusIcon name='arrowDown' background='orange' gap='large' />
     case 'ready_to_ship':
-      return <Icon name='arrowUpRight' background='orange' gap='large' />
+      return <StatusIcon name='arrowUpRight' background='orange' gap='large' />
     case 'shipped':
-      return <Icon name='check' background='green' gap='large' />
+      return <StatusIcon name='check' background='green' gap='large' />
     case 'upcoming':
       return <RadialProgress icon='truck' />
   }
@@ -80,7 +80,7 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
           {sanitizeShipmentStatus(shipment.status)}
         </Text>
       </div>
-      {canAccess('shipments') && <Icon name='caretRight' />}
+      {canAccess('shipments') && <StatusIcon name='caretRight' />}
     </ListItem>
   )
 }
