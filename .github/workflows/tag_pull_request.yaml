@@ -4,6 +4,6 @@ on:
   pull_request_target:
 
 jobs:
-  tag:
+  tag-pull-request:
     uses: commercelayer/.github/.github/workflows/tag_pull_request.yaml@main
     secrets: inherit
