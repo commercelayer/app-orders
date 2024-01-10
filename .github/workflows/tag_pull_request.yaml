@@ -5,5 +5,5 @@ on:
 
 jobs:
   tag:
-    uses: commercelayer/.github-private/.github/workflows/tag_pull_request.yaml@main
+    uses: commercelayer/.github/.github/workflows/tag_pull_request.yaml@main
     secrets: inherit
