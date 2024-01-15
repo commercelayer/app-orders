@@ -1,4 +1,4 @@
-import { makeOrder } from '#mocks'
+import { isMockedId, makeOrder } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 
@@ -10,6 +10,7 @@ export const orderIncludeAttribute = [
   'shipping_address',
   'billing_address',
   'shipments',
+  'shipments.stock_transfers',
   'payment_method',
   'payment_source',
 
@@ -32,7 +33,7 @@ export function useOrderDetails(id: string) {
   } = useCoreApi(
     'orders',
     'retrieve',
-    !isEmpty(id)
+    !isMockedId(id) && !isEmpty(id)
       ? [
           id,
           {

@@ -1,5 +1,6 @@
 import { hasPaymentMethod, PaymentMethod } from '#components/PaymentMethod'
 import { appRoutes } from '#data/routes'
+import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   formatCentsToCurrency,
@@ -61,12 +62,16 @@ export function RefundForm({
   return (
     <PageLayout
       title='Make refund'
-      onGoBack={() => {
-        if (step === 'confirm') {
-          setStep('fields')
-        } else {
-          setLocation(appRoutes.details.makePath(order.id))
-        }
+      navigationButton={{
+        onClick: () => {
+          if (step === 'confirm') {
+            setStep('fields')
+          } else {
+            setLocation(appRoutes.details.makePath(order.id))
+          }
+        },
+        label: step === 'confirm' ? 'Back' : getOrderTitle(order),
+        icon: 'arrowLeft'
       }}
     >
       <HookedForm {...methods} onSubmit={onSubmit}>

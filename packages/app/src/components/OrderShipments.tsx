@@ -1,10 +1,6 @@
 import {
-  Icon,
-  ListItem,
-  RadialProgress,
+  ResourceListItem,
   Section,
-  Text,
-  formatDate,
   navigateTo,
   useTokenProvider,
   withSkeletonTemplate
@@ -16,35 +12,8 @@ interface Props {
   order: Order
 }
 
-function getIcon(status: Shipment['status']): JSX.Element | undefined {
-  switch (status) {
-    case 'cancelled':
-      return <Icon name='x' background='gray' gap='large' />
-    case 'draft':
-      return <Icon name='minus' background='gray' gap='large' />
-    case 'on_hold':
-      return <Icon name='hourglass' background='orange' gap='large' />
-    case 'packing':
-      return <Icon name='package' background='orange' gap='large' />
-    case 'picking':
-      return <Icon name='arrowDown' background='orange' gap='large' />
-    case 'ready_to_ship':
-      return <Icon name='arrowUpRight' background='orange' gap='large' />
-    case 'shipped':
-      return <Icon name='check' background='green' gap='large' />
-    case 'upcoming':
-      return <RadialProgress icon='truck' />
-  }
-}
-
-function sanitizeShipmentStatus(status: Shipment['status']): string {
-  const sanitizedStatus = status.replaceAll('_', ' ')
-  return sanitizedStatus.charAt(0).toUpperCase() + sanitizedStatus.slice(1)
-}
-
 const renderShipment = (shipment: Shipment): JSX.Element => {
   const {
-    user,
     canAccess,
     settings: { mode }
   } = useTokenProvider()
@@ -60,28 +29,12 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
     : {}
 
   return (
-    <ListItem
+    <ResourceListItem
       key={shipment.id}
+      resource={shipment}
       tag={canAccess('shipments') ? 'a' : 'div'}
-      icon={getIcon(shipment.status)}
       {...navigateToShipment}
-    >
-      <div>
-        <Text tag='div' weight='semibold'>
-          #{shipment.number}
-        </Text>
-        <Text size='small' tag='div' variant='info' weight='medium'>
-          {formatDate({
-            isoDate: shipment.updated_at,
-            timezone: user?.timezone,
-            format: 'date'
-          })}{' '}
-          · {shipment.shipping_method?.name} ·{' '}
-          {sanitizeShipmentStatus(shipment.status)}
-        </Text>
-      </div>
-      {canAccess('shipments') && <Icon name='caretRight' />}
-    </ListItem>
+    />
   )
 }
 

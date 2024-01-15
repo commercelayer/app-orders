@@ -36,8 +36,12 @@ export function OrderList(): JSX.Element {
       title={viewTitle ?? presets.history.viewTitle}
       mode={mode}
       gap='only-top'
-      onGoBack={() => {
-        setLocation(appRoutes.home.makePath())
+      navigationButton={{
+        onClick: () => {
+          setLocation(appRoutes.home.makePath())
+        },
+        label: 'Orders',
+        icon: 'arrowLeft'
       }}
     >
       <SearchWithNav
@@ -86,8 +90,8 @@ export function OrderList(): JSX.Element {
                 isUserCustomFiltered
                   ? 'userFiltered'
                   : viewTitle !== presets.history.viewTitle
-                  ? 'presetView'
-                  : 'history'
+                    ? 'presetView'
+                    : 'history'
               }
             />
           }

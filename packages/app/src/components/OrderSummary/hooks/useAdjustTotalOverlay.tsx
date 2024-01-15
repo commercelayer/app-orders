@@ -99,8 +99,12 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
     >
       <PageLayout
         title='Adjust total'
-        onGoBack={() => {
-          close()
+        navigationButton={{
+          onClick: () => {
+            close()
+          },
+          label: 'Cancel',
+          icon: 'x'
         }}
       >
         <div style={{ display: 'flex', width: '100%', gap: '1rem' }}>
