@@ -24,7 +24,7 @@ import {
   goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
+import { useLocation, useRoute } from 'wouter'
 
 export function OrderDetails(): JSX.Element {
   const {
@@ -59,9 +59,17 @@ export function OrderDetails(): JSX.Element {
         <EmptyState
           title='Not authorized'
           action={
-            <Link href={appRoutes.home.makePath()}>
-              <Button variant='primary'>Go back</Button>
-            </Link>
+            <Button
+              variant='primary'
+              onClick={() => {
+                goBack({
+                  setLocation,
+                  defaultRelativePath: appRoutes.home.makePath()
+                })
+              }}
+            >
+              Go back
+            </Button>
           }
         />
       </PageLayout>
