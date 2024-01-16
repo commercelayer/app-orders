@@ -21,6 +21,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
+  goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -45,9 +46,12 @@ export function OrderDetails(): JSX.Element {
         title='Orders'
         navigationButton={{
           onClick: () => {
-            setLocation(appRoutes.home.makePath())
+            goBack({
+              setLocation,
+              defaultRelativePath: appRoutes.home.makePath()
+            })
           },
-          label: 'Orders',
+          label: 'Back',
           icon: 'arrowLeft'
         }}
         mode={mode}
@@ -97,9 +101,12 @@ export function OrderDetails(): JSX.Element {
       }
       navigationButton={{
         onClick: () => {
-          setLocation(appRoutes.home.makePath())
+          goBack({
+            setLocation,
+            defaultRelativePath: appRoutes.home.makePath()
+          })
         },
-        label: 'Orders',
+        label: 'Back',
         icon: 'arrowLeft'
       }}
       gap='only-top'
