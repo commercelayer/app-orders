@@ -131,30 +131,32 @@ export function Home(): JSX.Element {
                 <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
-
-            <Link
-              href={appRoutes.list.makePath(
-                adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.editing
-                })
-              )}
-            >
-              <ListItem
-                tag='a'
-                icon={
-                  <StatusIcon
-                    name='pencilSimple'
-                    background='orange'
-                    gap='small'
-                  />
-                }
+            {counters?.editing != null && counters?.editing > 0 && (
+              <Link
+                href={appRoutes.list.makePath(
+                  adapters.adaptFormValuesToUrlQuery({
+                    formValues: presets.editing
+                  })
+                )}
               >
-                <Text weight='semibold'>
-                  {presets.editing.viewTitle} {formatCounter(counters?.editing)}
-                </Text>
-                <StatusIcon name='caretRight' />
-              </ListItem>
-            </Link>
+                <ListItem
+                  tag='a'
+                  icon={
+                    <StatusIcon
+                      name='pencilSimple'
+                      background='orange'
+                      gap='small'
+                    />
+                  }
+                >
+                  <Text weight='semibold'>
+                    {presets.editing.viewTitle}{' '}
+                    {formatCounter(counters?.editing)}
+                  </Text>
+                  <StatusIcon name='caretRight' />
+                </ListItem>
+              </Link>
+            )}
           </List>
         </Spacer>
 
