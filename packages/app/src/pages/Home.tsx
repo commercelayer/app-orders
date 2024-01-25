@@ -172,7 +172,11 @@ export function Home(): JSX.Element {
               <ListItem
                 tag='a'
                 icon={
-                  <StatusIcon name='asterisk' background='black' gap='small' />
+                  <StatusIcon
+                    name='asteriskSimple'
+                    background='black'
+                    gap='small'
+                  />
                 }
               >
                 <Text weight='semibold'>{presets.history.viewTitle}</Text>
