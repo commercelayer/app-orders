@@ -1,3 +1,5 @@
+import type { AppProps } from 'src/App'
+
 export {}
 
 declare global {
@@ -12,6 +14,9 @@ declare global {
        * Enable Google Tag Manager for the provided GTM ID.
        */
       gtmId?: string
+    }
+    clAppOrders: {
+      init: (node?: HTMLElement, options?: AppProps) => void
     }
   }
 }

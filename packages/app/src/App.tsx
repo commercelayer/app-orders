@@ -1,8 +1,6 @@
-import { CreateReturn } from '#pages/CreateReturn'
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
 import { Home } from '#pages/Home'
-import { OrderDetails } from '#pages/OrderDetails'
 import { OrderList } from '#pages/OrderList'
 import { Refund } from '#pages/Refund'
 import {
@@ -12,17 +10,22 @@ import {
   MetaTags,
   TokenProvider
 } from '@commercelayer/app-elements'
+import { Suspense, lazy, type FC } from 'react'
 import { SWRConfig } from 'swr'
 import { Route, Router, Switch } from 'wouter'
 import { appRoutes } from './data/routes'
 
-const isDev = Boolean(import.meta.env.DEV)
-const basePath =
-  import.meta.env.PUBLIC_PROJECT_PATH != null
-    ? `/${import.meta.env.PUBLIC_PROJECT_PATH}`
-    : undefined
+const OrderDetails = lazy(async () => await import('#pages/OrderDetails'))
+const CreateReturn = lazy(async () => await import('#pages/CreateReturn'))
 
-export function App(): JSX.Element {
+const isDev = Boolean(import.meta.env.DEV)
+
+export interface AppProps {
+  basePath?: string
+  organizationSlug?: string
+}
+
+export const App: FC<AppProps> = ({ basePath, organizationSlug }) => {
   return (
     <ErrorBoundary hasContainer>
       <SWRConfig
@@ -34,10 +37,11 @@ export function App(): JSX.Element {
           kind='orders'
           appSlug='orders'
           domain={window.clAppConfig.domain}
-          reauthenticateOnInvalidAuth={!isDev}
+          // TODO: restore correct behavior in final version
+          reauthenticateOnInvalidAuth={false}
           devMode={isDev}
           loadingElement={<div />}
-          organizationSlug={import.meta.env.PUBLIC_SELF_HOSTED_SLUG}
+          organizationSlug={organizationSlug}
         >
           <GTMProvider gtmId={window.clAppConfig.gtmId}>
             <MetaTags />
@@ -54,13 +58,17 @@ export function App(): JSX.Element {
                     <Filters />
                   </Route>
                   <Route path={appRoutes.details.path}>
-                    <OrderDetails />
+                    <Suspense>
+                      <OrderDetails />
+                    </Suspense>
                   </Route>
                   <Route path={appRoutes.refund.path}>
                     <Refund />
                   </Route>
                   <Route path={appRoutes.return.path}>
-                    <CreateReturn />
+                    <Suspense>
+                      <CreateReturn />
+                    </Suspense>
                   </Route>
                   <Route>
                     <ErrorNotFound />

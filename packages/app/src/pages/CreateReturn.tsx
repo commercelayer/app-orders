@@ -25,7 +25,7 @@ import type { Address, StockLocation } from '@commercelayer/sdk'
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function CreateReturn(): JSX.Element {
+function CreateReturn(): JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.return.path)
@@ -229,3 +229,5 @@ export function CreateReturn(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default CreateReturn

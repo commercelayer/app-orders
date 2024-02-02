@@ -1,11 +1,30 @@
 import '@commercelayer/app-elements/style.css'
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App'
 
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+const defaultBasePath =
+  import.meta.env.PUBLIC_PROJECT_PATH != null
+    ? `/${import.meta.env.PUBLIC_PROJECT_PATH}`
+    : undefined
+
+window.clAppOrders = {
+  init: (node, options) => {
+    if (node == null) {
+      return
+    }
+
+    const root = ReactDOM.createRoot(node)
+    root.render(
+      <StrictMode>
+        <App
+          basePath={options?.basePath ?? defaultBasePath}
+          organizationSlug={
+            import.meta.env.PUBLIC_SELF_HOSTED_SLUG ?? options?.organizationSlug
+          }
+        />
+      </StrictMode>
+    )
+    return root
+  }
+}

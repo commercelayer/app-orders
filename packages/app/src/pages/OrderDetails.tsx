@@ -26,7 +26,7 @@ import {
 } from '@commercelayer/app-elements'
 import { useLocation, useRoute } from 'wouter'
 
-export function OrderDetails(): JSX.Element {
+function OrderDetails(): JSX.Element {
   const {
     canUser,
     settings: { mode },
@@ -178,3 +178,5 @@ export function OrderDetails(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default OrderDetails
