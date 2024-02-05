@@ -19,7 +19,7 @@ import { useListCounters } from '../metricsApi/useListCounters'
 
 export function Home(): JSX.Element {
   const {
-    dashboardUrl,
+    // dashboardUrl,
     settings: { mode }
   } = useTokenProvider()
 
@@ -36,14 +36,14 @@ export function Home(): JSX.Element {
       title='Orders'
       mode={mode}
       gap='only-top'
-      navigationButton={{
-        onClick: () => {
-          window.location.href =
-            dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
-        },
-        label: 'Hub',
-        icon: 'arrowLeft'
-      }}
+      // navigationButton={{
+      //   onClick: () => {
+      //     window.location.href =
+      //       dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
+      //   },
+      //   label: 'Hub',
+      //   icon: 'arrowLeft'
+      // }}
     >
       <SearchWithNav
         hideFiltersNav
