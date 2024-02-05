@@ -9,7 +9,7 @@ import {
 import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Bundle, Order, Sku } from '@commercelayer/sdk'
 import { useRef } from 'react'
-import { navigate, useSearch } from 'wouter/use-location'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
 interface OverlayHook {
   show: (type: 'skus' | 'bundles') => void
