@@ -63,6 +63,7 @@ export function Home(): JSX.Element {
                   formValues: presets.awaitingApproval
                 })
               )}
+              asChild
             >
               <ListItem
                 tag='a'
@@ -88,6 +89,7 @@ export function Home(): JSX.Element {
                   formValues: presets.paymentToCapture
                 })
               )}
+              asChild
             >
               <ListItem
                 tag='a'
@@ -113,6 +115,7 @@ export function Home(): JSX.Element {
                   formValues: presets.fulfillmentInProgress
                 })
               )}
+              asChild
             >
               <ListItem
                 tag='a'
@@ -138,6 +141,7 @@ export function Home(): JSX.Element {
                     formValues: presets.editing
                   })
                 )}
+                asChild
               >
                 <ListItem
                   tag='a'
@@ -168,6 +172,7 @@ export function Home(): JSX.Element {
                   formValues: presets.history
                 })
               )}
+              asChild
             >
               <ListItem
                 tag='a'
@@ -189,6 +194,7 @@ export function Home(): JSX.Element {
                   formValues: presets.pending
                 })
               )}
+              asChild
             >
               <ListItem tag='a' icon={<RadialProgress size='small' />}>
                 <Text weight='semibold'>{presets.pending.viewTitle}</Text>
@@ -201,6 +207,7 @@ export function Home(): JSX.Element {
                   formValues: presets.archived
                 })
               )}
+              asChild
             >
               <ListItem
                 tag='a'
