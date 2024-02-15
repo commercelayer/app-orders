@@ -23,9 +23,12 @@ const isDev = Boolean(import.meta.env.DEV)
 export interface AppProps {
   basePath?: string
   organizationSlug?: string
+  domain?: string
 }
 
-export const App: FC<AppProps> = ({ basePath, organizationSlug }) => {
+export const App: FC<AppProps> = ({ basePath, organizationSlug, domain }) => {
+  console.log({ organizationSlug, domain, basePath })
+
   return (
     <ErrorBoundary hasContainer>
       <SWRConfig
@@ -36,7 +39,7 @@ export const App: FC<AppProps> = ({ basePath, organizationSlug }) => {
         <TokenProvider
           kind='orders'
           appSlug='orders'
-          domain={window.clAppConfig.domain}
+          domain={domain}
           // TODO: restore correct behavior in final version
           reauthenticateOnInvalidAuth={false}
           devMode={isDev}
