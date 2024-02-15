@@ -23,12 +23,14 @@ const isDev = Boolean(import.meta.env.DEV)
 export interface AppProps {
   basePath?: string
   organizationSlug?: string
-  domain?: string
+  onInvalidAuth?: () => void
 }
 
-export const App: FC<AppProps> = ({ basePath, organizationSlug, domain }) => {
-  console.log({ organizationSlug, domain, basePath })
-
+export const App: FC<AppProps> = ({
+  basePath,
+  organizationSlug,
+  onInvalidAuth
+}) => {
   return (
     <ErrorBoundary hasContainer>
       <SWRConfig
@@ -39,9 +41,12 @@ export const App: FC<AppProps> = ({ basePath, organizationSlug, domain }) => {
         <TokenProvider
           kind='orders'
           appSlug='orders'
-          domain={domain}
+          domain={window.clAppConfig.domain}
           // TODO: restore correct behavior in final version
           reauthenticateOnInvalidAuth={false}
+          onInvalidAuth={() => {
+            onInvalidAuth?.()
+          }}
           devMode={isDev}
           loadingElement={<div />}
           organizationSlug={organizationSlug}

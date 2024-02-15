@@ -22,7 +22,7 @@ window.clAppOrders = {
           organizationSlug={
             import.meta.env.PUBLIC_SELF_HOSTED_SLUG ?? options?.organizationSlug
           }
-          domain={options?.domain ?? window.clAppConfig.domain}
+          onInvalidAuth={options?.onInvalidAuth}
         />
       </StrictMode>
     )
