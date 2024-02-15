@@ -13,6 +13,7 @@ export function Filters(): JSX.Element {
 
   return (
     <PageLayout
+      overlay
       title='Filters'
       navigationButton={{
         onClick: () => {
