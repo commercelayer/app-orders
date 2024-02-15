@@ -22,10 +22,15 @@ export default defineConfig(({ mode }) => {
             react: 'React',
             'react-dom': 'ReactDOM'
           })
-        ]
-      },
-      sourcemap: true,
-      manifest: true
+        ],
+        output: {
+          entryFileNames: `assets/[name].js`
+          // chunkFileNames: `assets/[name].js`,
+          // assetFileNames: `assets/[name].[ext]`
+        }
+      }
+      // sourcemap: true,
+      // manifest: true
     },
     // build: {
     //   cssCodeSplit: false,
