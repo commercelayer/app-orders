@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
     envPrefix: 'PUBLIC_',
     base: basePath,
     build: {
+      modulePreload: false,
       rollupOptions: {
         external: ['react', 'react-dom'],
         plugins: [

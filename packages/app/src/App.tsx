@@ -1,7 +1,5 @@
 import { ErrorNotFound } from '#pages/ErrorNotFound'
-import { Filters } from '#pages/Filters'
 import { Home } from '#pages/Home'
-import { OrderList } from '#pages/OrderList'
 import { Refund } from '#pages/Refund'
 import {
   CoreSdkProvider,
@@ -17,6 +15,8 @@ import { appRoutes } from './data/routes'
 
 const OrderDetails = lazy(async () => await import('#pages/OrderDetails'))
 const CreateReturn = lazy(async () => await import('#pages/CreateReturn'))
+const Filters = lazy(async () => await import('#pages/Filters'))
+const OrderList = lazy(async () => await import('#pages/OrderList'))
 
 const isDev = Boolean(import.meta.env.DEV)
 
@@ -54,35 +54,33 @@ export const App: FC<AppProps> = ({
           <GTMProvider gtmId={window.clAppConfig.gtmId}>
             <MetaTags />
             <CoreSdkProvider>
-              <Router base={basePath}>
-                <Switch>
-                  <Route path={appRoutes.home.path}>
-                    <Home />
-                  </Route>
-                  <Route path={appRoutes.list.path}>
-                    <OrderList />
-                  </Route>
-                  <Route path={appRoutes.filters.path}>
-                    <Filters />
-                  </Route>
-                  <Route path={appRoutes.details.path}>
-                    <Suspense>
+              <Suspense>
+                <Router base={basePath}>
+                  <Switch>
+                    <Route path={appRoutes.home.path}>
+                      <Home />
+                    </Route>
+                    <Route path={appRoutes.list.path}>
+                      <OrderList />
+                    </Route>
+                    <Route path={appRoutes.filters.path}>
+                      <Filters />
+                    </Route>
+                    <Route path={appRoutes.details.path}>
                       <OrderDetails />
-                    </Suspense>
-                  </Route>
-                  <Route path={appRoutes.refund.path}>
-                    <Refund />
-                  </Route>
-                  <Route path={appRoutes.return.path}>
-                    <Suspense>
+                    </Route>
+                    <Route path={appRoutes.refund.path}>
+                      <Refund />
+                    </Route>
+                    <Route path={appRoutes.return.path}>
                       <CreateReturn />
-                    </Suspense>
-                  </Route>
-                  <Route>
-                    <ErrorNotFound />
-                  </Route>
-                </Switch>
-              </Router>
+                    </Route>
+                    <Route>
+                      <ErrorNotFound />
+                    </Route>
+                  </Switch>
+                </Router>
+              </Suspense>
             </CoreSdkProvider>
           </GTMProvider>
         </TokenProvider>

@@ -4,7 +4,7 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
-    "preview:react": "pnpm -r preview",
+    "preview": "pnpm -r preview",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "test": "pnpm -r test",
