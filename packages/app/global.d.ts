@@ -15,7 +15,7 @@ declare global {
        */
       gtmId?: string
     }
-    clAppOrders: {
+    clApp: {
       init: (node?: HTMLElement, options?: AppProps) => void
     }
   }
