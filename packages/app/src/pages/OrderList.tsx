@@ -38,7 +38,7 @@ export function OrderList(): JSX.Element {
       gap='only-top'
       navigationButton={{
         onClick: () => {
-          setLocation(appRoutes.home.makePath())
+          setLocation(appRoutes.home.makePath({}))
         },
         label: 'Orders',
         icon: 'arrowLeft'
@@ -52,7 +52,7 @@ export function OrderList(): JSX.Element {
           })
         }}
         onFilterClick={(queryString) => {
-          setLocation(appRoutes.filters.makePath(queryString))
+          setLocation(appRoutes.filters.makePath({}, queryString))
         }}
         hideFiltersNav={hideFiltersNav}
       />

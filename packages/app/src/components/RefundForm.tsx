@@ -61,13 +61,14 @@ export function RefundForm({
 
   return (
     <PageLayout
+      overlay
       title='Make refund'
       navigationButton={{
         onClick: () => {
           if (step === 'confirm') {
             setStep('fields')
           } else {
-            setLocation(appRoutes.details.makePath(order.id))
+            setLocation(appRoutes.details.makePath({ orderId: order.id }))
           }
         },
         label: step === 'confirm' ? 'Back' : getOrderTitle(order),

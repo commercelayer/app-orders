@@ -34,7 +34,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
         key='request-return'
         label='Request return'
         onClick={() => {
-          setLocation(appRoutes.return.makePath(order.id))
+          setLocation(appRoutes.return.makePath({ orderId: order.id }))
         }}
       />
     ) : undefined
@@ -56,7 +56,7 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
       onClick={() => {
         // refund action has its own form page
         if (triggerAttribute === '_refund') {
-          setLocation(appRoutes.refund.makePath(order.id))
+          setLocation(appRoutes.refund.makePath({ orderId: order.id }))
           return
         }
 

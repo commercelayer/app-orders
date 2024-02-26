@@ -33,8 +33,8 @@ export function CreateReturn(): JSX.Element {
   const orderId = params?.orderId ?? ''
   const goBackUrl =
     orderId != null
-      ? appRoutes.details.makePath(orderId)
-      : appRoutes.home.makePath()
+      ? appRoutes.details.makePath({ orderId })
+      : appRoutes.home.makePath({})
 
   const { order, isLoading, mutateOrder } = useOrderDetails(orderId)
   const { inventoryModel } = useMarketInventoryModel(order.market?.id)
@@ -92,11 +92,6 @@ export function CreateReturn(): JSX.Element {
     []
   )
 
-  // const goBackUrl =
-  //   orderId != null
-  //     ? appRoutes.details.makePath(orderId)
-  //     : appRoutes.home.makePath()
-
   if (
     isMock(order) ||
     returnObj == null ||
@@ -117,7 +112,7 @@ export function CreateReturn(): JSX.Element {
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: orderId != null ? 'TODO Order title' : 'Orders',
+          label: orderId != null ? 'Back' : 'Orders',
           icon: 'arrowLeft'
         }}
       >
@@ -136,6 +131,7 @@ export function CreateReturn(): JSX.Element {
 
   return (
     <PageLayout
+      overlay
       title={
         <SkeletonTemplate isLoading={isLoading}>
           Request return

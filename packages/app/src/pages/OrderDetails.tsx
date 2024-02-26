@@ -48,7 +48,7 @@ export function OrderDetails(): JSX.Element {
           onClick: () => {
             goBack({
               setLocation,
-              defaultRelativePath: appRoutes.home.makePath()
+              defaultRelativePath: appRoutes.home.makePath({})
             })
           },
           label: 'Back',
@@ -64,7 +64,7 @@ export function OrderDetails(): JSX.Element {
               onClick={() => {
                 goBack({
                   setLocation,
-                  defaultRelativePath: appRoutes.home.makePath()
+                  defaultRelativePath: appRoutes.home.makePath({})
                 })
               }}
             >
@@ -111,7 +111,7 @@ export function OrderDetails(): JSX.Element {
         onClick: () => {
           goBack({
             setLocation,
-            defaultRelativePath: appRoutes.home.makePath()
+            defaultRelativePath: appRoutes.home.makePath({})
           })
         },
         label: 'Back',

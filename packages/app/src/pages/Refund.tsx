@@ -74,7 +74,7 @@ export function Refund(): JSX.Element {
         // when the attachments is not created, the process continues since the refund is already done
       }
     }
-    setLocation(appRoutes.details.makePath(orderId))
+    setLocation(appRoutes.details.makePath({ orderId }))
   }
 
   if (isLoading) {
@@ -97,7 +97,7 @@ export function Refund(): JSX.Element {
               : 'Cannot make refund on this order'
           }
           action={
-            <Link href={appRoutes.details.makePath(orderId)}>
+            <Link href={appRoutes.details.makePath({ orderId })}>
               <Button variant='primary'>Go back</Button>
             </Link>
           }

@@ -17,7 +17,7 @@ export function useBackToList(): {
   const [, setLocation] = useLocation()
 
   const goBackToList = useCallback(() => {
-    let listPath = appRoutes.list.makePath()
+    let listPath = appRoutes.list.makePath({})
     try {
       const backTo = JSON.parse(sessionStorage.getItem(itemName) ?? '{}')
       if (backTo.fullPath != null && backTo.ver === currentVersion) {
@@ -34,7 +34,7 @@ export function useBackToList(): {
   const setBackToList = useCallback(
     ({ search }: { search: string }) => {
       const data: PersistentBackToListItem = {
-        fullPath: `${appRoutes.list.makePath()}${search}`,
+        fullPath: `${appRoutes.list.makePath({})}${search}`,
         ver: currentVersion
       }
       sessionStorage.setItem(itemName, JSON.stringify(data))
