@@ -12,7 +12,7 @@ import {
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function OrderList(): JSX.Element {
+function OrderList(): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
@@ -100,3 +100,5 @@ export function OrderList(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default OrderList

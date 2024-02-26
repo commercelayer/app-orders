@@ -13,7 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function Refund(): JSX.Element {
+function Refund(): JSX.Element {
   const { canUser, user } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
@@ -122,3 +122,5 @@ export function Refund(): JSX.Element {
     />
   )
 }
+
+export default Refund

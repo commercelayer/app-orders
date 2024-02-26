@@ -1,10 +1,4 @@
-import { CreateReturn } from '#pages/CreateReturn'
-import { ErrorNotFound } from '#pages/ErrorNotFound'
-import { Filters } from '#pages/Filters'
-import { Home } from '#pages/Home'
-import { OrderDetails } from '#pages/OrderDetails'
-import { OrderList } from '#pages/OrderList'
-import { Refund } from '#pages/Refund'
+import { Routes } from '#components/Routes'
 import {
   CoreSdkProvider,
   ErrorBoundary,
@@ -13,7 +7,7 @@ import {
   TokenProvider
 } from '@commercelayer/app-elements'
 import { SWRConfig } from 'swr'
-import { Route, Router, Switch } from 'wouter'
+import { Router } from 'wouter'
 import { appRoutes } from './data/routes'
 
 const isDev = Boolean(import.meta.env.DEV)
@@ -43,29 +37,29 @@ export function App(): JSX.Element {
             <MetaTags />
             <CoreSdkProvider>
               <Router base={basePath}>
-                <Switch>
-                  <Route path={appRoutes.home.path}>
-                    <Home />
-                  </Route>
-                  <Route path={appRoutes.list.path}>
-                    <OrderList />
-                  </Route>
-                  <Route path={appRoutes.filters.path}>
-                    <Filters />
-                  </Route>
-                  <Route path={appRoutes.details.path}>
-                    <OrderDetails />
-                  </Route>
-                  <Route path={appRoutes.refund.path}>
-                    <Refund />
-                  </Route>
-                  <Route path={appRoutes.return.path}>
-                    <CreateReturn />
-                  </Route>
-                  <Route>
-                    <ErrorNotFound />
-                  </Route>
-                </Switch>
+                <Routes
+                  routes={appRoutes}
+                  list={{
+                    home: {
+                      component: async () => await import('#pages/Home')
+                    },
+                    list: {
+                      component: async () => await import('#pages/OrderList')
+                    },
+                    filters: {
+                      component: async () => await import('#pages/Filters')
+                    },
+                    details: {
+                      component: async () => await import('#pages/OrderDetails')
+                    },
+                    refund: {
+                      component: async () => await import('#pages/Refund')
+                    },
+                    return: {
+                      component: async () => await import('#pages/CreateReturn')
+                    }
+                  }}
+                />
               </Router>
             </CoreSdkProvider>
           </GTMProvider>

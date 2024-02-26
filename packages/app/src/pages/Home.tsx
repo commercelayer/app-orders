@@ -17,7 +17,7 @@ import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
-export function Home(): JSX.Element {
+function Home(): JSX.Element {
   const {
     dashboardUrl,
     settings: { mode }
@@ -234,3 +234,5 @@ export function Home(): JSX.Element {
 function formatCounter(counter = 0): string {
   return `(${Intl.NumberFormat().format(counter)})`
 }
+
+export default Home

@@ -26,7 +26,7 @@ import {
 } from '@commercelayer/app-elements'
 import { useLocation, useRoute } from 'wouter'
 
-export function OrderDetails(): JSX.Element {
+function OrderDetails(): JSX.Element {
   const {
     canUser,
     settings: { mode },
@@ -37,10 +37,10 @@ export function OrderDetails(): JSX.Element {
 
   const orderId = params?.orderId ?? ''
 
-  const { order, isLoading } = useOrderDetails(orderId)
+  const { order, isLoading, error } = useOrderDetails(orderId)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
 
-  if (orderId === undefined || !canUser('read', 'orders')) {
+  if (orderId === undefined || !canUser('read', 'orders') || error != null) {
     return (
       <PageLayout
         title='Orders'
@@ -178,3 +178,5 @@ export function OrderDetails(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default OrderDetails
