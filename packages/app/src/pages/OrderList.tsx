@@ -12,7 +12,7 @@ import {
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function OrderList(): JSX.Element {
+function OrderList(): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
@@ -38,7 +38,7 @@ export function OrderList(): JSX.Element {
       gap='only-top'
       navigationButton={{
         onClick: () => {
-          setLocation(appRoutes.home.makePath())
+          setLocation(appRoutes.home.makePath({}))
         },
         label: 'Orders',
         icon: 'arrowLeft'
@@ -52,7 +52,7 @@ export function OrderList(): JSX.Element {
           })
         }}
         onFilterClick={(queryString) => {
-          setLocation(appRoutes.filters.makePath(queryString))
+          setLocation(appRoutes.filters.makePath({}, queryString))
         }}
         hideFiltersNav={hideFiltersNav}
       />
@@ -100,3 +100,5 @@ export function OrderList(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default OrderList

@@ -3,7 +3,7 @@ import { appRoutes } from '#data/routes'
 import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
-export function Filters(): JSX.Element {
+function Filters(): JSX.Element {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
     instructions
@@ -13,11 +13,13 @@ export function Filters(): JSX.Element {
 
   return (
     <PageLayout
+      overlay
       title='Filters'
       navigationButton={{
         onClick: () => {
           setLocation(
             appRoutes.list.makePath(
+              {},
               adapters.adaptUrlQueryToUrlQuery({
                 queryString: location.search
               })
@@ -33,9 +35,11 @@ export function Filters(): JSX.Element {
     >
       <FiltersForm
         onSubmit={(filtersQueryString) => {
-          setLocation(appRoutes.list.makePath(filtersQueryString))
+          setLocation(appRoutes.list.makePath({}, filtersQueryString))
         }}
       />
     </PageLayout>
   )
 }
+
+export default Filters

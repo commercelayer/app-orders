@@ -17,7 +17,7 @@ import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
-export function Home(): JSX.Element {
+function Home(): JSX.Element {
   const {
     dashboardUrl,
     settings: { mode }
@@ -49,7 +49,7 @@ export function Home(): JSX.Element {
         hideFiltersNav
         onFilterClick={() => {}}
         onUpdate={(qs) => {
-          setLocation(appRoutes.list.makePath(qs))
+          setLocation(appRoutes.list.makePath({}, qs))
         }}
         queryString={search}
       />
@@ -59,6 +59,7 @@ export function Home(): JSX.Element {
           <List title='Open'>
             <Link
               href={appRoutes.list.makePath(
+                {},
                 adapters.adaptFormValuesToUrlQuery({
                   formValues: presets.awaitingApproval
                 })
@@ -85,6 +86,7 @@ export function Home(): JSX.Element {
 
             <Link
               href={appRoutes.list.makePath(
+                {},
                 adapters.adaptFormValuesToUrlQuery({
                   formValues: presets.paymentToCapture
                 })
@@ -111,6 +113,7 @@ export function Home(): JSX.Element {
 
             <Link
               href={appRoutes.list.makePath(
+                {},
                 adapters.adaptFormValuesToUrlQuery({
                   formValues: presets.fulfillmentInProgress
                 })
@@ -137,6 +140,7 @@ export function Home(): JSX.Element {
             {counters?.editing != null && counters?.editing > 0 && (
               <Link
                 href={appRoutes.list.makePath(
+                  {},
                   adapters.adaptFormValuesToUrlQuery({
                     formValues: presets.editing
                   })
@@ -168,6 +172,7 @@ export function Home(): JSX.Element {
           <List title='Browse'>
             <Link
               href={appRoutes.list.makePath(
+                {},
                 adapters.adaptFormValuesToUrlQuery({
                   formValues: presets.history
                 })
@@ -190,6 +195,7 @@ export function Home(): JSX.Element {
             </Link>
             <Link
               href={appRoutes.list.makePath(
+                {},
                 adapters.adaptFormValuesToUrlQuery({
                   formValues: presets.pending
                 })
@@ -203,6 +209,7 @@ export function Home(): JSX.Element {
             </Link>
             <Link
               href={appRoutes.list.makePath(
+                {},
                 adapters.adaptFormValuesToUrlQuery({
                   formValues: presets.archived
                 })
@@ -227,3 +234,5 @@ export function Home(): JSX.Element {
 function formatCounter(counter = 0): string {
   return `(${Intl.NumberFormat().format(counter)})`
 }
+
+export default Home

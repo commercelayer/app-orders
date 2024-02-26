@@ -29,7 +29,8 @@ export function useOrderDetails(id: string) {
     data: order,
     isLoading,
     mutate: mutateOrder,
-    isValidating
+    isValidating,
+    error
   } = useCoreApi(
     'orders',
     'retrieve',
@@ -46,5 +47,5 @@ export function useOrderDetails(id: string) {
     }
   )
 
-  return { order, isLoading, mutateOrder, isValidating }
+  return { order, isLoading, mutateOrder, isValidating, error }
 }
