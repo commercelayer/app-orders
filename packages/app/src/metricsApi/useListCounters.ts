@@ -9,14 +9,17 @@ import { getLastYearIsoRange } from './utils'
 const fetchOrderStats = async ({
   slug,
   accessToken,
-  filters
+  filters,
+  domain
 }: {
   slug: string
   accessToken: string
   filters: object
+  domain: string
 }): Promise<VndApiResponse<MetricsApiOrdersStatsData>> =>
   await metricsApiFetcher<MetricsApiOrdersStatsData>({
     endpoint: '/orders/stats',
+    domain,
     slug,
     accessToken,
     body: {
@@ -35,9 +38,11 @@ const fetchOrderStats = async ({
   })
 
 const fetchAllCounters = async ({
+  domain,
   slug,
   accessToken
 }: {
+  domain: string
   slug: string
   accessToken: string
 }): Promise<{
@@ -61,6 +66,7 @@ const fetchAllCounters = async ({
   const allStats = await Promise.allSettled(
     lists.map(async (listType) => {
       return await fetchOrderStats({
+        domain,
         slug,
         accessToken,
         filters: fromFormValuesToMetricsApi(presets[listType])
@@ -83,12 +89,13 @@ export function useListCounters(): SWRResponse<{
   fulfillmentInProgress: number
 }> {
   const {
-    settings: { accessToken, organizationSlug }
+    settings: { accessToken, organizationSlug, domain }
   } = useTokenProvider()
 
   const swrResponse = useSWR(
     {
       slug: organizationSlug,
+      domain,
       accessToken
     },
     fetchAllCounters,
