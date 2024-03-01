@@ -55,6 +55,7 @@ function OrderDetails(): JSX.Element {
           icon: 'arrowLeft'
         }}
         mode={mode}
+        scrollToTop
       >
         <EmptyState
           title='Not authorized'

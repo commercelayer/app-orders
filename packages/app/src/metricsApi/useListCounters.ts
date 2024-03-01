@@ -1,22 +1,27 @@
 import { presets, type ListType } from '#data/lists'
-import { useTokenProvider } from '@commercelayer/app-elements'
+import {
+  getLastYearIsoRange,
+  useTokenProvider
+} from '@commercelayer/app-elements'
 import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import castArray from 'lodash/castArray'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'
-import { getLastYearIsoRange } from './utils'
 
 const fetchOrderStats = async ({
   slug,
   accessToken,
-  filters
+  filters,
+  domain
 }: {
   slug: string
   accessToken: string
   filters: object
+  domain: string
 }): Promise<VndApiResponse<MetricsApiOrdersStatsData>> =>
   await metricsApiFetcher<MetricsApiOrdersStatsData>({
     endpoint: '/orders/stats',
+    domain,
     slug,
     accessToken,
     body: {
@@ -26,7 +31,10 @@ const fetchOrderStats = async ({
       },
       filter: {
         order: {
-          ...getLastYearIsoRange(new Date()),
+          ...getLastYearIsoRange({
+            now: new Date(),
+            showMilliseconds: false
+          }),
           date_field: 'updated_at',
           ...filters
         }
@@ -35,9 +43,11 @@ const fetchOrderStats = async ({
   })
 
 const fetchAllCounters = async ({
+  domain,
   slug,
   accessToken
 }: {
+  domain: string
   slug: string
   accessToken: string
 }): Promise<{
@@ -61,6 +71,7 @@ const fetchAllCounters = async ({
   const allStats = await Promise.allSettled(
     lists.map(async (listType) => {
       return await fetchOrderStats({
+        domain,
         slug,
         accessToken,
         filters: fromFormValuesToMetricsApi(presets[listType])
@@ -83,12 +94,13 @@ export function useListCounters(): SWRResponse<{
   fulfillmentInProgress: number
 }> {
   const {
-    settings: { accessToken, organizationSlug }
+    settings: { accessToken, organizationSlug, domain }
   } = useTokenProvider()
 
   const swrResponse = useSWR(
     {
       slug: organizationSlug,
+      domain,
       accessToken
     },
     fetchAllCounters,
