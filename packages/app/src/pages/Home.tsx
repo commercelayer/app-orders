@@ -2,27 +2,21 @@ import { instructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
+  HomePageLayout,
   List,
   ListItem,
-  PageLayout,
   RadialProgress,
   SkeletonTemplate,
   Spacer,
   StatusIcon,
   Text,
-  useResourceFilters,
-  useTokenProvider
+  useResourceFilters
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
 function Home(): JSX.Element {
-  const {
-    dashboardUrl,
-    settings: { mode }
-  } = useTokenProvider()
-
   const [, setLocation] = useLocation()
   const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
@@ -32,19 +26,7 @@ function Home(): JSX.Element {
   })
 
   return (
-    <PageLayout
-      title='Orders'
-      mode={mode}
-      gap='only-top'
-      navigationButton={{
-        onClick: () => {
-          window.location.href =
-            dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
-        },
-        label: 'Hub',
-        icon: 'arrowLeft'
-      }}
-    >
+    <HomePageLayout title='Orders'>
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
@@ -227,7 +209,7 @@ function Home(): JSX.Element {
           </List>
         </Spacer>
       </SkeletonTemplate>
-    </PageLayout>
+    </HomePageLayout>
   )
 }
 

@@ -26,6 +26,7 @@ function getOrderStatusBadgeVariant(
     case 'pending':
       return 'secondary'
     case 'placed':
+    case 'placing':
     case 'editing':
       return 'warning-solid'
   }
