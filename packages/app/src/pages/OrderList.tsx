@@ -55,6 +55,7 @@ function OrderList(): JSX.Element {
           setLocation(appRoutes.filters.makePath({}, queryString))
         }}
         hideFiltersNav={hideFiltersNav}
+        searchBarDebounceMs={1500}
       />
 
       <Spacer bottom='14'>
