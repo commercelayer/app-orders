@@ -88,9 +88,9 @@ export const instructions: FiltersInstructions = [
     label: 'Archived',
     type: 'options',
     sdk: {
-      predicate: 'archived_at_null',
+      predicate: 'archived',
       parseFormValue: (value) =>
-        value === 'show' ? undefined : value !== 'only'
+        value === 'show' ? undefined : value === 'only'
     },
     hidden: true,
     render: {
@@ -152,8 +152,7 @@ export const instructions: FiltersInstructions = [
     label: 'Search',
     type: 'textSearch',
     sdk: {
-      predicate:
-        ['number', 'reference', 'customer_email'].join('_or_') + '_cont'
+      predicate: 'aggregated_details'
     },
     render: {
       component: 'searchBar'

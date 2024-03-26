@@ -34,7 +34,6 @@ function Home(): JSX.Element {
           setLocation(appRoutes.list.makePath({}, qs))
         }}
         queryString={search}
-        searchBarDebounceMs={1500}
       />
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
