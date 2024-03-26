@@ -153,16 +153,7 @@ export const instructions: FiltersInstructions = [
     type: 'textSearch',
     sdk: {
       predicate:
-        [
-          'number',
-          'reference',
-          'customer_email',
-          'billing_address_email',
-          'billing_address_company',
-          'billing_address_first_name',
-          'billing_address_last_name',
-          'billing_address_billing_info'
-        ].join('_or_') + '_cont'
+        ['number', 'reference', 'customer_email'].join('_or_') + '_cont'
     },
     render: {
       component: 'searchBar'
