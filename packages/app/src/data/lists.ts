@@ -13,38 +13,38 @@ export const presets: Record<ListType, FormFullValues> = {
   awaitingApproval: {
     status_in: ['placed'],
     payment_status_in: ['authorized', 'free', 'paid'],
-    archived_at_null: 'show',
+    archived: 'show',
     viewTitle: 'Awaiting approval'
   },
   editing: {
     status_in: ['editing'],
     payment_status_in: [],
-    archived_at_null: 'hide',
+    archived: 'hide',
     viewTitle: 'Editing'
   },
   paymentToCapture: {
     status_in: ['approved'],
     payment_status_in: ['authorized'],
-    archived_at_null: 'show',
+    archived: 'show',
     viewTitle: 'Payment to capture'
   },
   fulfillmentInProgress: {
     status_in: ['approved'],
     fulfillment_status_in: ['in_progress'],
-    archived_at_null: 'show',
+    archived: 'show',
     viewTitle: 'Fulfillment in progress'
   },
   history: {
-    archived_at_null: 'hide',
+    archived: 'hide',
     viewTitle: 'Order history'
   },
   pending: {
     status_in: ['pending'],
-    archived_at_null: 'hide',
+    archived: 'hide',
     viewTitle: 'Pending orders'
   },
   archived: {
-    archived_at_null: 'only',
+    archived: 'only',
     viewTitle: 'Archived'
   }
 }

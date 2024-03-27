@@ -55,34 +55,19 @@ function OrderList(): JSX.Element {
           setLocation(appRoutes.filters.makePath({}, queryString))
         }}
         hideFiltersNav={hideFiltersNav}
-        searchBarDebounceMs={1500}
+        searchBarDebounceMs={1000}
       />
 
       <Spacer bottom='14'>
         <FilteredList
           type='orders'
           ItemTemplate={ListItemOrder}
-          query={{
-            fields: {
-              orders: [
-                'id',
-                'number',
-                'updated_at',
-                'placed_at',
-                'formatted_total_amount',
-                'status',
-                'payment_status',
-                'fulfillment_status',
-                'market',
-                'billing_address',
-                'shipping_address'
-              ],
-              markets: ['id', 'name']
-            },
-            include: ['market', 'billing_address'],
-            pageSize: 25,
-            sort: {
-              updated_at: 'desc'
+          metricsQuery={{
+            search: {
+              limit: 25,
+              sort: 'desc',
+              sort_by: 'order.updated_at',
+              fields: ['order.*', 'billing_address.*', 'market.*']
             }
           }}
           emptyState={
