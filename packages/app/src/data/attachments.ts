@@ -2,8 +2,8 @@ import type { Attachment } from '@commercelayer/sdk'
 import isEmpty from 'lodash/isEmpty'
 import type { SetNonNullable, SetRequired } from 'type-fest'
 
-export const noteReferenceOrigin = 'app-orders--note' as const
-export const refundNoteReferenceOrigin = 'app-orders--refund-note' as const
+export const noteReferenceOrigin = 'app-orders--note'
+export const refundNoteReferenceOrigin = 'app-orders--refund-note'
 
 export function isAttachmentValidNote(
   attachment: Attachment
