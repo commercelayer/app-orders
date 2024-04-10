@@ -29,7 +29,7 @@ export function renderTotalRow({
   bold?: boolean
 }): JSX.Element {
   return (
-    <ListItem tag='div' borderStyle='none' padding='y' paddingSize='2'>
+    <ListItem borderStyle='none' padding='y' paddingSize='2'>
       <Text weight={bold ? 'bold' : 'medium'}>{label}</Text>
       <Text wrap='nowrap' weight={bold ? 'bold' : 'medium'}>
         {value}

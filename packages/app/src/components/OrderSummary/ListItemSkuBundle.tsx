@@ -18,7 +18,6 @@ export const ListItemSkuBundle = withSkeletonTemplate<Props>(
   ({ resource = makeSku(), onSelect }) => {
     return (
       <ListItem
-        tag='a'
         onClick={(e) => {
           e.preventDefault()
           onSelect(resource)

@@ -32,7 +32,6 @@ const renderShipment = (shipment: Shipment): JSX.Element => {
     <ResourceListItem
       key={shipment.id}
       resource={shipment}
-      tag={canAccess('shipments') ? 'a' : 'div'}
       {...navigateToShipment}
     />
   )

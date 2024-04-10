@@ -124,11 +124,7 @@ const Form: React.FC<Props> = ({ order, close }) => {
                       shipment.available_shipping_methods?.map(
                         (availableShippingMethod) => ({
                           content: (
-                            <ListItem
-                              tag='div'
-                              borderStyle='none'
-                              padding='none'
-                            >
+                            <ListItem borderStyle='none' padding='none'>
                               <Text weight='semibold'>
                                 {availableShippingMethod.name}
                               </Text>
