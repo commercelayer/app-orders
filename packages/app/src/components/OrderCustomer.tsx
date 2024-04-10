@@ -37,7 +37,6 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
     return (
       <Section title='Customer'>
         <ListItem
-          tag={canAccess('customers') ? 'a' : 'div'}
           icon={<StatusIcon name='user' background='teal' gap='large' />}
           {...navigateToCustomer}
         >

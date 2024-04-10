@@ -59,7 +59,7 @@ export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
 
   return (
     <Section title='Payment method'>
-      <ListItem tag='div' icon={icon}>
+      <ListItem icon={icon}>
         <PaymentMethod order={order} />
       </ListItem>
     </Section>

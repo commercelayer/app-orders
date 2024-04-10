@@ -32,7 +32,6 @@ export function FormFieldItems({ lineItems }: Props): JSX.Element {
               ) : undefined
             }
             padding='none'
-            tag='div'
           >
             <div>
               <Text size='regular' tag='div' weight='bold'>

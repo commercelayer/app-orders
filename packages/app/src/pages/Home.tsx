@@ -50,7 +50,6 @@ function Home(): JSX.Element {
               asChild
             >
               <ListItem
-                tag='a'
                 icon={
                   <StatusIcon
                     name='arrowDown'
@@ -77,7 +76,6 @@ function Home(): JSX.Element {
               asChild
             >
               <ListItem
-                tag='a'
                 icon={
                   <StatusIcon
                     name='creditCard'
@@ -104,7 +102,6 @@ function Home(): JSX.Element {
               asChild
             >
               <ListItem
-                tag='a'
                 icon={
                   <StatusIcon
                     name='arrowClockwise'
@@ -131,7 +128,6 @@ function Home(): JSX.Element {
                 asChild
               >
                 <ListItem
-                  tag='a'
                   icon={
                     <StatusIcon
                       name='pencilSimple'
@@ -163,7 +159,6 @@ function Home(): JSX.Element {
               asChild
             >
               <ListItem
-                tag='a'
                 icon={
                   <StatusIcon
                     name='asteriskSimple'
@@ -185,7 +180,7 @@ function Home(): JSX.Element {
               )}
               asChild
             >
-              <ListItem tag='a' icon={<RadialProgress size='small' />}>
+              <ListItem icon={<RadialProgress size='small' />}>
                 <Text weight='semibold'>{presets.pending.viewTitle}</Text>
                 <StatusIcon name='caretRight' />
               </ListItem>
@@ -200,7 +195,6 @@ function Home(): JSX.Element {
               asChild
             >
               <ListItem
-                tag='a'
                 icon={<StatusIcon name='minus' background='gray' gap='small' />}
               >
                 <Text weight='semibold'>{presets.archived.viewTitle}</Text>

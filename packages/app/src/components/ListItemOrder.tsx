@@ -21,7 +21,6 @@ export function ListItemOrder({
       resource={resource}
       isLoading={isLoading}
       delayMs={delayMs}
-      tag='a'
       {...navigateTo({
         setLocation,
         destination: {
