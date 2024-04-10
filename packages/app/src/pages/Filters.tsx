@@ -1,4 +1,4 @@
-import { instructions } from '#data/filters'
+import { makeInstructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
@@ -6,7 +6,7 @@ import { useLocation } from 'wouter'
 function Filters(): JSX.Element {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
-    instructions
+    instructions: makeInstructions({})
   })
 
   const searchParams = new URLSearchParams(location.search)

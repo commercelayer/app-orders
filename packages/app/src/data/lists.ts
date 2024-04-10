@@ -40,7 +40,7 @@ export const presets: Record<ListType, FormFullValues> = {
   },
   pending: {
     status_in: ['pending'],
-    archived: 'hide',
+    archived: 'show',
     viewTitle: 'Pending orders'
   },
   archived: {

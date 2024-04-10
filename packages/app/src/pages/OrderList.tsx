@@ -1,6 +1,6 @@
 import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemOrder } from '#components/ListItemOrder'
-import { instructions } from '#data/filters'
+import { makeInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -20,9 +20,15 @@ function OrderList(): JSX.Element {
   const queryString = useSearch()
   const [, setLocation] = useLocation()
 
+  const isPendingOrdersList =
+    new URLSearchParams(queryString).get('viewTitle') ===
+    presets.pending.viewTitle
+
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
-      instructions
+      instructions: makeInstructions({
+        sortByAttribute: isPendingOrdersList ? 'created_at' : 'placed_at'
+      })
     })
 
   const isUserCustomFiltered =
@@ -55,6 +61,7 @@ function OrderList(): JSX.Element {
           setLocation(appRoutes.filters.makePath({}, queryString))
         }}
         hideFiltersNav={hideFiltersNav}
+        hideSearchBar={viewTitle === presets.pending.viewTitle}
         searchBarDebounceMs={1000}
       />
 
