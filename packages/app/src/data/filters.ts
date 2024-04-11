@@ -1,6 +1,10 @@
 import type { FiltersInstructions } from '@commercelayer/app-elements'
 
-export const instructions: FiltersInstructions = [
+export const makeInstructions = ({
+  sortByAttribute = 'placed_at'
+}: {
+  sortByAttribute?: 'placed_at' | 'created_at'
+}): FiltersInstructions => [
   {
     label: 'Markets',
     type: 'options',
@@ -109,7 +113,7 @@ export const instructions: FiltersInstructions = [
     label: 'Time Range',
     type: 'timeRange',
     sdk: {
-      predicate: 'placed_at'
+      predicate: sortByAttribute
     },
     render: {
       component: 'dateRangePicker'

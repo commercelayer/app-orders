@@ -1,4 +1,4 @@
-import { instructions } from '#data/filters'
+import { makeInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -22,7 +22,7 @@ function Home(): JSX.Element {
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
   const { adapters, SearchWithNav } = useResourceFilters({
-    instructions
+    instructions: makeInstructions({})
   })
 
   return (
