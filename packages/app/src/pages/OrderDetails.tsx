@@ -166,6 +166,7 @@ function OrderDetails(): JSX.Element {
                 overlay={{
                   title: pageTitle
                 }}
+                mode='simple'
               />
             </Spacer>
           )}
