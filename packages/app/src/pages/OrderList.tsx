@@ -61,7 +61,6 @@ function OrderList(): JSX.Element {
           setLocation(appRoutes.filters.makePath({}, queryString))
         }}
         hideFiltersNav={hideFiltersNav}
-        hideSearchBar={viewTitle === presets.pending.viewTitle}
         searchBarDebounceMs={1000}
       />
 
