@@ -31,8 +31,6 @@ function OrderList(): JSX.Element {
       })
     })
 
-  const isUserCustomFiltered =
-    hasActiveFilter && viewTitle === presets.history.viewTitle
   const hideFiltersNav = !(
     viewTitle == null || viewTitle === presets.history.viewTitle
   )
@@ -79,7 +77,7 @@ function OrderList(): JSX.Element {
           emptyState={
             <ListEmptyState
               scope={
-                isUserCustomFiltered
+                hasActiveFilter
                   ? 'userFiltered'
                   : viewTitle !== presets.history.viewTitle
                     ? 'presetView'

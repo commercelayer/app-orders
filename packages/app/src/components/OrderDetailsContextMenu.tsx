@@ -3,8 +3,10 @@ import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
 import { useReturnableList } from '#hooks/useReturnableList'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
+  Button,
   Dropdown,
   DropdownItem,
+  Icon,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
@@ -72,6 +74,11 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
   return (
     <>
       <Dropdown
+        dropdownLabel={
+          <Button variant='secondary' size='small'>
+            <Icon name='dotsThree' size={16} weight='bold' />
+          </Button>
+        }
         dropdownItems={[createReturnDropDownItem, ...triggerDropDownItems]}
       />
     </>
