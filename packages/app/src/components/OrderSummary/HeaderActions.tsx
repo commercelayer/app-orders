@@ -4,6 +4,7 @@ import {
   Button,
   Dropdown,
   DropdownItem,
+  Icon,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -34,7 +35,8 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
   if (editFeature && canEdit) {
     return (
       <Button
-        variant='link'
+        variant='secondary'
+        size='mini'
         onClick={(e) => {
           e.preventDefault()
           void dispatch('_start_editing').catch(() => {
@@ -66,7 +68,12 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
           }}
         />
         <Dropdown
-          dropdownLabel='Add item'
+          dropdownLabel={
+            <Button variant='secondary' size='mini' alignItems='center'>
+              Add item
+              <Icon name='caretDown' />
+            </Button>
+          }
           dropdownItems={
             <>
               <DropdownItem
