@@ -120,12 +120,14 @@ export function RefundForm({
               >
                 Proceed with refund
               </Button>
-              <HookedValidationApiError
-                apiError={apiError}
-                fieldMap={{
-                  _refund_amount_cents: 'amountCents'
-                }}
-              />
+              <Spacer top='2'>
+                <HookedValidationApiError
+                  apiError={apiError}
+                  fieldMap={{
+                    _refund_amount_cents: 'amountCents'
+                  }}
+                />
+              </Spacer>
             </Spacer>
           </>
         ) : step === 'confirm' ? (
