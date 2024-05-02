@@ -2,7 +2,6 @@ import {
   CoreSdkProvider,
   ErrorBoundary,
   MetaTags,
-  PageSkeleton,
   TokenProvider,
   createApp
 } from '@commercelayer/app-elements'
@@ -27,9 +26,7 @@ createApp(
             appSlug='orders'
             devMode={isDev}
             reauthenticateOnInvalidAuth={!isDev && props?.onInvalidAuth == null}
-            loadingElement={
-              props?.isInDashboard === true ? <PageSkeleton /> : <div />
-            }
+            loadingElement={<div />}
             {...props}
           >
             <CoreSdkProvider>
