@@ -130,7 +130,9 @@ function OrderDetails(): JSX.Element {
                 resourceId={order.id}
                 overlay={{ title: 'Edit tags', description: pageTitle }}
                 onTagClick={(tagId) => {
-                  setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
+                  setLocation(
+                    appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                  )
                 }}
               />
             </Spacer>
