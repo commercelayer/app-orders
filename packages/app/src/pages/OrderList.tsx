@@ -74,6 +74,7 @@ function OrderList(): JSX.Element {
               fields: ['order.*', 'billing_address.*', 'market.*']
             }
           }}
+          hideTitle={viewTitle === presets.pending.viewTitle}
           emptyState={
             <ListEmptyState
               scope={

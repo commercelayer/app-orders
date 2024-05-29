@@ -1,23 +1,25 @@
+import {
+  getTriggerAttributeName,
+  getTriggerAttributes
+} from '#components/OrderSummary/orderDictionary'
 import { appRoutes } from '#data/routes'
 import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
 import { useReturnableList } from '#hooks/useReturnableList'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  Icon,
-  useTokenProvider
+  useTokenProvider,
+  type DropdownItemProps
 } from '@commercelayer/app-elements'
+import type { PageHeadingToolbarProps } from '@commercelayer/app-elements/dist/ui/atoms/PageHeading/PageHeadingToolbar'
 import { type Order } from '@commercelayer/sdk'
-import { useMemo, type FC } from 'react'
+import { useMemo } from 'react'
 import { useLocation } from 'wouter'
-import {
-  getTriggerAttributeName,
-  getTriggerAttributes
-} from './OrderSummary/orderDictionary'
 
-export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
+export function useOrderToolbar({
+  order
+}: {
+  order: Order
+}): PageHeadingToolbarProps {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { inventoryModel } = useMarketInventoryModel(order.market?.id)
@@ -30,16 +32,17 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
     orderReturnStockLocation.length > 0 &&
     returnableLineItems.length > 0
 
-  const createReturnDropDownItem = useMemo(() => {
-    return showReturnDropDownItem ? (
-      <DropdownItem
-        key='request-return'
-        label='Request return'
-        onClick={() => {
-          setLocation(appRoutes.return.makePath({ orderId: order.id }))
-        }}
-      />
-    ) : undefined
+  const createReturnDropDownItem = useMemo<
+    DropdownItemProps | undefined
+  >(() => {
+    return showReturnDropDownItem
+      ? {
+          label: 'Request return',
+          onClick: () => {
+            setLocation(appRoutes.return.makePath({ orderId: order.id }))
+          }
+        }
+      : undefined
   }, [order, returnableLineItems, showReturnDropDownItem])
 
   const { dispatch } = useTriggerAttribute(order.id)
@@ -51,11 +54,10 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
     )
   }, [order])
 
-  const triggerDropDownItems = triggerMenuActions.map((triggerAttribute) => (
-    <DropdownItem
-      key={triggerAttribute}
-      label={getTriggerAttributeName(triggerAttribute)}
-      onClick={() => {
+  const triggerDropDownItems: DropdownItemProps[] = triggerMenuActions.map(
+    (triggerAttribute) => ({
+      label: getTriggerAttributeName(triggerAttribute),
+      onClick: () => {
         // refund action has its own form page
         if (triggerAttribute === '_refund') {
           setLocation(appRoutes.refund.makePath({ orderId: order.id }))
@@ -63,26 +65,28 @@ export const OrderDetailsContextMenu: FC<{ order: Order }> = ({ order }) => {
         }
 
         void dispatch(triggerAttribute)
-      }}
-    />
-  ))
-
-  if (!showReturnDropDownItem && triggerMenuActions.length === 0) {
-    return null
-  }
-
-  return (
-    <>
-      <Dropdown
-        dropdownLabel={
-          <Button variant='secondary' size='small'>
-            <Icon name='dotsThree' size={16} weight='bold' />
-          </Button>
-        }
-        dropdownItems={[createReturnDropDownItem, ...triggerDropDownItems]}
-      />
-    </>
+      }
+    })
   )
+
+  const dropdownItemsGroup: DropdownItemProps[] =
+    createReturnDropDownItem != null
+      ? [createReturnDropDownItem, ...triggerDropDownItems]
+      : [...triggerDropDownItems]
+
+  return {
+    buttons:
+      dropdownItemsGroup.length === 1 && dropdownItemsGroup[0] != null
+        ? [
+            {
+              label: dropdownItemsGroup[0].label,
+              onClick: dropdownItemsGroup[0].onClick
+            }
+          ]
+        : undefined,
+    dropdownItems:
+      dropdownItemsGroup.length === 1 ? undefined : [dropdownItemsGroup]
+  }
 }
 
 type UITriggerAttributes = Parameters<typeof getTriggerAttributeName>[0]
