@@ -27,11 +27,11 @@ importers:
   packages/app:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^1.24.3
-        version: 1.24.3(@commercelayer/sdk@5.38.0)(query-string@8.2.0)(react-dom@18.2.0(react@18.2.0))(react-gtm-module@2.0.11)(react-hook-form@7.51.3(react@18.2.0))(react@18.2.0)(wouter@3.1.2(react@18.2.0))
+        specifier: ^2.0.1
+        version: 2.0.1(@commercelayer/sdk@6.3.0)(query-string@8.2.0)(react-dom@18.2.0(react@18.2.0))(react-gtm-module@2.0.11)(react-hook-form@7.51.3(react@18.2.0))(react@18.2.0)(wouter@3.1.2(react@18.2.0))
       '@commercelayer/sdk':
-        specifier: 5.38.0
-        version: 5.38.0
+        specifier: ^6.3.0
+        version: 6.3.0
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.51.3(react@18.2.0))
@@ -234,11 +234,11 @@ packages:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
 
-  '@commercelayer/app-elements@1.24.3':
-    resolution: {integrity: sha512-r/qSZHT0D8qK2YtZqA7rUiXC40wcssoBb6p/6YNFNMiGUCwxB4TeU+V4oE9O4cCuRcHYk9chFnaLOfd21t6Fsg==}
+  '@commercelayer/app-elements@2.0.1':
+    resolution: {integrity: sha512-//BzZohT3HmlX9Xx2rL//ywH8L1vWynfXC9KBkLwnOcNxTKAqsz8xlR1iIlM9WxapvV1jZCEkahU/9Kz00+QAw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
-      '@commercelayer/sdk': ^5.x
+      '@commercelayer/sdk': ^6.x
       query-string: ^8.2.x
       react: ^18.2.x
       react-dom: ^18.2.x
@@ -259,9 +259,9 @@ packages:
       eslint: '>=8.0'
       typescript: '>=5.0'
 
-  '@commercelayer/sdk@5.38.0':
-    resolution: {integrity: sha512-MiwbdTs5fFRPPcBh4kw5CeQvGNUeBvjreaA58kEKbYzVncw7YhsqIelmF9LRlKrUtewVzv1SOLbyH8CB0npk5A==}
-    engines: {node: '>=16 || ^14.17'}
+  '@commercelayer/sdk@6.3.0':
+    resolution: {integrity: sha512-xZn1rJPEod6Nt7u12oAG35iQ2Sf44eaxl4vpZ0nx+uoX+ugZ2wLhngtOF2yCSMb+iTyWmtCRRZrFq8zopuTntg==}
+    engines: {node: '>=20'}
 
   '@emotion/babel-plugin@11.11.0':
     resolution: {integrity: sha512-m4HEDZleaaCH+XgDDsPF15Ht6wTLsgDTeR3WYj9Q/k76JtWhrJjcP4+/XlG8LGT/Rol9qUfOIztXeA84ATpqPQ==}
@@ -4931,9 +4931,9 @@ snapshots:
   '@colors/colors@1.5.0':
     optional: true
 
-  '@commercelayer/app-elements@1.24.3(@commercelayer/sdk@5.38.0)(query-string@8.2.0)(react-dom@18.2.0(react@18.2.0))(react-gtm-module@2.0.11)(react-hook-form@7.51.3(react@18.2.0))(react@18.2.0)(wouter@3.1.2(react@18.2.0))':
+  '@commercelayer/app-elements@2.0.1(@commercelayer/sdk@6.3.0)(query-string@8.2.0)(react-dom@18.2.0(react@18.2.0))(react-gtm-module@2.0.11)(react-hook-form@7.51.3(react@18.2.0))(react@18.2.0)(wouter@3.1.2(react@18.2.0))':
     dependencies:
-      '@commercelayer/sdk': 5.38.0
+      '@commercelayer/sdk': 6.3.0
       '@types/lodash': 4.17.0
       '@types/react': 18.2.79
       '@types/react-datepicker': 6.2.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -4992,11 +4992,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  '@commercelayer/sdk@5.38.0':
-    dependencies:
-      axios: 1.6.7
-    transitivePeerDependencies:
-      - debug
+  '@commercelayer/sdk@6.3.0': {}
 
   '@emotion/babel-plugin@11.11.0':
     dependencies:

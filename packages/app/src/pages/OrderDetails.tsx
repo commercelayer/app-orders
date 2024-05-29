@@ -1,6 +1,5 @@
 import { OrderAddresses } from '#components/OrderAddresses'
 import { OrderCustomer } from '#components/OrderCustomer'
-import { OrderDetailsContextMenu } from '#components/OrderDetailsContextMenu'
 import { OrderPayment } from '#components/OrderPayment'
 import { OrderReturns } from '#components/OrderReturns'
 import { OrderShipments } from '#components/OrderShipments'
@@ -10,6 +9,7 @@ import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useOrderReturns } from '#hooks/useOrderReturns'
+import { useOrderToolbar } from '#hooks/useOrderToolbar'
 import { isMockedId } from '#mocks'
 import { getOrderTitle } from '#utils/getOrderTitle'
 import {
@@ -39,6 +39,7 @@ function OrderDetails(): JSX.Element {
 
   const { order, isLoading, error } = useOrderDetails(orderId)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
+  const toolbar = useOrderToolbar({ order })
 
   if (orderId === undefined || !canUser('read', 'orders') || error != null) {
     return (
@@ -82,7 +83,7 @@ function OrderDetails(): JSX.Element {
   return (
     <PageLayout
       mode={mode}
-      actionButton={<OrderDetailsContextMenu order={order} />}
+      toolbar={toolbar}
       title={
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
