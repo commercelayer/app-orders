@@ -1,6 +1,6 @@
 import { presets, type ListType } from '#data/lists'
 import {
-  getLastYearIsoRange,
+  makeDateYearsRange,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
@@ -31,9 +31,10 @@ const fetchOrderStats = async ({
       },
       filter: {
         order: {
-          ...getLastYearIsoRange({
+          ...makeDateYearsRange({
             now: new Date(),
-            showMilliseconds: false
+            showMilliseconds: false,
+            yearsAgo: 1
           }),
           date_field: 'updated_at',
           ...filters
