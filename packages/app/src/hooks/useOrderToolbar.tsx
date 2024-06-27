@@ -80,7 +80,8 @@ export function useOrderToolbar({
         ? [
             {
               label: dropdownItemsGroup[0].label,
-              onClick: dropdownItemsGroup[0].onClick
+              onClick: dropdownItemsGroup[0].onClick,
+              size: 'small'
             }
           ]
         : undefined,
