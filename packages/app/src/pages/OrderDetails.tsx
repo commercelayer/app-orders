@@ -22,7 +22,9 @@ import {
   Spacer,
   formatDateWithPredicate,
   goBack,
-  useTokenProvider
+  useEditMetadataOverlay,
+  useTokenProvider,
+  type DropdownItemProps
 } from '@commercelayer/app-elements'
 import { useLocation, useRoute } from 'wouter'
 
@@ -40,6 +42,23 @@ function OrderDetails(): JSX.Element {
   const { order, isLoading, error } = useOrderDetails(orderId)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const toolbar = useOrderToolbar({ order })
+  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
+    useEditMetadataOverlay()
+  if (canUser('update', 'orders')) {
+    const setMetadataDropDownItem: DropdownItemProps = {
+      label: 'Set metadata',
+      onClick: () => {
+        showEditMetadataOverlay()
+      }
+    }
+    if (toolbar.dropdownItems != null) {
+      toolbar.dropdownItems[toolbar.dropdownItems.length - 1]?.push(
+        setMetadataDropDownItem
+      )
+    } else {
+      toolbar.dropdownItems = [[setMetadataDropDownItem]]
+    }
+  }
 
   if (orderId === undefined || !canUser('read', 'orders') || error != null) {
     return (
@@ -177,6 +196,13 @@ function OrderDetails(): JSX.Element {
             <Spacer top='14'>
               <Timeline order={order} />
             </Spacer>
+          )}
+          {!isMockedId(order.id) && (
+            <EditMetadataOverlay
+              resourceType={order.type}
+              resourceId={order.id}
+              title={pageTitle}
+            />
           )}
         </Spacer>
       </SkeletonTemplate>
