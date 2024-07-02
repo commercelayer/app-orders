@@ -1,91 +1,68 @@
-import { presets, type ListType } from '#data/lists'
+import { makeInstructions } from '#data/filters'
+import { presets } from '#data/lists'
 import {
-  makeDateYearsRange,
+  useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
-import castArray from 'lodash/castArray'
+import type { MetricsFilters } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/adaptSdkToMetrics'
+import type { UiFilterValue } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
+import type { QueryFilter } from '@commercelayer/sdk'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'
 
-const fetchOrderStats = async ({
-  slug,
-  accessToken,
-  filters,
-  domain
-}: {
-  slug: string
-  accessToken: string
-  filters: object
-  domain: string
-}): Promise<VndApiResponse<MetricsApiOrdersStatsData>> =>
-  await metricsApiFetcher<MetricsApiOrdersStatsData>({
-    endpoint: '/orders/stats',
-    domain,
-    slug,
-    accessToken,
-    body: {
-      stats: {
-        field: 'order.id',
-        operator: 'value_count'
-      },
-      filter: {
-        order: {
-          ...makeDateYearsRange({
-            now: new Date(),
-            showMilliseconds: false,
-            yearsAgo: 1
-          }),
-          date_field: 'updated_at',
-          ...filters
-        }
-      }
-    }
-  })
+const listPresetsForCounters = [
+  'awaitingApproval',
+  'paymentToCapture',
+  'fulfillmentInProgress',
+  'editing'
+] as const
+type ListPreset = (typeof listPresetsForCounters)[number]
 
 const fetchAllCounters = async ({
   domain,
   slug,
-  accessToken
+  accessToken,
+  metricsFilters
 }: {
   domain: string
   slug: string
   accessToken: string
-}): Promise<{
-  awaitingApproval: number
-  editing: number
-  paymentToCapture: number
-  fulfillmentInProgress: number
-}> => {
+  metricsFilters: Record<ListPreset, MetricsFilters>
+}): Promise<Record<ListPreset, number>> => {
   function fulfillResult(result?: PromiseSettledResult<number>): number {
     return result?.status === 'fulfilled' ? result.value : 0
   }
 
-  // keep proper order since responses will be assigned for each list in the returned object
-  const lists: ListType[] = [
-    'awaitingApproval',
-    'editing',
-    'paymentToCapture',
-    'fulfillmentInProgress'
-  ]
+  const lists = Object.keys(metricsFilters) as ListPreset[]
 
   const allStats = await Promise.allSettled(
     lists.map(async (listType) => {
-      return await fetchOrderStats({
+      return await metricsApiFetcher<MetricsApiOrdersStatsData>({
+        endpoint: '/orders/stats',
         domain,
         slug,
         accessToken,
-        filters: fromFormValuesToMetricsApi(presets[listType])
+        body: {
+          stats: {
+            field: 'order.id',
+            operator: 'value_count'
+          },
+          filter: metricsFilters[listType]
+        }
       }).then((r) => r.data.value)
     })
   )
 
-  return {
-    awaitingApproval: fulfillResult(allStats[0]),
-    editing: fulfillResult(allStats[1]),
-    paymentToCapture: fulfillResult(allStats[2]),
-    fulfillmentInProgress: fulfillResult(allStats[3])
-  }
+  const defaultValues = Object.fromEntries(
+    lists.map((listType) => [listType, 0])
+  ) as Record<ListPreset, number>
+
+  return lists.reduce((acc, listType, index) => {
+    return {
+      ...acc,
+      [listType]: fulfillResult(allStats[index])
+    }
+  }, defaultValues)
 }
 
 export function useListCounters(): SWRResponse<{
@@ -98,11 +75,37 @@ export function useListCounters(): SWRResponse<{
     settings: { accessToken, organizationSlug, domain }
   } = useTokenProvider()
 
+  const {
+    adapters: { adaptFormValuesToSdk, adaptSdkToMetrics }
+  } = useResourceFilters({
+    instructions: makeInstructions({})
+  })
+
+  const sdkFilters = listPresetsForCounters.reduce((acc, listType) => {
+    return {
+      ...acc,
+      [listType]: adaptFormValuesToSdk({
+        formValues: presets[listType] as Record<ListPreset, UiFilterValue>
+      })
+    }
+  }, {}) as Record<ListPreset, QueryFilter>
+
+  const metricsFilters = listPresetsForCounters.reduce((acc, listType) => {
+    return {
+      ...acc,
+      [listType]: adaptSdkToMetrics({
+        resourceType: 'orders',
+        sdkFilters: sdkFilters[listType]
+      })
+    }
+  }, {})
+
   const swrResponse = useSWR(
     {
       slug: organizationSlug,
       domain,
-      accessToken
+      accessToken,
+      metricsFilters
     },
     fetchAllCounters,
     {
@@ -111,33 +114,4 @@ export function useListCounters(): SWRResponse<{
   )
 
   return swrResponse
-}
-
-/**
- * Covert FilterFormValues in Metrics API filter object.
- * Partial implementation: it only supports status, payment_status and fulfillment_status
- */
-function fromFormValuesToMetricsApi(formValues: FormFullValues): object {
-  return {
-    statuses:
-      formValues.status_in != null && castArray(formValues.status_in).length > 0
-        ? {
-            in: formValues.status_in
-          }
-        : undefined,
-    payment_statuses:
-      formValues.payment_status_in != null &&
-      castArray(formValues.payment_status_in).length > 0
-        ? {
-            in: formValues.payment_status_in
-          }
-        : undefined,
-    fulfillment_statuses:
-      formValues.fulfillment_status_in != null &&
-      castArray(formValues.fulfillment_status_in).length > 0
-        ? {
-            in: formValues.fulfillment_status_in
-          }
-        : undefined
-  }
 }
