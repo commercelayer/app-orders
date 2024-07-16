@@ -95,7 +95,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
       )
 
     return renderTotalRow({
-      label: 'Shipping method',
+      label: order.shipments?.[0]?.shipping_method?.name ?? 'Shipping method',
       value:
         canEditShipments && !hasInvalidShipments ? (
           <>
@@ -131,7 +131,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
       })}
       {shippingMethodRow}
       {renderTotalRowAmount({
-        label: 'Payment method',
+        label: order.payment_method?.name ?? 'Payment method',
         amountCents: order.payment_method_amount_cents,
         formattedAmount: order.formatted_payment_method_amount
       })}
