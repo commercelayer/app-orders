@@ -9,7 +9,6 @@ interface Props {
 
 export function PaymentMethod({ order }: Props): JSX.Element {
   const paymentInstrument = paymentInstrumentType.safeParse(
-    // @ts-expect-error At the moment 'payment_instrument' does not exist on type 'SatispayPayment'.
     order.payment_source?.payment_instrument
   )
 
