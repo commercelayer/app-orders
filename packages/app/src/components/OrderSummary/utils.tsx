@@ -66,7 +66,8 @@ export function renderDiscounts(order: Order): JSX.Element | null {
     fixed_price_promotions: undefined,
     free_gift_promotions: undefined,
     free_shipping_promotions: undefined,
-    percentage_discount_promotions: undefined
+    percentage_discount_promotions: undefined,
+    buy_x_pay_y_promotions: undefined
   } satisfies Record<PromotionItemType, undefined>) as ItemType[]
 
   const promotionLineItems =

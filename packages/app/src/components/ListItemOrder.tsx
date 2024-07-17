@@ -1,5 +1,10 @@
 import { makeOrder } from '#mocks'
-import { ResourceListItem, navigateTo } from '@commercelayer/app-elements'
+import {
+  ResourceListItem,
+  formatCentsToCurrency,
+  navigateTo,
+  type CurrencyCode
+} from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
 
@@ -18,7 +23,10 @@ export function ListItemOrder({
 
   return (
     <ResourceListItem
-      resource={resource}
+      resource={{
+        ...resource,
+        formatted_total_amount: getFormattedTotalAmount(resource)
+      }}
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
@@ -30,4 +38,18 @@ export function ListItemOrder({
       })}
     />
   )
+}
+
+/**
+ * This helper aims to get `formatted_total_amount` from a metrics `Order`.
+ */
+function getFormattedTotalAmount(resource: Order): string | null | undefined {
+  if ('total_amount' in resource && resource.currency_code != null) {
+    return formatCentsToCurrency(
+      (resource.total_amount as number) * 100,
+      resource.currency_code as CurrencyCode
+    )
+  }
+
+  return resource.formatted_total_amount
 }
