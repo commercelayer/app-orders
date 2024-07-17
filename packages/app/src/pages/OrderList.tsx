@@ -70,7 +70,9 @@ function OrderList(): JSX.Element {
             search: {
               limit: 25,
               sort: 'desc',
-              sort_by: 'order.updated_at',
+              sort_by: isPendingOrdersList
+                ? 'order.updated_at'
+                : 'order.placed_at',
               fields: ['order.*', 'billing_address.*', 'market.*']
             }
           }}
