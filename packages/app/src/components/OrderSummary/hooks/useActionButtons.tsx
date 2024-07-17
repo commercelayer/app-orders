@@ -85,7 +85,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     }
 
     const continueAction: ActionButtonsProps['actions'][number] = {
-      label: 'Continue',
+      label: 'Continue editing',
       disabled: isLoading || !hasLineItems,
       onClick: () => {
         showSelectShippingMethodOverlay()

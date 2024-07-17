@@ -73,7 +73,7 @@ export function getTriggerAttributeName(
   const dictionary: Record<typeof triggerAttribute, string> = {
     _approve: 'Approve',
     _archive: 'Archive',
-    _cancel: 'Cancel',
+    _cancel: 'Cancel order',
     _capture: 'Capture payment',
     _refund: 'Refund',
     _unarchive: 'Unarchive'
